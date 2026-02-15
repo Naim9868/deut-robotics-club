@@ -1,65 +1,123 @@
-import Image from "next/image";
+// app/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
+import TechStack from '@/components/TechStack';
+import FocusAreas from '@/components/FocusAreas';
+import Blog from '@/components/Blog';
+import Projects from '@/components/Projects';
+import Gallery from '@/components/Gallery';
+import Stats from '@/components/Stats';
+import Timeline from '@/components/Timeline';
+import Committee from '@/components/Committee';
+import Testimonials from '@/components/Testimonials';
+import Sponsors from '@/components/Sponsors';
+import FAQ from '@/components/FAQ';
+import Events from '@/components/Events';
+import Footer from '@/components/Footer';
+// import AIChat from '@/components/AIChat';
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Anchors used for navigation highlighting
+      const sections = ['home', 'about', 'tech', 'blog', 'projects', 'gallery', 'committee', 'events', 'faq', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const height = element.offsetHeight;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
+            setActiveSection(section);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen font-sans selection:bg-primary selection:text-white bg-dark text-white overflow-x-hidden">
+      <Navbar activeSection={activeSection} />
+      
+      <main>
+        {/* 1. HOME SECTION */}
+        <section id="home">
+          <Hero />
+        </section>
+        
+        {/* 2. ABOUT SECTION */}
+        <section id="about" className="bg-[#0a0a0a]">
+          <About />
+        </section>
+
+        {/* 3. IMPACT STATS (Supplementary to About) */}
+        <Stats />
+
+        {/* 4. FOCUS AREAS */}
+        <section id="focus">
+          <FocusAreas />
+        </section>
+
+        {/* 5. TECH SECTION */}
+        <section id="tech" className="bg-[#080808]">
+          <TechStack />
+        </section>
+
+        {/* 6. BLOG SECTION */}
+        <Blog />
+        
+        {/* 7. PROJECTS SECTION */}
+        <section id="projects" className="bg-[#0a0a0a]">
+          <Projects />
+        </section>
+
+        {/* 8. GALLERY SECTION */}
+        <section id="gallery" className="bg-[#0d0d0d]">
+          <Gallery />
+        </section>
+
+        {/* 9. EVENTS SECTION */}
+        <section id="events" className="bg-[#080808]">
+          <Events />
+        </section>
+
+        {/* 10. HISTORY/TIMELINE */}
+        <Timeline />
+
+        {/* 11. TEAM SECTION (Committee) */}
+        <section id="committee" className="bg-[#0a0a0a]">
+          <Committee />
+        </section>
+
+        {/* 12. TESTIMONIALS (Social Proof) */}
+        <Testimonials />
+
+        {/* 13. FAQ SECTION */}
+        <section id="faq" className="bg-[#0a0a0a]">
+          <FAQ />
+        </section>
+
+        {/* 14. SPONSORS/PARTNERS */}
+        <Sponsors />
       </main>
+
+      {/* 15. FOOTER & CONTACT */}
+      <footer id="contact">
+        <Footer />
+      </footer>
+
+      {/* FLOATING AI ASSISTANT */}
+      {/* <AIChat /> */}
     </div>
   );
 }
