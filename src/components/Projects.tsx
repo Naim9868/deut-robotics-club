@@ -105,7 +105,7 @@ const Projects: React.FC = () => {
         <ScrollReveal animation="up">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 space-y-8 md:space-y-0">
             <div>
-              <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white flex items-center">
+              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white flex items-center">
                 ACTIVE<span className="mx-2 md:mx-4 w-4 h-8 md:w-6 md:h-12 bg-primary inline-block"></span><span className="text-primary">PROTOTYPES</span>
               </h2>
             </div>
@@ -133,7 +133,7 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((p, idx) => (
             <ScrollReveal key={p.id} animation="scale" delay={idx * 100}>
-              <div className="group relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
+              <div className="group mb-2 sm:m-1 shadow-white shadow-sm relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
                 {/* Background Image */}
                 <img 
                   src={p.image} 

@@ -83,7 +83,7 @@ const Blog: React.FC = () => {
         
         <div className="mt-16 text-center">
           <ScrollReveal animation="up">
-            <button className="px-10 py-4 border border-white/10 text-white font-black uppercase tracking-widest text-[11px] rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95">
+            <button className="px-10 py-4 border border-white/100 text-white font-black uppercase tracking-widest text-[11px] rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95">
               Explore All Articles
             </button>
           </ScrollReveal>
