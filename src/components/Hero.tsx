@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
                 : 'opacity-0 translate-x-full scale-110'
             }`}
             style={{ 
-              backgroundImage: `linear-gradient(to bottom, rgba(5,5,5,0.75), rgba(5,5,5,0.2), rgba(5,5,5,0.9)), url('${img}')`,
+              backgroundImage: `linear-gradient(to bottom, rgba(5,5,5,0.50), rgba(5,5,5,0.2), rgba(5,5,5,0.75)), url('${img}')`,
               zIndex: index === currentIndex ? 1 : 0
             }}
           />
@@ -51,12 +51,12 @@ const Hero: React.FC = () => {
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tighter leading-tight mb-8 text-white select-none whitespace-nowrap overflow-hidden">
           <span className="inline-block animate-[fadeInUp_1s_ease-out_forwards]">
-            Empowering Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-primary text-glow drop-shadow-2xl">Innovators</span> Through Robotics
+            Empowering Future <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-primary text-glow drop-shadow-2xl">Innovators<br/></span> Through Robotics
           </span>
         </h1>
         
         <p className="max-w-3xl mx-auto text-lg md:text-xl text-gray-100 mb-12 font-medium tracking-wide leading-relaxed animate-[fadeIn_2s_ease-out_forwards] drop-shadow-lg">
-          Transforming robotics at <span className="text-white font-bold border-b-2 border-primary/50">Dhaka University of Engineering & Technology</span>. 
+          Transforming robotics at <span className="text-white font-bold  border-primary/50">Dhaka University of Engineering & Technology(DUET)</span>. 
           The future is autonomous, and we are building it.
         </p>
         

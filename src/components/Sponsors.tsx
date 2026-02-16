@@ -10,13 +10,13 @@ const Sponsors: React.FC = () => {
   return (
     <div className="py-24 bg-dark overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-4 mb-12">
-        <p className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-primary/50">Global Network Partners</p>
+        <p className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-primary/100">Global Network Partners</p>
       </div>
       
       <div className="flex relative group">
         <div className="flex animate-marquee whitespace-nowrap">
           {logos.concat(logos).map((logo, idx) => (
-            <div key={idx} className="mx-12 text-3xl md:text-5xl font-black italic text-white/10 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter">
+            <div key={idx} className="mx-12 text-3xl md:text-5xl font-black italic text-white/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter">
               {logo}
             </div>
           ))}

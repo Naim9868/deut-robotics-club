@@ -26,7 +26,7 @@ const Testimonials: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {reviews.map((r, i) => (
             <div key={i} className="relative p-10 bg-card border border-white/5 rounded-2xl">
-              <div className="absolute top-0 right-10 -translate-y-1/2 text-8xl text-primary/10 font-serif italic">“</div>
+              <div className="absolute top-0 right-10 -translate-y-1/2 text-8xl text-primary/70 font-serif italic">“</div>
               <p className="text-gray-300 text-lg italic mb-8 relative z-10 leading-relaxed">
                 {r.text}
               </p>
