@@ -1,13 +1,6 @@
 // app/api/upload/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadImage, deleteImage } from '@/lib/utils/cloudinary';
-// import { v2 as cloudinary } from 'cloudinary';
-
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,15 +12,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
+    // console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
+    // console.log('Folder:', folder);
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`;
 
+    // console.log('Base64 created, length:', base64.length);
+
     const result = await uploadImage(base64, folder);
+    // console.log('Upload result:', result);
 
     return NextResponse.json(result);
-  } catch (error) {
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Upload error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
+    return NextResponse.json(
+      { error: 'Upload failed', details: error.message }, 
+      { status: 500 }
+    );
   }
 }
 
@@ -40,9 +48,12 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteImage(publicId);
-
     return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Delete error:', error);
+    return NextResponse.json(
+      { error: 'Delete failed', details: error.message }, 
+      { status: 500 }
+    );
   }
 }
