@@ -3,6 +3,28 @@ import React from 'react';
 import ScrollReveal from './ScrollReveal';
 
 const Blog: React.FC = () => {
+
+  // const [posts, setPosts] = useState<BlogPost[]>([]);
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   fetchPosts();
+  // }, []);
+
+  // const fetchPosts = async () => {
+  //   try {
+  //     const res = await fetch('/api/blog');
+  //     const data = await res.json();
+  //     setPosts(data.filter((p: any) => p.isActive).slice(0, 4));
+  //   } catch (error) {
+  //     console.error('Failed to fetch posts');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // if (loading) return <div className="py-32 text-center">Loading...</div>;
+
   const posts = [
     {
       title: 'The Rise of SLAM in Local Robotics',

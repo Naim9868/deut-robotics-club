@@ -5,6 +5,10 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
+import { EyeIcon } from '@heroicons/react/24/outline';
+import toast from 'react-hot-toast';
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -13,9 +17,18 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('home');
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [viewCount, setViewCount] = useState(0);
+  const [likesLoading, setLikesLoading] = useState(false);
 
   useEffect(() => {
     fetchPost();
+    // Check if user has already liked this post (from localStorage)
+    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '{}');
+    if (likedPosts[slug]) {
+      setLiked(true);
+    }
   }, [slug]);
 
   const fetchPost = async () => {
@@ -24,10 +37,64 @@ export default function BlogPostPage() {
       if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setPost(data);
+      setLikeCount(data.likes || 0);
+      setViewCount(data.views || 0);
+      
+      // Increment view count (using the same route)
+      await fetch(`/api/blog/slug/${slug}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'view' }),
+      });
     } catch (error) {
       console.error('Failed to fetch post');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLike = async () => {
+    if (likesLoading) return;
+    
+    setLikesLoading(true);
+    try {
+      const res = await fetch(`/api/blog/slug/${slug}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: liked ? 'unlike' : 'like' }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Update local state
+        setLikeCount(data.likes);
+        setLiked(!liked);
+        
+        // Save to localStorage
+        const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '{}');
+        if (!liked) {
+          likedPosts[slug] = true;
+        } else {
+          delete likedPosts[slug];
+        }
+        localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+
+        toast.success(liked ? 'Like removed' : 'Post liked!', {
+          icon: liked ? '👎' : '❤️',
+        });
+      } else {
+        toast.error(data.error || 'Failed to update like');
+      }
+    } catch (error) {
+      console.error('Like error:', error);
+      toast.error('Failed to update like');
+    } finally {
+      setLikesLoading(false);
     }
   };
 
@@ -63,7 +130,6 @@ export default function BlogPostPage() {
     );
   }
 
-  // Get the correct image URL
   const imageUrl = post.image?.url || post.coverImage || '';
 
   return (
@@ -106,23 +172,47 @@ export default function BlogPostPage() {
               {post.title}
             </h1>
             
-            {/* Author Section */}
-            <div className="flex items-center gap-4">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 bg-[#1e1e1e]">
-                <img 
-                  src={post.authorImage || getAvatarUrl(post.author)}
-                  alt={post.author}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = getAvatarUrl(post.author);
-                  }}
-                />
+            {/* Author Section with Stats */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 bg-[#1e1e1e]">
+                  <img 
+                    src={post.authorImage || getAvatarUrl(post.author)}
+                    alt={post.author}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = getAvatarUrl(post.author);
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="text-lg font-medium text-white">By {post.author}</p>
+                  {post.authorTitle && (
+                    <p className="text-sm text-gray-400">{post.authorTitle}</p>
+                  )}
+                </div>
               </div>
-              <div>
-                <p className="text-lg font-medium text-white">By {post.author}</p>
-                {post.authorTitle && (
-                  <p className="text-sm text-gray-400">{post.authorTitle}</p>
-                )}
+
+              {/* Stats */}
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 text-gray-400">
+                  <EyeIcon className="w-5 h-5" />
+                  <span className="text-sm">{viewCount.toLocaleString()} views</span>
+                </div>
+                <button
+                  onClick={handleLike}
+                  disabled={likesLoading}
+                  className="flex items-center gap-2 text-gray-400 hover:text-primary transition-colors group disabled:opacity-50"
+                >
+                  {liked ? (
+                    <HeartSolid className="w-5 h-5 text-primary" />
+                  ) : (
+                    <HeartOutline className="w-5 h-5 group-hover:text-primary" />
+                  )}
+                  <span className={`text-sm ${liked ? 'text-primary' : ''}`}>
+                    {likeCount.toLocaleString()} likes
+                  </span>
+                </button>
               </div>
             </div>
           </div>
@@ -159,7 +249,7 @@ export default function BlogPostPage() {
             </div>
           )}
 
-          {/* Content - HTML preview */}
+          {/* Content */}
           <div 
             className="prose prose-invert prose-lg max-w-none
               [&_h1]:text-4xl [&_h1]:font-black [&_h1]:mt-8 [&_h1]:mb-4

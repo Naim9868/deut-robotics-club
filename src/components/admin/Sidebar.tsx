@@ -47,7 +47,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-[#0a0a0a] border-r border-white/5 h-screen fixed left-0 top-0 overflow-y-auto">
+    <aside className="w-64 bg-[#0a0a0a] border-r border-white/5 h-[95vh] fixed left-0 top-0 overflow-y-auto">
       <div className="p-6 border-b border-white/5">
         <h1 className="text-xl font-black text-white">
           DRC <span className="text-primary">ADMIN</span>
@@ -57,12 +57,12 @@ export default function Sidebar() {
         </p>
       </div>
 
-      <nav className="p-4">
+      <nav className="p-4 mb-4">
         {menuItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center space-x-3 px-4 py-3 rounded-lg mb-1 text-sm transition-all ${
+            className={`flex items-center space-x-3 px-4 py-2 rounded-lg mb-1 text-sm transition-all ${
               pathname === item.href
                 ? 'bg-primary text-white'
                 : 'text-gray-400 hover:bg-white/5 hover:text-white'
@@ -74,7 +74,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/5">
+      <div className="fixed w-64 bottom-0 left-0 bg-red-500 right-0 p-0 border-t border-white/5">
         <button
           onClick={handleLogout}
           disabled={isLoggingOut}

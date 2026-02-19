@@ -8,7 +8,7 @@ const GallerySchema = new mongoose.Schema({
     alt: { type: String }
   },
   category: { type: String },
-  tags: [{ type: String }],
+  // tags: [{ type: String }],
   date: { type: Date },
   featured: { type: Boolean, default: false },
   order: { type: Number, default: 0 },

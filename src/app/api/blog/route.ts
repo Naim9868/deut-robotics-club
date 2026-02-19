@@ -12,30 +12,12 @@ export async function GET() {
   }
 }
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     await connectDB();
-//     const body = await req.json();
-    
-//     // Generate slug if not provided
-//     if (!body.slug) {
-//       body.slug = body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-//     }
-    
-//     const data = await Blog.create(body);
-//     return NextResponse.json(data, { status: 201 });
-//   } catch (error) {
-//     return NextResponse.json({ error: 'Failed to create' }, { status: 500 });
-//   }
-// }
 
 
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const body = await req.json();
-    
-    console.log('Creating blog post:', body.title);
     
     // Validate required fields
     if (!body.content) {
