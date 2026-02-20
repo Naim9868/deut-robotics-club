@@ -51,8 +51,10 @@ export default function HeroPage() {
     try {
       const res = await fetch('/api/hero');
       const data = await res.json();
+    
       if (data.length > 0) {
         const item = data[0];
+       
         setExistingId(item._id);
         
         // Sort images by order before setting
