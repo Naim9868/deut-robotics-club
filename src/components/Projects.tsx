@@ -1,13 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import ScrollReveal from './ScrollReveal';
 
+interface ProjectData {
+  _id: string;
+  id: string;
+  title: string;
+  tag: string;
+  category: string;
+  status: string;
+  latency: string;
+  description?: string;
+  image: {
+    url: string;
+    alt: string;
+    publicId?: string;
+  };
+  technologies?: string[];
+  team?: string[];
+  github?: string;
+  demo?: string;
+  featured: boolean;
+  order: number;
+  isActive: boolean;
+  statusColor?: string;
+}
+
 const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('ALL');
+  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [randomValues, setRandomValues] = useState<{[key: string]: {x: number, y: number}}>({});
 
   const categories = ['ALL', 'COMBAT', 'AI', 'AERO', 'AUTO'];
 
-  const projects = [
+  // Fetch projects from API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const data = await response.json();
+        
+        // Filter active projects and sort by order
+        const activeProjects = Array.isArray(data) 
+          ? data.filter((p: ProjectData) => p.isActive).sort((a, b) => a.order - b.order)
+          : [];
+        
+        setProjects(activeProjects);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Generate stable random values on the client only
+  useEffect(() => {
+    if (projects.length > 0) {
+      const values: {[key: string]: {x: number, y: number}} = {};
+      projects.forEach(p => {
+        values[p.id] = {
+          x: Math.floor(Math.random() * 999),
+          y: Math.floor(Math.random() * 999)
+        };
+      });
+      setRandomValues(values);
+    }
+  }, [projects]);
+
+  const filteredProjects = activeFilter === 'ALL' 
+    ? projects 
+    : projects.filter(p => p.category === activeFilter);
+
+  if (loading) {
+    return (
+      <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-red-500">
+            {error}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Use projects from API if available, otherwise use fallback data
+  const displayProjects = projects.length > 0 ? projects : [
     {
       id: 'DRC_A1',
       title: 'DESTRON V3',
@@ -15,7 +111,10 @@ const Projects: React.FC = () => {
       status: 'ACTIVE',
       latency: '0.02ms',
       category: 'COMBAT',
-      image: 'https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=1000', alt: 'DESTRON V3' },
+      featured: false,
+      order: 0,
+      isActive: true
     },
     {
       id: 'DRC_N2',
@@ -24,7 +123,10 @@ const Projects: React.FC = () => {
       status: 'TESTING',
       latency: '0.15ms',
       category: 'AI',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000', alt: 'SPIDER-BOT MK.II' },
+      featured: false,
+      order: 1,
+      isActive: true
     },
     {
       id: 'DRC_I3',
@@ -33,7 +135,10 @@ const Projects: React.FC = () => {
       status: 'ACTIVE',
       latency: '0.01ms',
       category: 'AUTO',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000', alt: '6-AXIS HYDRA' },
+      featured: false,
+      order: 2,
+      isActive: true
     },
     {
       id: 'DRC_E4',
@@ -42,7 +147,10 @@ const Projects: React.FC = () => {
       status: 'ACTIVE',
       latency: '0.05ms',
       category: 'AERO',
-      image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000', alt: 'EAGLE EYE DRONE' },
+      featured: false,
+      order: 3,
+      isActive: true
     },
     {
       id: 'DRC_M5',
@@ -51,7 +159,10 @@ const Projects: React.FC = () => {
       status: 'MAINTENANCE',
       latency: '0.22ms',
       category: 'AUTO',
-      image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=1000', alt: 'MAZE RUNNER V.O' },
+      featured: false,
+      order: 4,
+      isActive: true
     },
     {
       id: 'DRC_X6',
@@ -60,25 +171,12 @@ const Projects: React.FC = () => {
       status: 'UNKNOWN',
       latency: 'N/A',
       category: 'AI',
-      image: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000'
+      image: { url: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000', alt: 'VOID_WALKER' },
+      featured: false,
+      order: 5,
+      isActive: true
     }
   ];
-
-  // Generate stable random values on the client only
-  useEffect(() => {
-    const values: {[key: string]: {x: number, y: number}} = {};
-    projects.forEach(p => {
-      values[p.id] = {
-        x: Math.floor(Math.random() * 999),
-        y: Math.floor(Math.random() * 999)
-      };
-    });
-      setRandomValues(values);
-  }, []);
-
-  const filteredProjects = activeFilter === 'ALL' 
-    ? projects 
-    : projects.filter(p => p.category === activeFilter);
 
   return (
     <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
@@ -133,11 +231,11 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((p, idx) => (
             <ScrollReveal key={p.id} animation="scale" delay={idx * 100}>
-              <div className="group mb-2 sm:m-1 shadow-white shadow-sm relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
+              <div className="group mb-2 sm:m-1 shadow-white bg-blend-saturation shadow-sm relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
                 {/* Background Image */}
                 <img 
-                  src={p.image} 
-                  alt={p.title} 
+                  src={p.image?.url || p.image} 
+                  alt={p.image?.alt || p.title} 
                   className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
                 
@@ -167,10 +265,17 @@ const Projects: React.FC = () => {
                     <div className="flex items-center space-x-3">
                       <div className={`w-2 h-2 rounded-full animate-pulse ${
                         p.status === 'ACTIVE' ? 'bg-green-500 shadow-[0_0_10px_#22c55e]' : 
-                        p.status === 'TESTING' ? 'bg-yellow-500 shadow-[0_0_10px_#eab308]' : 'bg-gray-500'
+                        p.status === 'TESTING' ? 'bg-yellow-500 shadow-[0_0_10px_#eab308]' : 
+                        p.status === 'MAINTENANCE' ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 
+                        'bg-gray-500'
                       }`} />
                       <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase">
-                        PROT_STABLE: <span className={p.status === 'ACTIVE' ? 'text-green-500' : 'text-gray-400'}>{p.status}</span>
+                        PROT_STABLE: <span className={
+                          p.status === 'ACTIVE' ? 'text-green-500' : 
+                          p.status === 'TESTING' ? 'text-yellow-500' : 
+                          p.status === 'MAINTENANCE' ? 'text-blue-500' : 
+                          'text-gray-400'
+                        }>{p.status}</span>
                       </span>
                     </div>
                   </div>

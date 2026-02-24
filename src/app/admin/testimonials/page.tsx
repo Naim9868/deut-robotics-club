@@ -253,7 +253,7 @@ export default function TestimonialsPage() {
             </label>
             <textarea 
               {...register('text', { required: 'Testimonial text is required' })} 
-              placeholder="Share your experience..." 
+              placeholder="Share your experience (Maximum 100 words)..." 
               rows={4} 
               className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary resize-none" 
             />

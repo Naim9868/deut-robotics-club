@@ -9,12 +9,12 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', href: '#home', id: 'home' },
+    { name: 'Home', href: '/', id: 'home' },
     { name: 'About', href: '#about', id: 'about' },
     { name: 'Tech', href: '#tech', id: 'tech' },
-    { name: 'Blog', href: '#blog', id: 'blog' },
+    { name: 'Blog', href: '/blog', id: 'blog' },
     { name: 'Projects', href: '#projects', id: 'projects' },
-    { name: 'Gallery', href: '#gallery', id: 'gallery' },
+    { name: 'Gallery', href: '/gallery', id: 'gallery' },
     { name: 'Team', href: '#committee', id: 'committee' },
     { name: 'FAQ', href: '#faq', id: 'faq' },
   ];

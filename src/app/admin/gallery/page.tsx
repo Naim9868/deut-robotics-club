@@ -23,6 +23,9 @@ export default function GalleryPage() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
+  const [useImageLink, setUseImageLink] = useState(false);
+
 
   const { register, handleSubmit, reset, setValue, watch } = useForm<GalleryForm>({
     defaultValues: {
@@ -72,6 +75,25 @@ export default function GalleryPage() {
     }
   };
 
+  const handleImageUpload = (url: string, publicId?: string) => {
+    setValue('image', {
+      url,
+      alt: watch('title') || 'Project image',
+      publicId
+    });
+    setCurrentImageUrl(url);
+    setUseImageLink(false);
+  };
+
+  const handleImageLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setValue('image', {
+      url,
+      alt: watch('title') || 'Project image'
+    });
+    setCurrentImageUrl(url);
+  };
+
   const handleEdit = (item: any) => {
     setEditingId(item._id);
     reset(item);
@@ -113,9 +135,46 @@ export default function GalleryPage() {
 
           <textarea {...register('description')} placeholder="Description" rows={2} className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Image</label>
-            <ImageUpload onUpload={(url) => setValue('image', { url, alt: watch('title') })} defaultValue={watch('image')?.url} />
+          {/* Image Upload with Toggle */}
+          <div className="border-t border-white/5 pt-4">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-xs font-black text-gray-400 uppercase">
+                Project Image
+              </label>
+              <button
+                type="button"
+                onClick={() => setUseImageLink(!useImageLink)}
+                className="text-xs text-primary hover:underline"
+              >
+                {useImageLink ? 'Use Upload' : 'Use Image Link'}
+              </button>
+            </div>
+
+            {useImageLink ? (
+              <div>
+                <input
+                  type="url"
+                  placeholder="https://example.com/image.jpg"
+                  onChange={handleImageLinkChange}
+                  value={currentImageUrl}
+                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Enter a URL for the project image
+                </p>
+              </div>
+            ) : (
+              <div>
+                <ImageUpload
+                  onUpload={handleImageUpload}
+                  defaultValue={currentImageUrl}
+                  folder="projects"
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  Upload an image or toggle to use an external link
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-6">

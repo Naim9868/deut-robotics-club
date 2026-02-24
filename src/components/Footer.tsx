@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
             © 2026 DUET Robotics Club. All Rights Reserved.
           </div>
           <div className="text-center md:text-right">
-            Collaborated with <span className="text-primary">Naim Khan</span>
+            Collaborated with <span className="text-primary"><a href="https://naimulislamportfolio.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-white transition-colors">Naimul Islam</a></span>
           </div>
         </div>
       </div>

@@ -21,6 +21,8 @@ export default function TimelinePage() {
   const [milestones, setMilestones] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
+  const [useImageLink, setUseImageLink] = useState(false);
 
   const { register, handleSubmit, reset, setValue, watch, control } = useForm<TimelineForm>({
     defaultValues: {
@@ -54,7 +56,7 @@ export default function TimelinePage() {
   const onSubmit = async (data: TimelineForm) => {
     try {
       data.achievements = data.achievements.filter(a => a.trim() !== '');
-      
+
       const res = await fetch(`/api/timeline${editingId ? `/${editingId}` : ''}`, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,6 +72,25 @@ export default function TimelinePage() {
     } catch (error) {
       toast.error('Failed to save');
     }
+  };
+
+  const handleImageUpload = (url: string, publicId?: string) => {
+    setValue('image', { 
+      url, 
+      alt: watch('title') || 'Event image',
+      publicId 
+    });
+    setCurrentImageUrl(url);
+    setUseImageLink(false);
+  };
+
+  const handleImageLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setValue('image', { 
+      url, 
+      alt: watch('title') || 'Event image'
+    });
+    setCurrentImageUrl(url);
   };
 
   const handleEdit = (item: any) => {
@@ -107,10 +128,48 @@ export default function TimelinePage() {
 
           <textarea {...register('description')} placeholder="Description" rows={3} className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-2">Image (Optional)</label>
-            <ImageUpload onUpload={(url) => setValue('image', { url, alt: watch('title') })} defaultValue={watch('image')?.url} />
+          {/* Image Upload with Toggle */}
+          <div className="border-t border-white/5 pt-4">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-xs font-black text-gray-400 uppercase">
+                Timeline Image
+              </label>
+              <button
+                type="button"
+                onClick={() => setUseImageLink(!useImageLink)}
+                className="text-xs text-primary hover:underline"
+              >
+                {useImageLink ? 'Use Upload' : 'Use Image Link'}
+              </button>
+            </div>
+
+            {useImageLink ? (
+              <div>
+                <input
+                  type="url"
+                  placeholder="https://example.com/event-image.jpg"
+                  onChange={handleImageLinkChange}
+                  value={currentImageUrl}
+                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Enter a URL for the event image
+                </p>
+              </div>
+            ) : (
+              <div>
+                <ImageUpload
+                  onUpload={handleImageUpload}
+                  defaultValue={currentImageUrl}
+                  folder="events"
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  Upload an image or toggle to use an external link
+                </p>
+              </div>
+            )}
           </div>
+
 
           <div>
             <label className="block text-sm text-gray-400 mb-2">Achievements</label>

@@ -18,6 +18,7 @@ import Sponsors from '@/components/Sponsors';
 import FAQ from '@/components/FAQ';
 import Events from '@/components/Events';
 import Footer from '@/components/Footer';
+import ResearchFrontiers from '@/components/ResearchFrontiers';
 // import AIChat from '@/components/AIChat';
 
 export default function Home() {
@@ -72,6 +73,8 @@ export default function Home() {
         <section id="tech" className="bg-[#080808]">
           <TechStack />
         </section>
+
+        <ResearchFrontiers />
 
         {/* 6. BLOG SECTION */}
         <Blog />

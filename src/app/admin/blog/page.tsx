@@ -19,7 +19,11 @@ export default function BlogAdminPage() {
     try {
       const res = await fetch('/api/blog');
       const data = await res.json();
-      setPosts(data);
+      // Sort posts by order (ascending)
+      const sortedPosts = Array.isArray(data) 
+        ? [...data].sort((a, b) => (a.order || 0) - (b.order || 0))
+        : [];
+      setPosts(sortedPosts);
     } catch (error) {
       toast.error('Failed to fetch');
     } finally {
@@ -55,6 +59,7 @@ export default function BlogAdminPage() {
         <table className="w-full">
           <thead className="bg-white/5">
             <tr>
+              <th className="px-6 py-4 text-left text-xs text-gray-400">Order</th> 
               <th className="px-6 py-4 text-left text-xs text-gray-400">Image</th>
               <th className="px-6 py-4 text-left text-xs text-gray-400">Title</th>
               <th className="px-6 py-4 text-left text-xs text-gray-400">Category</th>
@@ -66,6 +71,7 @@ export default function BlogAdminPage() {
           <tbody className="divide-y divide-white/5">
             {posts.map((post) => (
               <tr key={post._id} className="hover:bg-white/5">
+                <td className="px-6 py-4 text-white font-medium">{post.order || 0}</td>
                 <td className="px-6 py-4">
                   {post.image?.url && (
                     <img src={post.image.url} alt={post.title} className="w-16 h-12 object-cover rounded" />
@@ -88,6 +94,12 @@ export default function BlogAdminPage() {
             ))}
           </tbody>
         </table>
+        
+        {posts.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            No blog posts found. Create your first post!
+          </div>
+        )}
       </div>
     </div>
   );

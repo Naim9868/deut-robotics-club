@@ -19,8 +19,9 @@ export default function FocusAreasPage() {
   const [areas, setAreas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [showIconPicker, setShowIconPicker] = useState(false);
 
-  const { register, handleSubmit, reset, watch } = useForm<FocusForm>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<FocusForm>({
     defaultValues: {
       title: '',
       description: '',
@@ -30,6 +31,29 @@ export default function FocusAreasPage() {
       isActive: true
     }
   });
+
+  // Common icon suggestions categorized
+  const iconSuggestions = {
+    'Robotics': ['🤖', '🦾', '🦿', '⚙️', '🔧', '🛠️', '🔩', '🧰', '📡', '🎮','🏎️','🔥','🚁','⚽'],
+    'AI & Tech': ['🧠', '💻', '🖥️', '📱', '🤯', '💡', '🔬', '⚡', '📊', '📈'],
+    'Science': ['🔭', '🧪', '🧬', '🔬', '🧲', '⚛️', '🧮', '📐', '📏', '🔋'],
+    'Innovation': ['🚀', '💫', '✨', '🌟', '💭', '🎯', '🏆', '🥇', '🏅', '🎨'],
+    'Networking': ['🌐', '📡', '📶', '🛜', '🔗', '🔄', '📨', '📬', '📧', '💬','🗣️', '📞', '📟', '📠', '🔊'],
+    'Hardware': ['🔌', '💾', '💽', '📀', '🎛️', '🎚️', '🎧', '📻', '🕹️', '⌨️'],
+   
+    'Programming': ['💻', '🖥️', '⌨️', '🖱️', '💾', '💽', '📀', '📱', '📲', '🤖', '⚡', '🔌', '📊', '📈', '📉'],
+    'Design & Research': ['🎨', '✏️', '📐', '📏', '🖌️', '🖍️', '📝', '📄', '📑', '🔬', '🧪', '📊', '📈', '📋', '🗂️'],
+  'Aerospace': ['🚀', '🛸', '🛰️', '✈️', '🛩️', '🪂', '🚁', '🛬', '🛫', '🌍', '🌎', '🌏', '🪐', '🌌', '☄️'],
+  'Automation': ['⚡', '🔋', '💡', '🕹️', '🎛️', '🎚️', '⏱️', '⏲️', '🔄', '⚙️', '🔧', '🛠️', '📟', '📠', '🤖'],
+ 
+  'Competitions': ['🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🎯', '🎪', '🎭', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹'],
+  'Misc': ['🎯', '🎲', '🧩', '🎪', '🎭', '🎨', '🎬', '🎤', '🎧', '🎼', '🎹', '🥁', '🎷', '🎸', '🎺']
+  };
+
+  const handleIconSelect = (icon: string) => {
+    setValue('icon', icon);
+    setShowIconPicker(false);
+  };
 
   useEffect(() => {
     fetchAreas();
@@ -95,10 +119,74 @@ export default function FocusAreasPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <input {...register('title')} placeholder="Title" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
-            <input {...register('icon')} placeholder="Icon" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
+            
+            {/* Icon input with picker */}
+            <div className="relative">
+              <div className="flex gap-2">
+                <input 
+                  {...register('icon')} 
+                  placeholder="Icon" 
+                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" 
+                  required 
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowIconPicker(!showIconPicker)}
+                  className="px-4 py-3 bg-[#121212] border border-white/10 rounded-lg text-white hover:bg-primary/20 transition-colors"
+                >
+                  📋
+                </button>
+              </div>
+              
+              {/* Icon picker dropdown */}
+              {showIconPicker && (
+                <div className="absolute z-50 mt-2 w-full bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl p-4 max-h-96 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="text-sm font-bold text-white">Select Icon</h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowIconPicker(false)}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  {Object.entries(iconSuggestions).map(([category, icons]) => (
+                    <div key={category} className="mb-4">
+                      <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-2">{category}</h4>
+                      <div className="grid grid-cols-8 gap-2">
+                        {icons.map((icon) => (
+                          <button
+                            key={icon}
+                            type="button"
+                            onClick={() => handleIconSelect(icon)}
+                            className={`text-2xl p-2 rounded-lg hover:bg-primary/20 transition-colors ${
+                              watch('icon') === icon ? 'bg-primary/30 ring-2 ring-primary' : ''
+                            }`}
+                            title={icon}
+                          >
+                            {icon}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* Custom emoji picker note */}
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    <p className="text-[10px] text-gray-500">
+                      💡 You can also paste any emoji or symbol in the input field
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+            
             <input {...register('color')} type="color" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white h-12" />
             <input type="number" {...register('order')} placeholder="Order" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
           </div>
+          
           <textarea {...register('description')} placeholder="Description" rows={3} className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
           
           <div className="flex items-center gap-4">
@@ -106,6 +194,14 @@ export default function FocusAreasPage() {
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
               <span className="text-sm text-gray-300">Active</span>
             </label>
+            
+            {/* Live preview */}
+            {watch('icon') && (
+              <div className="flex items-center gap-2 ml-4 px-3 py-1 bg-[#121212] rounded-full">
+                <span className="text-sm text-gray-400">Preview:</span>
+                <span className="text-2xl" style={{ color: watch('color') }}>{watch('icon')}</span>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-2">
@@ -117,18 +213,28 @@ export default function FocusAreasPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {areas.map((area) => (
-          <div key={area._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+          <div key={area._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-colors">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
-                <div className="text-4xl" style={{ color: area.color }}>{area.icon}</div>
+                <div className="text-4xl w-12 h-12 flex items-center justify-center" style={{ color: area.color }}>
+                  {area.icon}
+                </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">{area.title}</h3>
                   <p className="text-sm text-gray-400 mt-1">{area.description}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[10px] text-gray-600">Order: {area.order}</span>
+                    {area.isActive ? (
+                      <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[8px] font-black uppercase tracking-wider rounded-full">Active</span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-red-500/10 text-red-500 text-[8px] font-black uppercase tracking-wider rounded-full">Inactive</span>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(area)} className="text-blue-500 text-sm">Edit</button>
-                <button onClick={() => handleDelete(area._id)} className="text-red-500 text-sm">Delete</button>
+                <button onClick={() => handleEdit(area)} className="px-3 py-1 text-blue-500 text-sm hover:bg-blue-500/10 rounded-lg transition-colors">Edit</button>
+                <button onClick={() => handleDelete(area._id)} className="px-3 py-1 text-red-500 text-sm hover:bg-red-500/10 rounded-lg transition-colors">Delete</button>
               </div>
             </div>
           </div>

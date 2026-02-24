@@ -1,13 +1,16 @@
-
+"use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import ScrollReveal from './ScrollReveal';
+import ScrollReveal from '@/components/ScrollReveal';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import toast from 'react-hot-toast';
 
 const Blog: React.FC = () => {
 
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState('blog');
 
   useEffect(() => {
     fetchPosts();
@@ -20,8 +23,8 @@ const Blog: React.FC = () => {
       const sortedPosts = Array.isArray(data) 
         ? [...data].sort((a, b) => (a.order || 0) - (b.order || 0))
         : [];
-      setPosts(sortedPosts.filter((p: any) => p.isActive).slice(0, 4));
-      // console.log(data);
+      setPosts(sortedPosts);
+
     } catch (error) {
       console.error('Failed to fetch posts');
       toast.error("Failed to fetch");
@@ -30,7 +33,32 @@ const Blog: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="py-32 text-center">Loading...</div>;
+   if (loading) {
+    return (
+      <>
+        <Navbar activeSection={activeSection} />
+        <div className="min-h-screen bg-dark pt-32 flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!posts) {
+    return (
+      <>
+        <Navbar activeSection={activeSection} />
+        <div className="min-h-screen bg-dark pt-32 text-center">
+          <h1 className="text-4xl text-white mb-4">Post not found</h1>
+          <Link href="/#blog" className="text-primary hover:underline">
+            ← Back to Blog
+          </Link>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   // const posts = [
   //   {
@@ -64,7 +92,8 @@ const Blog: React.FC = () => {
   // ];
 
   return (
-    <div id="blog" className="py-32 bg-[#050505] overflow-hidden">
+    <div id="blog" className="py-32 min-h-screen bg-[#050505] overflow-hidden">
+         <Navbar activeSection={activeSection} />
       <div className="container mx-auto px-4">
         <ScrollReveal animation="up">
           <div className="mb-20">
@@ -129,7 +158,7 @@ const Blog: React.FC = () => {
         </div>
         
         
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <ScrollReveal animation="up">
             <button className="px-10 py-4 border border-white/100 text-white font-black uppercase tracking-widest text-[11px] rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95">
              <Link
@@ -139,8 +168,9 @@ const Blog: React.FC = () => {
              </Link>
             </button>
           </ScrollReveal>
-        </div>
+        </div> */}
       </div>
+      <Footer />
     </div>
   );
 };
