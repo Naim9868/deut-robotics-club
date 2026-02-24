@@ -3,9 +3,12 @@ import connectDB from '@/lib/mongodb';
 import Blog from '@/lib/models/Blog';
 import { deleteImage } from '@/lib/utils/cloudinary';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }  // Change here
+) {
   try {
-    const { id } = await params;
+    const { id } = await params;  // Await params
     await connectDB();
     const data = await Blog.findById(id);
     if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -15,9 +18,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }  // Change here
+) {
   try {
-    const { id } = await params;
+    const { id } = await params;  // Await params
     await connectDB();
     const body = await req.json();
     const data = await Blog.findByIdAndUpdate(id, body, { new: true });
@@ -28,9 +34,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }  // Change here
+) {
   try {
-    const { id } = await params;
+    const { id } = await params;  // Await params
     await connectDB();
     const blog = await Blog.findById(id);
     if (blog?.image?.publicId) {
