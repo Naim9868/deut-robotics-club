@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Blog from '@/lib/models/Blog';
 
-export async function GET() {
+export async function GET(
+   req: NextRequest, 
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
     await connectDB();
     const data = await Blog.find().sort({ createdAt: -1 });
@@ -14,7 +17,7 @@ export async function GET() {
 
 
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
     await connectDB();
     const body = await req.json();
