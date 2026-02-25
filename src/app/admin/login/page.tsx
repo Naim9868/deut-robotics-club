@@ -109,14 +109,14 @@ export default function AdminLoginPage() {
           </form>
 
           {/* First time setup notice */}
-          <div className="mt-6 p-4 bg-[#121212] border border-white/5 rounded-lg">
+          {/* <div className="mt-6 p-4 bg-[#121212] border border-white/5 rounded-lg">
             <p className="text-[10px] text-gray-600 uppercase tracking-wider text-center">
               ⚡ First time? Check .env file for default credentials
             </p>
             <p className="text-[8px] text-gray-700 text-center mt-2">
               Default: admin@drc.duet.ac.bd / ChangeThisPassword123
             </p>
-          </div>
+          </div> */}
 
           {/* System Status */}
           <div className="mt-6 flex items-center justify-center gap-4 text-[8px] text-gray-600 uppercase tracking-wider">
