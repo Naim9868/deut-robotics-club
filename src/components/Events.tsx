@@ -91,6 +91,7 @@ const Events: React.FC = () => {
       slug: 'duet-techfest-2025',
       description: 'The biggest national-level technology festival on campus.',
       date: { day: '25', month: 'MAR', year: '2025' },
+      location: 'DUET Campus',
       image: { url: 'https://picsum.photos/seed/techfest2/800/400', alt: 'DUET Techfest 2025' },
       featured: true,
       isActive: true,
@@ -102,6 +103,7 @@ const Events: React.FC = () => {
       slug: 'robo-workshop-101',
       description: 'Introductory hands-on training for newly recruited members.',
       date: { day: '10', month: 'FEB', year: '2025' },
+      location: 'Robotics Lab',
       image: { url: 'https://picsum.photos/seed/workshop2/800/400', alt: 'Robo-Workshop 101' },
       featured: false,
       isActive: true,
@@ -113,6 +115,7 @@ const Events: React.FC = () => {
       slug: 'intra-robo-carnival',
       description: 'Annual competition showcase for internal club projects.',
       date: { day: '15', month: 'JAN', year: '2025' },
+      location: 'Auditorium',
       image: { url: 'https://picsum.photos/seed/carnival2/800/400', alt: 'Intra-Robo Carnival' },
       featured: false,
       isActive: true,
@@ -139,7 +142,7 @@ const Events: React.FC = () => {
                   <div className="text-[10px] font-black tracking-widest mt-1 opacity-80">{event.date.month}</div>
                 </div>
                 <img 
-                  src={event.image?.url || event.image} 
+                  src={event.image?.url} // Fixed: Always use event.image.url
                   alt={event.image?.alt || event.title} 
                   className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 grayscale hover:grayscale-0" 
                 />
