@@ -31,7 +31,7 @@ export default function AdminLayout({
         if (data.authenticated) {
           setIsAuthenticated(true);
         } else {
-          router.push('/admin');
+          router.push('/admin/login');
         }
       } catch (error) {
         router.push('/admin/login');

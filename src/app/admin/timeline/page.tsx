@@ -11,7 +11,7 @@ interface TimelineForm {
   title: string;
   description: string;
   image?: { url: string; alt: string; publicId?: string };
-  achievements: string[];
+  achievements: { value: string }[];  // Changed from string[] to array of objects
   order: number;
   isActive: boolean;
 }
@@ -29,13 +29,16 @@ export default function TimelinePage() {
       year: '',
       title: '',
       description: '',
-      achievements: [''],
+      achievements: [{ value: '' }],  // Updated default value
       order: 0,
       isActive: true
     }
   });
 
-  const { fields, append, remove } = useFieldArray({ control, name: 'achievements' });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'achievements'
+  });
 
   useEffect(() => {
     fetchMilestones();
@@ -55,18 +58,31 @@ export default function TimelinePage() {
 
   const onSubmit = async (data: TimelineForm) => {
     try {
-      data.achievements = data.achievements.filter(a => a.trim() !== '');
+      // Transform data for API
+      const apiData = {
+        ...data,
+        achievements: data.achievements.map(a => a.value).filter(v => v.trim() !== '')
+      };
 
       const res = await fetch(`/api/timeline${editingId ? `/${editingId}` : ''}`, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(apiData),
       });
 
       if (res.ok) {
         toast.success(editingId ? 'Updated' : 'Created');
-        reset();
+        reset({
+          year: '',
+          title: '',
+          description: '',
+          achievements: [{ value: '' }],
+          order: 0,
+          isActive: true
+        });
         setEditingId(null);
+        setCurrentImageUrl('');
+        setUseImageLink(false);
         fetchMilestones();
       }
     } catch (error) {
@@ -95,8 +111,17 @@ export default function TimelinePage() {
 
   const handleEdit = (item: any) => {
     setEditingId(item._id);
-    if (!item.achievements?.length) item.achievements = [''];
-    reset(item);
+    
+    // Transform API data for form
+    const formData = {
+      ...item,
+      achievements: item.achievements?.length 
+        ? item.achievements.map((a: string) => ({ value: a }))
+        : [{ value: '' }]
+    };
+    
+    reset(formData);
+    setCurrentImageUrl(item.image?.url || '');
   };
 
   const handleDelete = async (id: string) => {
@@ -161,7 +186,7 @@ export default function TimelinePage() {
                 <ImageUpload
                   onUpload={handleImageUpload}
                   defaultValue={currentImageUrl}
-                  folder="events"
+                  folder="timeline"
                 />
                 <p className="text-xs text-gray-500 mt-2">
                   Upload an image or toggle to use an external link
@@ -170,16 +195,23 @@ export default function TimelinePage() {
             )}
           </div>
 
-
           <div>
             <label className="block text-sm text-gray-400 mb-2">Achievements</label>
             {fields.map((field, index) => (
               <div key={field.id} className="flex gap-2 mb-2">
-                <input {...register(`achievements.${index}`)} placeholder={`Achievement ${index + 1}`} className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" />
-                {fields.length > 1 && <button type="button" onClick={() => remove(index)} className="text-red-500">×</button>}
+                <input 
+                  {...register(`achievements.${index}.value`)} 
+                  placeholder={`Achievement ${index + 1}`} 
+                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" 
+                />
+                {fields.length > 1 && (
+                  <button type="button" onClick={() => remove(index)} className="text-red-500">×</button>
+                )}
               </div>
             ))}
-            <button type="button" onClick={() => append('')} className="mt-2 text-sm text-primary">+ Add Achievement</button>
+            <button type="button" onClick={() => append({ value: '' })} className="mt-2 text-sm text-primary">
+              + Add Achievement
+            </button>
           </div>
 
           <div className="flex items-center gap-6">
@@ -191,7 +223,27 @@ export default function TimelinePage() {
 
           <div className="flex gap-2">
             <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
-            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg">Cancel</button>}
+            {editingId && (
+              <button 
+                type="button" 
+                onClick={() => { 
+                  setEditingId(null); 
+                  reset({
+                    year: '',
+                    title: '',
+                    description: '',
+                    achievements: [{ value: '' }],
+                    order: 0,
+                    isActive: true
+                  }); 
+                  setCurrentImageUrl('');
+                  setUseImageLink(false);
+                }} 
+                className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </form>
       </div>
