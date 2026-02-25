@@ -20,69 +20,8 @@ const ResearchFrontiers: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchResearch = async () => {
-      try {
-        const response = await fetch('/api/research');
-        if (!response.ok) {
-          throw new Error('Failed to fetch research data');
-        }
-        const data = await response.json();
-        
-        // Filter active research items and sort by order
-        const activeItems = Array.isArray(data) 
-          ? data
-              .filter((item: ResearchData) => item.isActive)
-              .sort((a, b) => a.order - b.order)
-          : [];
-        
-        setResearchItems(activeItems);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchResearch();
-  }, []);
-
-  // Get status badge color
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'ONGOING': return 'bg-green-500/10 text-green-500 border-green-500/20';
-      case 'COMPLETED': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
-      case 'PROPOSED': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
-      default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="py-32 bg-[#050505] overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="py-32 bg-[#050505] overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-red-500">
-            {error}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Use research items from API if available, otherwise use fallback data
-  const displayItems = researchItems.length > 0 ? researchItems : [
+  // Fallback data
+  const fallbackItems: ResearchData[] = [
     { 
       _id: '1',
       title: 'SLAM Navigation', 
@@ -121,6 +60,87 @@ const ResearchFrontiers: React.FC = () => {
     }
   ];
 
+  useEffect(() => {
+    const fetchResearch = async () => {
+      try {
+        const response = await fetch('/api/research');
+        if (!response.ok) {
+          throw new Error('Failed to fetch research data');
+        }
+        const data = await response.json();
+        
+        // Filter active research items and sort by order
+        const activeItems = Array.isArray(data) && data.length > 0
+          ? data
+              .filter((item: ResearchData) => item.isActive)
+              .sort((a, b) => a.order - b.order)
+          : fallbackItems;
+        
+        setResearchItems(activeItems);
+      } catch (err) {
+        console.error('Error fetching research:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        // Use fallback on error
+        setResearchItems(fallbackItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResearch();
+  }, []);
+
+  // Get status badge color
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case 'ONGOING': return 'bg-green-500/10 text-green-500 border-green-500/20';
+      case 'COMPLETED': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
+      case 'PROPOSED': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
+      default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+    }
+  };
+
+  // Safe array check and join
+  const renderResearchers = (researchers?: string[]) => {
+    if (!researchers || !Array.isArray(researchers) || researchers.length === 0) {
+      return null;
+    }
+    return (
+      <div className="mt-4">
+        <p className="text-[8px] text-gray-600 uppercase tracking-wider mb-1">Researchers</p>
+        <p className="text-[10px] text-gray-400">{researchers.join(' • ')}</p>
+      </div>
+    );
+  };
+
+  // Safe publications display
+  const renderPublications = (publications?: string[]) => {
+    if (!publications || !Array.isArray(publications) || publications.length === 0) {
+      return null;
+    }
+    return (
+      <div className="mt-2">
+        <p className="text-[8px] text-gray-600 uppercase tracking-wider mb-1">Publications</p>
+        <p className="text-[8px] text-primary/70">{publications.length} paper{publications.length > 1 ? 's' : ''}</p>
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="py-32 bg-[#050505] overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Use research items from state (already includes fallback)
+  const displayItems = researchItems;
+
   return (
     <div className="py-32 bg-[#050505] overflow-hidden">
       <div className="container mx-auto px-4">
@@ -151,21 +171,11 @@ const ResearchFrontiers: React.FC = () => {
                     {item.description}
                   </p>
                   
-                  {/* Researchers (if available) */}
-                  {item.researchers && item.researchers.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-[8px] text-gray-600 uppercase tracking-wider mb-1">Researchers</p>
-                      <p className="text-[10px] text-gray-400">{item.researchers.join(' • ')}</p>
-                    </div>
-                  )}
+                  {/* Researchers - Safe rendering */}
+                  {renderResearchers(item.researchers)}
                   
-                  {/* Publications (if available) */}
-                  {item.publications && item.publications.length > 0 && (
-                    <div className="mt-2">
-                      <p className="text-[8px] text-gray-600 uppercase tracking-wider mb-1">Publications</p>
-                      <p className="text-[8px] text-primary/70">{item.publications.length} paper{item.publications.length > 1 ? 's' : ''}</p>
-                    </div>
-                  )}
+                  {/* Publications - Safe rendering */}
+                  {renderPublications(item.publications)}
                 </div>
                 
                 <div className="absolute bottom-8 right-8 w-10 h-[1px] bg-white/20 group-hover:w-20 group-hover:bg-primary transition-all"></div>

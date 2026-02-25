@@ -34,24 +34,117 @@ const Projects: React.FC = () => {
 
   const categories = ['ALL', 'COMBAT', 'AI', 'AERO', 'AUTO'];
 
+  // Fallback data with _id
+  const fallbackProjects: ProjectData[] = [
+    {
+      _id: 'fallback-1',
+      id: 'DRC_A1',
+      title: 'DESTRON V3',
+      tag: 'COMBAT CLASS',
+      status: 'ACTIVE',
+      latency: '0.02ms',
+      category: 'COMBAT',
+      image: { url: 'https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=1000', alt: 'DESTRON V3' },
+      featured: false,
+      order: 0,
+      isActive: true
+    },
+    {
+      _id: 'fallback-2',
+      id: 'DRC_N2',
+      title: 'SPIDER-BOT MK.II',
+      tag: 'NEURAL MESH',
+      status: 'TESTING',
+      latency: '0.15ms',
+      category: 'AI',
+      image: { url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000', alt: 'SPIDER-BOT MK.II' },
+      featured: false,
+      order: 1,
+      isActive: true
+    },
+    {
+      _id: 'fallback-3',
+      id: 'DRC_I3',
+      title: '6-AXIS HYDRA',
+      tag: 'INDUSTRIAL',
+      status: 'ACTIVE',
+      latency: '0.01ms',
+      category: 'AUTO',
+      image: { url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000', alt: '6-AXIS HYDRA' },
+      featured: false,
+      order: 2,
+      isActive: true
+    },
+    {
+      _id: 'fallback-4',
+      id: 'DRC_E4',
+      title: 'EAGLE EYE DRONE',
+      tag: 'AEROSPACE',
+      status: 'ACTIVE',
+      latency: '0.05ms',
+      category: 'AERO',
+      image: { url: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000', alt: 'EAGLE EYE DRONE' },
+      featured: false,
+      order: 3,
+      isActive: true
+    },
+    {
+      _id: 'fallback-5',
+      id: 'DRC_M5',
+      title: 'MAZE RUNNER V.O',
+      tag: 'AUTONOMOUS',
+      status: 'MAINTENANCE',
+      latency: '0.22ms',
+      category: 'AUTO',
+      image: { url: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=1000', alt: 'MAZE RUNNER V.O' },
+      featured: false,
+      order: 4,
+      isActive: true
+    },
+    {
+      _id: 'fallback-6',
+      id: 'DRC_X6',
+      title: 'VOID_WALKER',
+      tag: 'EXPERIMENTAL',
+      status: 'UNKNOWN',
+      latency: 'N/A',
+      category: 'AI',
+      image: { url: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000', alt: 'VOID_WALKER' },
+      featured: false,
+      order: 5,
+      isActive: true
+    }
+  ];
+
   // Fetch projects from API
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/projects');
+        
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
+        
         const data = await response.json();
         
         // Filter active projects and sort by order
-        const activeProjects = Array.isArray(data) 
-          ? data.filter((p: ProjectData) => p.isActive).sort((a, b) => a.order - b.order)
-          : [];
-        
-        setProjects(activeProjects);
+        if (Array.isArray(data) && data.length > 0) {
+          const activeProjects = data
+            .filter((p: ProjectData) => p.isActive)
+            .sort((a, b) => a.order - b.order);
+          
+          setProjects(activeProjects);
+        } else {
+          // No data from API, use fallback
+          setProjects(fallbackProjects);
+        }
       } catch (err) {
+        console.error('Error fetching projects:', err);
         setError(err instanceof Error ? err.message : 'An error occurred');
+        // Use fallback on error
+        setProjects(fallbackProjects);
       } finally {
         setLoading(false);
       }
@@ -90,93 +183,18 @@ const Projects: React.FC = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-red-500">
-            {error}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Use projects from API if available, otherwise use fallback data
-  const displayProjects = projects.length > 0 ? projects : [
-    {
-      id: 'DRC_A1',
-      title: 'DESTRON V3',
-      tag: 'COMBAT CLASS',
-      status: 'ACTIVE',
-      latency: '0.02ms',
-      category: 'COMBAT',
-      image: { url: 'https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=1000', alt: 'DESTRON V3' },
-      featured: false,
-      order: 0,
-      isActive: true
-    },
-    {
-      id: 'DRC_N2',
-      title: 'SPIDER-BOT MK.II',
-      tag: 'NEURAL MESH',
-      status: 'TESTING',
-      latency: '0.15ms',
-      category: 'AI',
-      image: { url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000', alt: 'SPIDER-BOT MK.II' },
-      featured: false,
-      order: 1,
-      isActive: true
-    },
-    {
-      id: 'DRC_I3',
-      title: '6-AXIS HYDRA',
-      tag: 'INDUSTRIAL',
-      status: 'ACTIVE',
-      latency: '0.01ms',
-      category: 'AUTO',
-      image: { url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000', alt: '6-AXIS HYDRA' },
-      featured: false,
-      order: 2,
-      isActive: true
-    },
-    {
-      id: 'DRC_E4',
-      title: 'EAGLE EYE DRONE',
-      tag: 'AEROSPACE',
-      status: 'ACTIVE',
-      latency: '0.05ms',
-      category: 'AERO',
-      image: { url: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000', alt: 'EAGLE EYE DRONE' },
-      featured: false,
-      order: 3,
-      isActive: true
-    },
-    {
-      id: 'DRC_M5',
-      title: 'MAZE RUNNER V.O',
-      tag: 'AUTONOMOUS',
-      status: 'MAINTENANCE',
-      latency: '0.22ms',
-      category: 'AUTO',
-      image: { url: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=1000', alt: 'MAZE RUNNER V.O' },
-      featured: false,
-      order: 4,
-      isActive: true
-    },
-    {
-      id: 'DRC_X6',
-      title: 'VOID_WALKER',
-      tag: 'EXPERIMENTAL',
-      status: 'UNKNOWN',
-      latency: 'N/A',
-      category: 'AI',
-      image: { url: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000', alt: 'VOID_WALKER' },
-      featured: false,
-      order: 5,
-      isActive: true
-    }
-  ];
+  // Don't show error, just show fallback data
+  // if (error) {
+  //   return (
+  //     <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
+  //       <div className="container mx-auto px-4">
+  //         <div className="text-center text-red-500">
+  //           {error}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="py-32 bg-[#050505] overflow-hidden border-t border-white/5">
@@ -234,7 +252,7 @@ const Projects: React.FC = () => {
               <div className="group mb-2 sm:m-1 shadow-white bg-blend-saturation shadow-sm relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
                 {/* Background Image */}
                 <img 
-                  src={p.image?.url || p.image} 
+                  src={p.image?.url} 
                   alt={p.image?.alt || p.title} 
                   className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
@@ -317,7 +335,7 @@ const Projects: React.FC = () => {
                 {/* Active Selection Indicator */}
                 <div className="absolute top-1/2 right-1/2 w-4 h-4 border border-primary/30 rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:scale-[15] transition-all duration-1000 pointer-events-none"></div>
                 
-                {/* Random HUD elements - Now using stable values from state */}
+                {/* Random HUD elements */}
                 <div className="absolute bottom-24 right-8 text-[8px] font-mono text-cyan-400/30 group-hover:text-cyan-400/80 transition-colors uppercase tracking-widest opacity-0 group-hover:opacity-100">
                   {randomValues[p.id] ? (
                     <>LNK_POS: {randomValues[p.id].x}, {randomValues[p.id].y}</>

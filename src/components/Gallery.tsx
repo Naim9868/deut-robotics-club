@@ -1,4 +1,3 @@
-// components/Gallery.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ScrollReveal from './ScrollReveal';
@@ -22,6 +21,25 @@ const Gallery: React.FC = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Safe date formatter
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return '';
+    try {
+      const date = new Date(dateString);
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return '';
+      }
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    } catch {
+      return '';
+    }
+  };
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -77,6 +95,8 @@ const Gallery: React.FC = () => {
       _id: '1',
       title: 'Midnight Lab Session', 
       image: { url: 'https://picsum.photos/seed/lab1/800/600', alt: 'Midnight Lab Session' },
+      category: 'Lab',
+      date: '2024-01-15',
       order: 0,
       isActive: true,
       featured: false
@@ -85,6 +105,8 @@ const Gallery: React.FC = () => {
       _id: '2',
       title: 'Techfest Champions', 
       image: { url: 'https://picsum.photos/seed/comp1/400/600', alt: 'Techfest Champions' },
+      category: 'Events',
+      date: '2024-02-20',
       order: 1,
       isActive: true,
       featured: false
@@ -93,6 +115,8 @@ const Gallery: React.FC = () => {
       _id: '3',
       title: 'Soldering Workshop', 
       image: { url: 'https://picsum.photos/seed/work1/400/400', alt: 'Soldering Workshop' },
+      category: 'Workshops',
+      date: '2024-03-10',
       order: 2,
       isActive: true,
       featured: false
@@ -101,6 +125,8 @@ const Gallery: React.FC = () => {
       _id: '4',
       title: 'Quadcopter Test Flight', 
       image: { url: 'https://picsum.photos/seed/drone2/800/400', alt: 'Quadcopter Test Flight' },
+      category: 'Lab',
+      date: '2024-04-05',
       order: 3,
       isActive: true,
       featured: false
@@ -109,6 +135,8 @@ const Gallery: React.FC = () => {
       _id: '5',
       title: 'Gold Medal Moments', 
       image: { url: 'https://picsum.photos/seed/award2/400/600', alt: 'Gold Medal Moments' },
+      category: 'Events',
+      date: '2024-05-12',
       order: 4,
       isActive: true,
       featured: false
@@ -117,6 +145,8 @@ const Gallery: React.FC = () => {
       _id: '6',
       title: 'PCB Design Flow', 
       image: { url: 'https://picsum.photos/seed/robo2/400/400', alt: 'PCB Design Flow' },
+      category: 'Workshops',
+      date: '2024-06-18',
       order: 5,
       isActive: true,
       featured: false
@@ -137,7 +167,7 @@ const Gallery: React.FC = () => {
           <ScrollReveal key={item._id || idx} animation="scale" delay={idx * 100} className="break-inside-avoid">
             <div className="relative group overflow-hidden rounded-xl bg-card">
               <img 
-                src={item.image?.url || item.image} 
+                src={item.image?.url} 
                 alt={item.image?.alt || item.title} 
                 className="w-full h-auto object-cover grayscale hover:grayscale-0 hover:scale-105 transition-all duration-700"
               />
@@ -148,7 +178,7 @@ const Gallery: React.FC = () => {
                 </p>
                 {item.date && (
                   <p className="text-gray-400 text-[8px] uppercase tracking-wider mt-1">
-                    {new Date(item.date).toLocaleDateString()}
+                    {formatDate(item.date)}
                   </p>
                 )}
               </div>
