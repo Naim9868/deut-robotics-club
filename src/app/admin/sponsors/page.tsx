@@ -18,7 +18,10 @@ interface SponsorForm {
   isActive: boolean;
 }
 
-const categoryColors = {
+// Define the type for category colors
+type CategoryType = 'PLATINUM' | 'GOLD' | 'SILVER' | 'PARTNER';
+
+const categoryColors: Record<CategoryType, string> = {
   PLATINUM: 'text-gray-300 border-gray-300',
   GOLD: 'text-yellow-500 border-yellow-500',
   SILVER: 'text-gray-400 border-gray-400',
@@ -194,6 +197,16 @@ export default function SponsorsPage() {
     }
   };
 
+  // Helper function to get color class safely
+  const getCategoryColorClass = (category: string) => {
+    // Type guard to check if category is a valid key
+    if (category === 'PLATINUM' || category === 'GOLD' || category === 'SILVER' || category === 'PARTNER') {
+      return categoryColors[category];
+    }
+    // Default fallback
+    return 'text-gray-300 border-gray-300';
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -367,104 +380,109 @@ export default function SponsorsPage() {
 
       {/* Sponsors Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {sponsors.map((sponsor, index) => (
-          <div 
-            key={sponsor._id} 
-            className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 text-center group relative hover:border-primary/50 transition-all"
-          >
-            {/* Order Controls */}
-            <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              {index > 0 && (
-                <button
-                  onClick={() => moveSponsor(sponsor._id, 'up')}
-                  className="p-1 bg-black/70 hover:bg-black rounded text-white"
-                  title="Move Up"
-                >
-                  <ArrowUpIcon className="w-4 h-4" />
-                </button>
-              )}
-              {index < sponsors.length - 1 && (
-                <button
-                  onClick={() => moveSponsor(sponsor._id, 'down')}
-                  className="p-1 bg-black/70 hover:bg-black rounded text-white"
-                  title="Move Down"
-                >
-                  <ArrowDownIcon className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-
-            {/* Edit/Delete Controls */}
-            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <button 
-                onClick={() => handleEdit(sponsor)} 
-                className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
-              >
-                Edit
-              </button>
-              <button 
-                onClick={() => handleDelete(sponsor._id)} 
-                className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-              >
-                Del
-              </button>
-            </div>
-
-            {/* Inactive Overlay */}
-            {!sponsor.isActive && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
-                <span className="px-2 py-1 bg-red-600/90 text-white text-xs rounded-full">
-                  Inactive
-                </span>
+        {sponsors.map((sponsor, index) => {
+          // Type assertion to ensure category is treated as CategoryType
+          const category = sponsor.category as CategoryType;
+          
+          return (
+            <div 
+              key={sponsor._id} 
+              className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 text-center group relative hover:border-primary/50 transition-all"
+            >
+              {/* Order Controls */}
+              <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                {index > 0 && (
+                  <button
+                    onClick={() => moveSponsor(sponsor._id, 'up')}
+                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    title="Move Up"
+                  >
+                    <ArrowUpIcon className="w-4 h-4" />
+                  </button>
+                )}
+                {index < sponsors.length - 1 && (
+                  <button
+                    onClick={() => moveSponsor(sponsor._id, 'down')}
+                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    title="Move Down"
+                  >
+                    <ArrowDownIcon className="w-4 h-4" />
+                  </button>
+                )}
               </div>
-            )}
 
-            {/* Logo */}
-            <div className="relative h-20 mb-4 flex items-center justify-center">
-              <img 
-                src={sponsor.logo?.url || getLogoUrl(sponsor.name)} 
-                alt={sponsor.name} 
-                className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = getLogoUrl(sponsor.name);
-                }}
-              />
+              {/* Edit/Delete Controls */}
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <button 
+                  onClick={() => handleEdit(sponsor)} 
+                  className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => handleDelete(sponsor._id)} 
+                  className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+                >
+                  Del
+                </button>
+              </div>
+
+              {/* Inactive Overlay */}
+              {!sponsor.isActive && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                  <span className="px-2 py-1 bg-red-600/90 text-white text-xs rounded-full">
+                    Inactive
+                  </span>
+                </div>
+              )}
+
+              {/* Logo */}
+              <div className="relative h-20 mb-4 flex items-center justify-center">
+                <img 
+                  src={sponsor.logo?.url || getLogoUrl(sponsor.name)} 
+                  alt={sponsor.name} 
+                  className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = getLogoUrl(sponsor.name);
+                  }}
+                />
+              </div>
+
+              {/* Name */}
+              <h3 className="text-white font-bold text-lg mb-1">{sponsor.name}</h3>
+
+              {/* Category Badge */}
+              <div className={`inline-block px-3 py-1 text-xs font-black uppercase tracking-wider border rounded-full mb-2 ${categoryColors[category]}`}>
+                {sponsor.category}
+              </div>
+
+              {/* Website */}
+              {sponsor.website && (
+                <a 
+                  href={sponsor.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-gray-400 hover:text-primary text-xs transition-colors mt-1"
+                >
+                  <GlobeAltIcon className="w-3 h-3" />
+                  Website
+                </a>
+              )}
+
+              {/* Description */}
+              {sponsor.description && (
+                <p className="text-gray-500 text-xs mt-2 line-clamp-2">
+                  {sponsor.description}
+                </p>
+              )}
+
+              {/* Order Display */}
+              <div className="text-xs text-gray-600 mt-2">
+                Order: {sponsor.order}
+              </div>
             </div>
-
-            {/* Name */}
-            <h3 className="text-white font-bold text-lg mb-1">{sponsor.name}</h3>
-
-            {/* Category Badge */}
-            <div className={`inline-block px-3 py-1 text-xs font-black uppercase tracking-wider border rounded-full mb-2 ${categoryColors[sponsor.category]}`}>
-              {sponsor.category}
-            </div>
-
-            {/* Website */}
-            {sponsor.website && (
-              <a 
-                href={sponsor.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-gray-400 hover:text-primary text-xs transition-colors mt-1"
-              >
-                <GlobeAltIcon className="w-3 h-3" />
-                Website
-              </a>
-            )}
-
-            {/* Description */}
-            {sponsor.description && (
-              <p className="text-gray-500 text-xs mt-2 line-clamp-2">
-                {sponsor.description}
-              </p>
-            )}
-
-            {/* Order Display */}
-            <div className="text-xs text-gray-600 mt-2">
-              Order: {sponsor.order}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {sponsors.length === 0 && (
