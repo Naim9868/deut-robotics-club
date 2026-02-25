@@ -10,7 +10,7 @@ const AdminSchema = new mongoose.Schema({
   },
   password: { 
     type: String, 
-    required: true 
+    required: true  
   },
   name: { 
     type: String,
@@ -36,11 +36,11 @@ const AdminSchema = new mongoose.Schema({
   timestamps: true 
 });
 
-// Don't return password in queries
+// Don't return password in queries - Using object destructuring
 AdminSchema.set('toJSON', {
   transform: function(doc, ret) {
-    delete ret.password;
-    return ret;
+    const { password, ...rest } = ret;
+    return rest;
   }
 });
 

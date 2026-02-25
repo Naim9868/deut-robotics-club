@@ -46,9 +46,9 @@ export function getTokenFromRequest(req: NextRequest): string | null {
   return cookie?.value || null;
 }
 
-// Get token from server components
-export function getTokenFromServer(): string | null {
-  const cookieStore = cookies();
+// Get token from server components - FIXED: Make async
+export async function getTokenFromServer(): Promise<string | null> {
+  const cookieStore = await cookies();
   return cookieStore.get('token')?.value || null;
 }
 
