@@ -3,8 +3,7 @@ import connectDB from '@/lib/mongodb';
 import Blog from '@/lib/models/Blog';
 
 export async function GET(
-   req: NextRequest, 
-  { params }: { params: Promise<{ slug: string }> }
+   req: NextRequest
 ) {
   try {
     await connectDB();
@@ -17,7 +16,7 @@ export async function GET(
 
 
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const body = await req.json();
