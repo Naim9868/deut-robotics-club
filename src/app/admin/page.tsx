@@ -15,7 +15,7 @@ interface SectionStats {
 }
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<SectionStats>({});
+  const [stats, setStats] = useState<SectionStats>({}); // Initialize as empty object
   const [loading, setLoading] = useState(true);
 
   const sections = [
@@ -37,23 +37,31 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const promises = sections.map(async (section) => {
-        const res = await fetch(`/api/${section.name.toLowerCase().replace(' ', '-')}`);
-        if (res.ok) {
-          const data = await res.json();
-          return {
-            [section.name]: {
-              total: data.length,
-              active: data.filter((item: any) => item.isActive !== false).length,
-              lastUpdated: data[0]?.updatedAt || 'Never',
-            },
-          };
+        try {
+          const res = await fetch(`/api/${section.name.toLowerCase().replace(' ', '-')}`);
+          if (res.ok) {
+            const data = await res.json();
+            return {
+              [section.name]: {
+                total: data.length,
+                active: data.filter((item: any) => item.isActive !== false).length,
+                lastUpdated: data[0]?.updatedAt || 'Never',
+              },
+            };
+          }
+        } catch (error) {
+          console.error(`Failed to fetch ${section.name}:`, error);
         }
         return null;
       });
 
       const results = await Promise.all(promises);
-      const statsData = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-      setStats(statsData);
+      // Filter out null values and merge
+      const statsData = results
+        .filter(result => result !== null)
+        .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+      
+      setStats(statsData); // Now statsData is never null
     } catch (error) {
       toast.error('Failed to fetch stats');
     } finally {
@@ -105,41 +113,6 @@ export default function AdminDashboard() {
             </div>
           </Link>
         ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-white mb-4">Quick Actions</h2>
-          <div className="space-y-2">
-            <button className="w-full text-left px-4 py-3 bg-white/5 rounded-lg text-sm text-gray-300 hover:bg-white/10 transition-all">
-              ➕ Add New Blog Post
-            </button>
-            <button className="w-full text-left px-4 py-3 bg-white/5 rounded-lg text-sm text-gray-300 hover:bg-white/10 transition-all">
-              📤 Upload Gallery Images
-            </button>
-            <button className="w-full text-left px-4 py-3 bg-white/5 rounded-lg text-sm text-gray-300 hover:bg-white/10 transition-all">
-              👥 Update Committee Members
-            </button>
-          </div>
-        </div>
-
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-white mb-4">System Status</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">Database</span>
-              <span className="text-xs px-2 py-1 bg-green-500/10 text-green-500 rounded-full">Connected</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">API Status</span>
-              <span className="text-xs px-2 py-1 bg-green-500/10 text-green-500 rounded-full">Operational</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">Last Backup</span>
-              <span className="text-xs text-gray-500">Today, 02:30 AM</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
