@@ -11,8 +11,8 @@ interface ResearchForm {
   description: string;
   icon: string;
   category: string;
-  researchers: string[];
-  publications: string[];
+  researchers: { value: string }[];
+  publications: { value: string }[];
   status: 'ONGOING' | 'COMPLETED' | 'PROPOSED';
   order: number;
   isActive: boolean;
@@ -31,16 +31,25 @@ export default function ResearchPage() {
       description: '',
       icon: '🔬',
       category: '',
-      researchers: [''],
-      publications: [''],
+      researchers: [{ value: '' }],
+      publications: [{ value: '' }],
       status: 'ONGOING',
       order: 0,
       isActive: true
     }
   });
 
-  const { fields: researcherFields, append: appendResearcher, remove: removeResearcher } = useFieldArray({ control, name: 'researchers' });
-  const { fields: publicationFields, append: appendPublication, remove: removePublication } = useFieldArray({ control, name: 'publications' });
+  const { fields: researcherFields, append: appendResearcher, remove: removeResearcher } = 
+    useFieldArray({
+      control,
+      name: 'researchers'
+    });
+
+  const { fields: publicationFields, append: appendPublication, remove: removePublication } = 
+    useFieldArray({
+      control,
+      name: 'publications'
+    });
 
   useEffect(() => {
     fetchResearch();
@@ -60,20 +69,37 @@ export default function ResearchPage() {
 
   const onSubmit = async (data: ResearchForm) => {
     try {
-      data.researchers = data.researchers.filter(r => r.trim() !== '');
-      data.publications = data.publications.filter(p => p.trim() !== '');
+      // Transform data for API
+      const apiData = {
+        ...data,
+        researchers: data.researchers.map(r => r.value).filter(v => v.trim() !== ''),
+        publications: data.publications.map(p => p.value).filter(v => v.trim() !== '')
+      };
       
       const res = await fetch(`/api/research${editingId ? `/${editingId}` : ''}`, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(apiData),
       });
 
       if (res.ok) {
         toast.success(editingId ? 'Updated' : 'Created');
-        reset();
+        reset({
+          title: '',
+          technology: '',
+          description: '',
+          icon: '🔬',
+          category: '',
+          researchers: [{ value: '' }],
+          publications: [{ value: '' }],
+          status: 'ONGOING',
+          order: 0,
+          isActive: true
+        });
         setEditingId(null);
         fetchResearch();
+      } else {
+        toast.error('Failed to save');
       }
     } catch (error) {
       toast.error('Failed to save');
@@ -82,9 +108,19 @@ export default function ResearchPage() {
 
   const handleEdit = (item: any) => {
     setEditingId(item._id);
-    if (!item.researchers?.length) item.researchers = [''];
-    if (!item.publications?.length) item.publications = [''];
-    reset(item);
+    
+    // Transform API data for form
+    const formData = {
+      ...item,
+      researchers: item.researchers?.length 
+        ? item.researchers.map((r: string) => ({ value: r })) 
+        : [{ value: '' }],
+      publications: item.publications?.length 
+        ? item.publications.map((p: string) => ({ value: p })) 
+        : [{ value: '' }]
+    };
+    
+    reset(formData);
   };
 
   const handleDelete = async (id: string) => {
@@ -126,22 +162,38 @@ export default function ResearchPage() {
             <label className="block text-sm text-gray-400 mb-2">Researchers</label>
             {researcherFields.map((field, index) => (
               <div key={field.id} className="flex gap-2 mb-2">
-                <input {...register(`researchers.${index}`)} placeholder="Researcher name" className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" />
-                {researcherFields.length > 1 && <button type="button" onClick={() => removeResearcher(index)} className="text-red-500">×</button>}
+                <input 
+                  {...register(`researchers.${index}.value`)} 
+                  placeholder="Researcher name" 
+                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" 
+                />
+                {researcherFields.length > 1 && (
+                  <button type="button" onClick={() => removeResearcher(index)} className="text-red-500">×</button>
+                )}
               </div>
             ))}
-            <button type="button" onClick={() => appendResearcher('')} className="mt-2 text-sm text-primary">+ Add Researcher</button>
+            <button type="button" onClick={() => appendResearcher({ value: '' })} className="mt-2 text-sm text-primary">
+              + Add Researcher
+            </button>
           </div>
 
           <div>
             <label className="block text-sm text-gray-400 mb-2">Publications</label>
             {publicationFields.map((field, index) => (
               <div key={field.id} className="flex gap-2 mb-2">
-                <input {...register(`publications.${index}`)} placeholder="Publication URL or DOI" className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" />
-                {publicationFields.length > 1 && <button type="button" onClick={() => removePublication(index)} className="text-red-500">×</button>}
+                <input 
+                  {...register(`publications.${index}.value`)} 
+                  placeholder="Publication URL or DOI" 
+                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" 
+                />
+                {publicationFields.length > 1 && (
+                  <button type="button" onClick={() => removePublication(index)} className="text-red-500">×</button>
+                )}
               </div>
             ))}
-            <button type="button" onClick={() => appendPublication('')} className="mt-2 text-sm text-primary">+ Add Publication</button>
+            <button type="button" onClick={() => appendPublication({ value: '' })} className="mt-2 text-sm text-primary">
+              + Add Publication
+            </button>
           </div>
 
           <div className="flex items-center gap-6">
@@ -152,8 +204,30 @@ export default function ResearchPage() {
           </div>
 
           <div className="flex gap-2">
-            <button type="submit" className="px-6 py-2 bg-primary cursor-pointer text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
-            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg">Cancel</button>}
+            <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
+            {editingId && (
+              <button 
+                type="button" 
+                onClick={() => { 
+                  setEditingId(null); 
+                  reset({
+                    title: '',
+                    technology: '',
+                    description: '',
+                    icon: '🔬',
+                    category: '',
+                    researchers: [{ value: '' }],
+                    publications: [{ value: '' }],
+                    status: 'ONGOING',
+                    order: 0,
+                    isActive: true
+                  }); 
+                }} 
+                className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </form>
       </div>
@@ -161,7 +235,7 @@ export default function ResearchPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {research.map((item) => (
           <div key={item._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 group relative">
-            <div className="absolute bottom-4 right-4 text-6xl text-white/100">{item.icon}</div>
+            <div className="absolute top-4 right-4 text-6xl text-white/5">{item.icon || '🔬'}</div>
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-primary text-xs font-black uppercase tracking-widest">{item.technology}</span>
@@ -172,9 +246,9 @@ export default function ResearchPage() {
                   item.status === 'COMPLETED' ? 'bg-blue-500/10 text-blue-500' : 'bg-yellow-500/10 text-yellow-500'
                 }`}>{item.status}</span>
               </div>
-              <div className="flex flex-col-reverse gap-2">
-                <button onClick={() => handleEdit(item)} className="text-blue-500 z-10 cursor-pointer text-sm">Edit</button>
-                <button onClick={() => handleDelete(item._id)} className="text-red-500 z-10 cursor-pointer text-sm">Delete</button>
+              <div className="flex gap-2">
+                <button onClick={() => handleEdit(item)} className="text-blue-500 text-sm">Edit</button>
+                <button onClick={() => handleDelete(item._id)} className="text-red-500 text-sm">Delete</button>
               </div>
             </div>
           </div>
