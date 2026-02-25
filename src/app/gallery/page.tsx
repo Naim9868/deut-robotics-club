@@ -28,6 +28,7 @@ export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState<GalleryData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [categories, setCategories] = useState<string[]>(['ALL']);
+  const [activeSection, setActiveSection] = useState('gallery'); // Add this
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -124,7 +125,7 @@ export default function GalleryPage() {
   if (loading) {
     return (
       <>
-        <Navbar />
+        <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
         <div className="min-h-screen bg-dark pt-32">
           <div className="flex justify-center items-center min-h-[50vh]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -138,7 +139,7 @@ export default function GalleryPage() {
   if (error) {
     return (
       <>
-        <Navbar />
+        <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
         <div className="min-h-screen bg-dark pt-32">
           <div className="text-center text-red-500 py-20">
             {error}
@@ -234,7 +235,7 @@ export default function GalleryPage() {
 
   return (
     <>
-      <Navbar />
+      <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
       <div className="min-h-screen bg-dark pt-32 pb-24">
         <div className="container mx-auto px-4">
           {/* Header */}
