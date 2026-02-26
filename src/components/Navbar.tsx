@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 interface NavbarProps {
   activeSection: string;
@@ -71,8 +72,17 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               }}
               className="text-2xl font-black tracking-tighter text-white group flex items-center gap-2 cursor-pointer"
             >
-              <span className="w-8 h-8 bg-primary rounded flex items-center justify-center text-sm italic">D</span>
-              <span>DUET <span className="text-primary group-hover:text-white transition-colors">ROBOTICS</span></span>
+               
+              <span className="w-10 h-10 bg-white rounded flex items-center justify-center text-sm italic">
+                <Image
+                  src="/favicon.ico"
+                  alt="Site Logo"
+                  width={40}
+                  height={20}
+                  priority
+                />
+              </span>
+              <span>DUET <span className="text-primary group-hover:text-white transition-colors">ROBOTICS</span>Club</span>
             </a>
           </div>
 

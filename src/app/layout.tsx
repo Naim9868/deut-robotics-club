@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Duet Robotics Club",
+  icons: {
+    icon: '/DRC-Logo-300x221.gif',
+  },
   description: "A high-performance, modern web portal for Dhaka University of Engineering & Technology (DUET) Robotics Club, featuring project showcases, event tracking, and an AI-powered club assistant.",
 
 };
