@@ -149,7 +149,7 @@ const Stats: React.FC = () => {
                   {stat.icon}
                 </div> */}
                 <div className="text-5xl md:text-7xl font-black text-white mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl tabular-nums">
-                  <CountUp end={stat.value} />
+                  <CountUp end={stat.value} /> <span className="text-white pb-5">{stat.suffix}</span>
                 </div>
                 <div className="text-white/80 uppercase font-black tracking-[0.3em] text-xs md:text-sm">
                   {stat.label}
