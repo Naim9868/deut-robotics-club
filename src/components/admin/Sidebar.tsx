@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 const menuItems = [
   { name: 'Dashboard', href: '/admin', icon: '📊' },
+  { name: 'Sections', href: '/admin/sections', icon: '👁️' },
   { name: 'Hero', href: '/admin/hero', icon: '🖼️' },
   { name: 'About', href: '/admin/about', icon: '📝' },
   { name: 'Stats', href: '/admin/stats', icon: '📈' },

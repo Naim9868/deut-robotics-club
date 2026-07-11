@@ -181,7 +181,7 @@ const Projects: React.FC = () => {
     <div className="py-12 sm:py-16 md:py-20 lg:py-32 bg-[#050505] overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* HUD Top Bar - Hidden on mobile, visible on tablet+ */}
-        <div className="hidden md:flex justify-between items-center mb-4 sm:mb-5 md:mb-6 opacity-40">
+        {/* <div className="hidden md:flex justify-between items-center mb-4 sm:mb-5 md:mb-6 opacity-40">
            <div className="flex items-center space-x-2">
               <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -196,7 +196,7 @@ const Projects: React.FC = () => {
                 <span className="mr-2">📡 LINK: ESTABLISHED</span>
               </div>
            </div>
-        </div>
+        </div> */}
 
         {/* Vault Header UI */}
         <ScrollReveal animation="up">

@@ -19,14 +19,46 @@ import FAQ from '@/components/FAQ';
 import Events from '@/components/Events';
 import Footer from '@/components/Footer';
 import ResearchFrontiers from '@/components/ResearchFrontiers';
-// import AIChat from '@/components/AIChat';
+
+const DEFAULT_VISIBILITY: Record<string, boolean> = {
+  hero: true,
+  about: true,
+  events: true,
+  stats: true,
+  focusAreas: true,
+  research: true,
+  blog: true,
+  projects: true,
+  gallery: true,
+  timeline: true,
+  committee: true,
+  testimonials: true,
+  faq: true,
+  sponsors: true,
+  footer: true,
+};
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home');
+  const [visibility, setVisibility] = useState<Record<string, boolean>>(DEFAULT_VISIBILITY);
+
+  useEffect(() => {
+    fetch('/api/section-visibility')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.sections) {
+          const map: Record<string, boolean> = { ...DEFAULT_VISIBILITY };
+          Object.entries(data.sections).forEach(([key, value]) => {
+            map[key] = value as boolean;
+          });
+          setVisibility(map);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Anchors used for navigation highlighting
       const sections = ['home', 'about', 'tech', 'blog', 'projects', 'gallery', 'committee', 'events', 'faq', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
@@ -51,79 +83,72 @@ export default function Home() {
       <Navbar activeSection={activeSection} />
       
       <main>
-        {/* 1. HOME SECTION */}
-        <section id="home">
-          <Hero />
-        </section>
+        {visibility.hero && (
+          <section id="home">
+            <Hero />
+          </section>
+        )}
         
-        {/* 2. ABOUT SECTION */}
-        <section id="about" className="bg-[#0a0a0a]">
-          <About />
-        </section>
+        {visibility.about && (
+          <section id="about" className="bg-[#0a0a0a]">
+            <About />
+          </section>
+        )}
 
-         {/* 9. EVENTS SECTION */}
-        <section id="events" className="bg-[#080808]">
-          <Events />
-        </section>
+        {visibility.events && (
+          <section id="events" className="bg-[#080808]">
+            <Events />
+          </section>
+        )}
 
-        {/* 3. IMPACT STATS (Supplementary to About) */}
-        <Stats />
+        {visibility.stats && <Stats />}
 
-        {/* 4. FOCUS AREAS */}
-        <section id="focus">
-          <FocusAreas />
-        </section>
+        {visibility.focusAreas && (
+          <section id="focus">
+            <FocusAreas />
+          </section>
+        )}
 
-        {/* 5. TECH SECTION */}
-        {/* <section id="tech" className="bg-[#080808]">
-          <TechStack />
-        </section> */}
+        {visibility.research && <ResearchFrontiers />}
 
-        <ResearchFrontiers />
-
-        {/* 6. BLOG SECTION */}
-        <Blog />
+        {visibility.blog && <Blog />}
         
-        {/* 7. PROJECTS SECTION */}
-        <section id="projects" className="bg-[#0a0a0a]">
-          <Projects />
-        </section>
+        {visibility.projects && (
+          <section id="projects" className="bg-[#0a0a0a]">
+            <Projects />
+          </section>
+        )}
 
-        {/* 8. GALLERY SECTION */}
-        <section id="gallery" className="bg-[#0d0d0d]">
-          <Gallery />
-        </section>
+        {visibility.gallery && (
+          <section id="gallery" className="bg-[#0d0d0d]">
+            <Gallery />
+          </section>
+        )}
 
-       
-        
+        {visibility.timeline && <Timeline />}
 
-        {/* 10. HISTORY/TIMELINE */}
-        <Timeline />
+        {visibility.committee && (
+          <section id="committee" className="bg-[#0a0a0a]">
+            <Committee />
+          </section>
+        )}
 
-        {/* 11. TEAM SECTION (Committee) */}
-        <section id="committee" className="bg-[#0a0a0a]">
-          <Committee />
-        </section>
+        {visibility.testimonials && <Testimonials />}
 
-        {/* 12. TESTIMONIALS (Social Proof) */}
-        <Testimonials />
+        {visibility.faq && (
+          <section id="faq" className="bg-[#0a0a0a]">
+            <FAQ />
+          </section>
+        )}
 
-        {/* 13. FAQ SECTION */}
-        <section id="faq" className="bg-[#0a0a0a]">
-          <FAQ />
-        </section>
-
-        {/* 14. SPONSORS/PARTNERS */}
-        <Sponsors />
+        {visibility.sponsors && <Sponsors />}
       </main>
 
-      {/* 15. FOOTER & CONTACT */}
-      <footer id="contact">
-        <Footer />
-      </footer>
-
-      {/* FLOATING AI ASSISTANT */}
-      {/* <AIChat /> */}
+      {visibility.footer && (
+        <footer id="contact">
+          <Footer />
+        </footer>
+      )}
     </div>
   );
 }
