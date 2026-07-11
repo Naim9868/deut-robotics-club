@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
                 Resources
               </h4>
               <ul className="space-y-2.5 sm:space-y-3 md:space-y-4 text-xs sm:text-sm text-gray-500 uppercase font-semibold">
-                <li><a href="/blog" className="hover:text-primary transition-colors">Blog</a></li>
+                <li><a href="blog" className="hover:text-primary transition-colors">Blog</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Components</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Join Club</a></li>

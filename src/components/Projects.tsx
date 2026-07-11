@@ -237,7 +237,7 @@ const Projects: React.FC = () => {
                 <img 
                   src={p.image?.url} 
                   alt={p.image?.alt || p.title} 
-                  className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                  className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
                 
                 {/* HUD Overlays */}

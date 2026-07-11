@@ -360,15 +360,11 @@ export default function ProjectsPage() {
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Category <span className="text-red-500">*</span>
               </label>
-              <select 
+              <input 
                 {...register('category', { required: 'Category is required' })} 
                 className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
-              >
-                <option value="COMBAT">⚔️ COMBAT</option>
-                <option value="AI">🤖 AI</option>
-                <option value="AERO">🚁 AERO</option>
-                <option value="AUTO">🚗 AUTO</option>
-              </select>
+              />
+                
             </div>
           </div>
 

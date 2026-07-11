@@ -186,7 +186,7 @@ const ResearchFrontiers: React.FC = () => {
                   {renderPublications(item.publications)}
                 </div>
                 
-                <div className="absolute bottom-8 w-full sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-white/20 group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all"></div>
+                <div className="absolute bottom-8 sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-white/20 group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all"></div>
               </div>
             </ScrollReveal>
           ))}

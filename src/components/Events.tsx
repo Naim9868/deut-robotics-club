@@ -299,7 +299,7 @@ const Events: React.FC<EventsProps> = ({
 
       {/* Other Events - 2 Columns */}
       {otherEvents.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
           {otherEvents.map((event, index) => (
             <ScrollReveal key={event._id} animation="up" delay={(index + 1) * 100}>
               <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)] h-full flex flex-col">

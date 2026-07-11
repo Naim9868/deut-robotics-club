@@ -21,11 +21,11 @@ const ProjectSchema = new mongoose.Schema({
   category: { 
     type: String, 
     required: [true, 'Category is required'],
-    enum: {
-      values: ['COMBAT', 'AI', 'AERO', 'AUTO'],
-      message: '{VALUE} is not a valid category'
-    },
-    default: 'COMBAT'
+    // enum: {
+    //   values: ['COMBAT', 'AI', 'AERO', 'AUTO'],
+    //   message: '{VALUE} is not a valid category'
+    // },
+    // default: 'COMBAT'
   },
   status: { 
     type: String, 
