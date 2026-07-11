@@ -25,7 +25,6 @@ const FocusAreas: React.FC = () => {
         }
         const data = await response.json();
         
-        // Filter active focus areas and sort by order
         const activeAreas = Array.isArray(data) 
           ? data
               .filter((item: FocusAreaData) => item.isActive)
@@ -45,9 +44,9 @@ const FocusAreas: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-32 container mx-auto px-4">
-        <div className="flex justify-center items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="py-12 sm:py-16 md:py-20 lg:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-center items-center min-h-[200px]">
+          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -55,15 +54,14 @@ const FocusAreas: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-32 container mx-auto px-4">
-        <div className="text-center text-red-500">
+      <div className="py-12 sm:py-16 md:py-20 lg:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center text-red-500 text-sm sm:text-base">
           {error}
         </div>
       </div>
     );
   }
 
-  // Use focus areas from API if available, otherwise use fallback data
   const displayAreas = focusAreas.length > 0 ? focusAreas : [
     {
       _id: '1',
@@ -104,45 +102,46 @@ const FocusAreas: React.FC = () => {
   ];
 
   return (
-    <div className="py-32 container mx-auto px-4">
+    <div className="py-12 sm:py-16 md:py-20 lg:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollReveal animation="up">
-        <div className="mb-16">
-          <h2 className="text-4xl font-extrabold uppercase mb-4 section-title">Our Focus</h2>
-          <p className="text-gray-500 max-w-xl">We are actively developing and researching these core robotic systems to solve real-world problems.</p>
+        <div className="mb-8 sm:mb-10 md:mb-14 lg:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title  sm:text-left">
+            Our Focus
+          </h2>
+          <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-xl mx-auto sm:mx-0 text-center sm:text-left uppercase tracking-[0.1em] sm:tracking-[0.2em]">
+            We are actively developing and researching these core robotic systems to solve real-world problems.
+          </p>
         </div>
       </ScrollReveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         {displayAreas.map((area, index) => (
           <ScrollReveal key={area._id || index} animation="up" delay={index * 100}>
             <div 
-              className="group p-8 bg-card border border-white/5 rounded-xl hover:border-primary/50 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.15)]"
-              style={{ 
-                borderColor: area.color ? `${area.color}20` : undefined,
-                boxShadow: area.color ? `0 0 30px ${area.color}10` : undefined
-              }}
+              className="group shadow-amber-50 p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/5 rounded-xl hover:border-primary/70 transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[2px_2px_10px_rgba(230,57,73,0.15)] sm:hover:shadow-[4px_4px_15px_rgba(230,57,70,0.2)] h-full flex flex-col"
             >
               <div 
-                className="text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110 group-hover:rotate-6"
+                className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110 group-hover:rotate-6"
                 style={{ color: area.color }}
               >
                 {area.icon}
               </div>
               <h3 
-                className="text-xl font-bold uppercase mb-4 text-white group-hover:text-primary transition-colors"
+                className="text-xs sm:text-sm md:text-base lg:text-xl font-bold uppercase mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 text-white group-hover:text-primary transition-colors line-clamp-2"
                 style={{ color: area.color ? undefined : undefined }}
               >
                 {area.title}
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{area.description}</p>
+              <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm leading-relaxed flex-1 line-clamp-3 sm:line-clamp-3 md:line-clamp-4">
+                {area.description}
+              </p>
             </div>
           </ScrollReveal>
         ))}
       </div>
       
-      {/* Show message if no focus areas */}
       {displayAreas.length === 0 && (
-        <div className="text-center text-gray-400 py-12">
+        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
           No focus areas available.
         </div>
       )}

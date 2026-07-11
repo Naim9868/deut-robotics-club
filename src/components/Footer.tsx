@@ -1,73 +1,85 @@
-
 import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <div className="bg-[#080808] border-t border-white/5 pt-24 pb-10">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-20">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-black uppercase mb-8 leading-tight">
+    <div className="bg-[#080808] border-t border-white/5 pt-12 sm:pt-16 md:pt-20 lg:pt-24 pb-6 sm:pb-8 md:pb-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 lg:gap-16 mb-12 sm:mb-16 md:mb-20">
+          {/* Column 1 - Brand & Info */}
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase mb-4 sm:mb-6 md:mb-8 leading-tight">
               Let's build the <br />
               <span className="text-primary italic">Future Together!</span>
             </h2>
-            <div className="text-gray-500 space-y-4">
+            <div className="text-gray-500 space-y-2 sm:space-y-3 md:space-y-4 text-sm sm:text-base">
               <p className="font-bold text-white">DUET Robotics Club</p>
               <p>Dhaka University of Engineering & Technology<br />Gazipur-1707, Bangladesh</p>
               <p>Email: <span className="text-primary">drc@duet.ac.bd</span></p>
             </div>
             
-            <div className="flex space-x-4 mt-8">
+            <div className="flex justify-center md:justify-start space-x-3 sm:space-x-4 mt-6 sm:mt-8">
               {['FB', 'LN', 'TW', 'YT'].map(social => (
-                <a key={social} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold text-white/50 hover:bg-primary hover:text-white hover:border-primary transition-all">
+                <a 
+                  key={social} 
+                  href="#" 
+                  className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border border-white/10 flex items-center justify-center text-[8px] sm:text-[9px] md:text-[10px] font-bold text-white/50 hover:bg-primary hover:text-white hover:border-primary transition-all"
+                >
                   {social}
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8">
+          {/* Column 2 - Navigation Links */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-8">
             <div>
-              <h4 className="text-white text-xs font-black uppercase tracking-[0.3em] mb-8">Navigation</h4>
-              <ul className="space-y-4 text-sm text-gray-500 uppercase font-semibold">
-                <li><a href="#about" className="hover:text-primary">About Us</a></li>
-                <li><a href="#projects" className="hover:text-primary">Our Projects</a></li>
-                <li><a href="#events" className="hover:text-primary">Events</a></li>
-                <li><a href="#committee" className="hover:text-primary">Committee</a></li>
+              <h4 className="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 md:mb-8">
+                Navigation
+              </h4>
+              <ul className="space-y-2.5 sm:space-y-3 md:space-y-4 text-xs sm:text-sm text-gray-500 uppercase font-semibold">
+                <li><a href="#about" className="hover:text-primary transition-colors">About Us</a></li>
+                <li><a href="#projects" className="hover:text-primary transition-colors">Our Projects</a></li>
+                <li><a href="#events" className="hover:text-primary transition-colors">Events</a></li>
+                <li><a href="#committee" className="hover:text-primary transition-colors">Committee</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white text-xs font-black uppercase tracking-[0.3em] mb-8">Resources</h4>
-              <ul className="space-y-4 text-sm text-gray-500 uppercase font-semibold">
-                <li><a href="#blog" className="hover:text-primary">Blog</a></li>
-                <li><a href="#" className="hover:text-primary">Guidelines</a></li>
-                <li><a href="#" className="hover:text-primary">Components</a></li>
-                <li><a href="#" className="hover:text-primary">Join Club</a></li>
+              <h4 className="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 md:mb-8">
+                Resources
+              </h4>
+              <ul className="space-y-2.5 sm:space-y-3 md:space-y-4 text-xs sm:text-sm text-gray-500 uppercase font-semibold">
+                <li><a href="/blog" className="hover:text-primary transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Components</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Join Club</a></li>
               </ul>
             </div>
           </div>
 
+          {/* Column 3 - Contact Form */}
           <div>
-            <h4 className="text-white text-xs font-black uppercase tracking-[0.3em] mb-8">Send Message</h4>
-            <form className="space-y-4">
+            <h4 className="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 md:mb-8 text-center md:text-left">
+              Send Message
+            </h4>
+            <form className="space-y-3 sm:space-y-4">
               <input 
                 type="text" 
                 placeholder="Name" 
-                className="w-full bg-[#121212] border border-white/10 p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
               />
               <input 
                 type="email" 
                 placeholder="Email" 
-                className="w-full bg-[#121212] border border-white/10 p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
               />
               <textarea 
                 rows={3} 
                 placeholder="Message" 
-                className="w-full bg-[#121212] border border-white/10 p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600 resize-none"
               />
               <button 
                 type="button" 
-                className="w-full py-4 bg-primary text-white font-black uppercase tracking-[0.2em] text-xs rounded hover:bg-white hover:text-dark transition-all"
+                className="w-full py-3 sm:py-4 bg-primary text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded hover:bg-white hover:text-dark transition-all active:scale-95"
               >
                 Send Message
               </button>
@@ -75,15 +87,35 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/5 pt-10 grid grid-cols-1 md:grid-cols-3 gap-6 items-center text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em]">
-          <div className="text-center md:text-left">
-            Design & Developed by <a href="https://www.pervezhasan.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-white transition-colors">Pervez Hasan</a>
+        {/* Bottom Footer */}
+        <div className="border-t border-white/5 pt-6 sm:pt-8 md:pt-10 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-center text-[8px] sm:text-[9px] md:text-[10px] text-gray-600 font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em]">
+          <div className="text-center md:text-left order-2 md:order-1">
+            Design & Developed by{' '}
+            <a 
+              href="https://www.pervezhasan.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-primary hover:text-white transition-colors"
+            >
+              Pervez Hasan
+            </a>
           </div>
-          <div className="text-center text-gray-400">
-            © 2026 DUET Robotics Club. All Rights Reserved.
+          <div className="text-center text-gray-400 order-1 md:order-2">
+            © 2026 DUET Robotics Club.
+            <span className="hidden sm:inline"> All Rights Reserved.</span>
           </div>
-          <div className="text-center md:text-right">
-            Collaborated with <span className="text-primary"><a href="https://naimulislamportfolio.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-white transition-colors">Naimul Islam</a></span>
+          <div className="text-center md:text-right order-3">
+            Collaborated with{' '}
+            <span className="text-primary">
+              <a 
+                href="https://naimulislamportfolio.vercel.app/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-primary hover:text-white transition-colors"
+              >
+                Naimul Islam
+              </a>
+            </span>
           </div>
         </div>
       </div>

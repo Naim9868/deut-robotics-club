@@ -24,7 +24,6 @@ const FAQ: React.FC = () => {
         }
         const data = await response.json();
         
-        // Filter active FAQs and sort by order
         const activeFAQs = Array.isArray(data) 
           ? data
               .filter((item: FAQData) => item.isActive)
@@ -44,9 +43,9 @@ const FAQ: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-32 container mx-auto px-4 max-w-4xl">
-        <div className="flex justify-center items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="flex justify-center items-center min-h-[200px]">
+          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -54,15 +53,14 @@ const FAQ: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-32 container mx-auto px-4 max-w-4xl">
-        <div className="text-center text-red-500">
+      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="text-center text-red-500 text-sm sm:text-base">
           {error}
         </div>
       </div>
     );
   }
 
-  // Use FAQs from API if available, otherwise use fallback data
   const displayFAQs = faqs.length > 0 ? faqs : [
     {
       _id: '1',
@@ -99,40 +97,57 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <div className="py-32 container mx-auto px-4 max-w-4xl">
-      <div className="text-center mb-20">
-        <h2 className="text-4xl font-black uppercase mb-4 section-title after:mx-auto">Questions?</h2>
-        <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">Everything you need to know about joining DRC</p>
+    <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+      <div className="text-center mb-8 sm:mb-12 md:mb-16 lg:mb-20">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto">
+          Questions?
+        </h2>
+        <p className="text-gray-500 uppercase text-[8px] sm:text-[9px] md:text-xs font-bold tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] mt-2 sm:mt-3 md:mt-4">
+          Everything you need to know about joining DRC
+        </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2.5 sm:space-y-3 md:space-y-4">
         {displayFAQs.map((faq, idx) => (
-          <div key={faq._id || idx} className="border border-white/5 rounded-xl bg-card overflow-hidden">
+          <div 
+            key={faq._id || idx} 
+            className="border border-white/5 rounded-xl bg-card overflow-hidden hover:border-white/10 transition-all duration-300"
+          >
             <button 
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
+              className="w-full flex items-start sm:items-center justify-between gap-3 sm:gap-4 p-3 sm:p-4 md:p-5 lg:p-6 text-left hover:bg-white/5 transition-colors active:bg-white/10"
+              aria-expanded={openIndex === idx}
             >
-              <span className="text-sm font-bold uppercase tracking-widest text-white">{faq.question}</span>
+              <span className="text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-widest text-white flex-1 pr-2 sm:pr-4">
+                {faq.question}
+              </span>
               <svg 
-                className={`w-5 h-5 text-primary transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 transition-transform duration-300 mt-0.5 sm:mt-0 ${openIndex === idx ? 'rotate-180' : ''}`}
                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div className={`transition-all duration-300 ease-in-out ${openIndex === idx ? 'max-h-96 opacity-100 p-6 pt-0' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-              <p className="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
-                {faq.answer}
-              </p>
-              
-              {/* Optional category badge */}
-              {faq.category && faq.category !== 'General' && (
-                <div className="mt-3">
-                  <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-[8px] font-black uppercase tracking-wider rounded-full border border-primary/30">
-                    {faq.category}
-                  </span>
-                </div>
-              )}
+            
+            <div 
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                openIndex === idx ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="p-3 sm:p-4 md:p-5 lg:p-6 pt-0 sm:pt-0">
+                <p className="text-gray-400 text-[11px] sm:text-xs md:text-sm leading-relaxed border-t border-white/5 pt-3 sm:pt-4">
+                  {faq.answer}
+                </p>
+                
+                {/* Optional category badge */}
+                {faq.category && faq.category !== 'General' && (
+                  <div className="mt-2.5 sm:mt-3">
+                    <span className="inline-block px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary/10 text-primary text-[6px] sm:text-[7px] md:text-[8px] font-black uppercase tracking-wider rounded-full border border-primary/30">
+                      {faq.category}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -140,7 +155,7 @@ const FAQ: React.FC = () => {
       
       {/* Show message if no FAQs */}
       {displayFAQs.length === 0 && (
-        <div className="text-center text-gray-400 py-12">
+        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
           No FAQs available at the moment.
         </div>
       )}

@@ -61,6 +61,11 @@ export default function Home() {
           <About />
         </section>
 
+         {/* 9. EVENTS SECTION */}
+        <section id="events" className="bg-[#080808]">
+          <Events />
+        </section>
+
         {/* 3. IMPACT STATS (Supplementary to About) */}
         <Stats />
 
@@ -70,9 +75,9 @@ export default function Home() {
         </section>
 
         {/* 5. TECH SECTION */}
-        <section id="tech" className="bg-[#080808]">
+        {/* <section id="tech" className="bg-[#080808]">
           <TechStack />
-        </section>
+        </section> */}
 
         <ResearchFrontiers />
 
@@ -89,10 +94,8 @@ export default function Home() {
           <Gallery />
         </section>
 
-        {/* 9. EVENTS SECTION */}
-        <section id="events" className="bg-[#080808]">
-          <Events />
-        </section>
+       
+        
 
         {/* 10. HISTORY/TIMELINE */}
         <Timeline />
