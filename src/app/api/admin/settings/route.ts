@@ -58,13 +58,13 @@ export async function PUT(req: NextRequest) {
         adminName: adminName.trim(),
         adminEmail: adminEmail.trim().toLowerCase(),
         replySubjectTemplate: replySubjectTemplate?.trim() || 'Re: {subject}',
-        replyBodyTemplate: replyBodyTemplate?.trim() || 'Hi {name},\n\n',
+        replyBodyTemplate: replyBodyTemplate || 'Hi {name},\n\n',
       });
     } else {
       settings.adminName = adminName.trim();
       settings.adminEmail = adminEmail.trim().toLowerCase();
       if (replySubjectTemplate !== undefined) settings.replySubjectTemplate = replySubjectTemplate.trim() || 'Re: {subject}';
-      if (replyBodyTemplate !== undefined) settings.replyBodyTemplate = replyBodyTemplate.trim() || 'Hi {name},\n\n';
+      if (replyBodyTemplate !== undefined) settings.replyBodyTemplate = replyBodyTemplate || 'Hi {name},\n\n';
       await settings.save();
     }
 

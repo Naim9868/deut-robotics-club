@@ -92,13 +92,14 @@ export default function ContactMessageDetailPage({
 
     const applyTemplate = (template: string) =>
       template
+        .replace(/\\n/g, '\n')
         .replace(/{name}/g, message.name)
         .replace(/{email}/g, message.email)
         .replace(/{subject}/g, message.subject)
         .replace(/{message}/g, message.message);
 
-    const subject = applyTemplate(replySubjectTemplate);
-    const body = applyTemplate(replyBodyTemplate);
+    const subject = applyTemplate(replySubjectTemplate || 'Re: {subject}');
+    const body = applyTemplate(replyBodyTemplate || 'Hi {name},\n\n');
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(message.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     try {

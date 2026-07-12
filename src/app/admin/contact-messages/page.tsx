@@ -128,13 +128,14 @@ export default function ContactMessagesPage() {
   const handleGmailReply = async (msg: ContactMessage) => {
     const applyTemplate = (template: string) =>
       template
+        .replace(/\\n/g, '\n')
         .replace(/{name}/g, msg.name)
         .replace(/{email}/g, msg.email)
         .replace(/{subject}/g, msg.subject)
         .replace(/{message}/g, msg.message);
 
-    const subject = applyTemplate(settings.replySubjectTemplate);
-    const body = applyTemplate(settings.replyBodyTemplate);
+    const subject = applyTemplate(settings.replySubjectTemplate || 'Re: {subject}');
+    const body = applyTemplate(settings.replyBodyTemplate || 'Hi {name},\n\n');
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     // Save reply placeholder to database
