@@ -6,12 +6,11 @@
  * Auto-marks as read on load. Shows full message, metadata, and reply history.
  */
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import ConfirmationDialog from '@/components/admin/ConfirmationDialog';
-import ContactReplyModal from '@/components/admin/ContactReplyModal';
 
 interface ContactMessage {
   _id: string;
@@ -46,8 +45,11 @@ export default function ContactMessageDetailPage({
   const [message, setMessage] = useState<ContactMessage | null>(null);
   const [loading, setLoading] = useState(true);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [replyModal, setReplyModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  const [adminName, setAdminName] = useState('Admin');
+  const [adminEmail, setAdminEmail] = useState('admin@drc.duet.ac.bd');
+  const [replySubjectTemplate, setReplySubjectTemplate] = useState('Re: {subject}');
+  const [replyBodyTemplate, setReplyBodyTemplate] = useState('Hi {name},\n\n');
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -65,6 +67,56 @@ export default function ContactMessageDetailPage({
     };
     fetchMessage();
   }, [id, router]);
+
+  const fetchSettings = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setAdminName(data.adminName || 'Admin');
+        setAdminEmail(data.adminEmail || 'admin@drc.duet.ac.bd');
+        setReplySubjectTemplate(data.replySubjectTemplate || 'Re: {subject}');
+        setReplyBodyTemplate(data.replyBodyTemplate || 'Hi {name},\n\n');
+      }
+    } catch {
+      // Silently fail
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  const handleGmailReply = async () => {
+    if (!message) return;
+
+    const applyTemplate = (template: string) =>
+      template
+        .replace(/{name}/g, message.name)
+        .replace(/{email}/g, message.email)
+        .replace(/{subject}/g, message.subject)
+        .replace(/{message}/g, message.message);
+
+    const subject = applyTemplate(replySubjectTemplate);
+    const body = applyTemplate(replyBodyTemplate);
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(message.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    try {
+      await fetch(`/api/admin/contact/${message._id}/reply`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reply: `[Reply sent via Gmail by ${adminName}]`,
+          repliedBy: adminName,
+        }),
+      });
+      setMessage((prev) => prev ? { ...prev, status: 'replied', reply: `[Reply sent via Gmail by ${adminName}]`, repliedBy: adminName, repliedAt: new Date() } : null);
+    } catch {
+      // Non-critical
+    }
+
+    window.open(gmailUrl, '_blank');
+  };
 
   const handleArchive = async () => {
     try {
@@ -160,7 +212,7 @@ export default function ContactMessageDetailPage({
             </button>
           )}
           <button
-            onClick={() => setReplyModal(true)}
+            onClick={handleGmailReply}
             className="px-3 py-1.5 text-xs font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
             Reply
@@ -273,19 +325,6 @@ export default function ContactMessageDetailPage({
         confirmLabel="Delete"
         isLoading={actionLoading}
         variant="danger"
-      />
-
-      {/* Reply Modal */}
-      <ContactReplyModal
-        isOpen={replyModal}
-        onClose={() => setReplyModal(false)}
-        message={{ _id: message._id, name: message.name, email: message.email, subject: message.subject }}
-        onReplySent={() => {
-          // Re-fetch message to show the reply
-          fetch(`/api/admin/contact/${id}`)
-            .then((r) => r.json())
-            .then((data) => setMessage(data));
-        }}
       />
     </div>
   );

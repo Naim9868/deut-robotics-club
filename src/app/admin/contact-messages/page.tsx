@@ -1,17 +1,9 @@
 'use client';
 
-/**
- * ContactMessagesPage
- * Admin page for managing contact messages.
- * Features: paginated data table, search, filtering, sorting,
- * status badges, bulk actions, and inline quick actions.
- */
-
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import ConfirmationDialog from '@/components/admin/ConfirmationDialog';
-import ContactReplyModal from '@/components/admin/ContactReplyModal';
 
 interface ContactMessage {
   _id: string;
@@ -35,6 +27,13 @@ interface Pagination {
   totalPages: number;
 }
 
+interface SiteSettings {
+  adminName: string;
+  adminEmail: string;
+  replySubjectTemplate: string;
+  replyBodyTemplate: string;
+}
+
 const STATUS_STYLES: Record<string, string> = {
   unread: 'bg-blue-500/15 text-blue-400 border border-blue-500/20',
   read: 'bg-gray-500/15 text-gray-400 border border-gray-500/20',
@@ -54,11 +53,109 @@ export default function ContactMessagesPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
+  // Settings
+  const [settings, setSettings] = useState<SiteSettings>({ adminName: 'Admin', adminEmail: 'admin@drc.duet.ac.bd', replySubjectTemplate: 'Re: {subject}', replyBodyTemplate: 'Hi {name},\n\n' });
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsLoading, setSettingsLoading] = useState(false);
+  const [adminNameInput, setAdminNameInput] = useState('Admin');
+  const [adminEmailInput, setAdminEmailInput] = useState('admin@drc.duet.ac.bd');
+  const [subjectTemplateInput, setSubjectTemplateInput] = useState('Re: {subject}');
+  const [bodyTemplateInput, setBodyTemplateInput] = useState('Hi {name},\n\n');
+
   // Modals
   const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; id: string | null }>({ isOpen: false, id: null });
   const [bulkDeleteDialog, setBulkDeleteDialog] = useState(false);
-  const [replyModal, setReplyModal] = useState<{ isOpen: boolean; message: ContactMessage | null }>({ isOpen: false, message: null });
   const [actionLoading, setActionLoading] = useState(false);
+
+  // ─── Settings ──────────────────────────────────────────
+
+  const fetchSettings = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setSettings(data);
+        setAdminNameInput(data.adminName || 'Admin');
+        setAdminEmailInput(data.adminEmail || 'admin@drc.duet.ac.bd');
+        setSubjectTemplateInput(data.replySubjectTemplate || 'Re: {subject}');
+        setBodyTemplateInput(data.replyBodyTemplate || 'Hi {name},\n\n');
+      }
+    } catch {
+      // Silently fail — settings are non-critical
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  const handleSaveSettings = async () => {
+    if (!adminNameInput.trim()) {
+      toast.error('Admin name is required');
+      return;
+    }
+    if (!adminEmailInput.trim()) {
+      toast.error('Admin email is required');
+      return;
+    }
+
+    setSettingsLoading(true);
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          adminName: adminNameInput.trim(),
+          adminEmail: adminEmailInput.trim(),
+          replySubjectTemplate: subjectTemplateInput.trim(),
+          replyBodyTemplate: bodyTemplateInput.trim(),
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      setSettings(data.data);
+      toast.success('Settings saved');
+      setSettingsOpen(false);
+    } catch {
+      toast.error('Failed to save settings');
+    } finally {
+      setSettingsLoading(false);
+    }
+  };
+
+  // ─── Gmail Reply ───────────────────────────────────────
+
+  const handleGmailReply = async (msg: ContactMessage) => {
+    const applyTemplate = (template: string) =>
+      template
+        .replace(/{name}/g, msg.name)
+        .replace(/{email}/g, msg.email)
+        .replace(/{subject}/g, msg.subject)
+        .replace(/{message}/g, msg.message);
+
+    const subject = applyTemplate(settings.replySubjectTemplate);
+    const body = applyTemplate(settings.replyBodyTemplate);
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Save reply placeholder to database
+    try {
+      await fetch(`/api/admin/contact/${msg._id}/reply`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reply: `[Reply sent via Gmail by ${settings.adminName}]`,
+          repliedBy: settings.adminName,
+        }),
+      });
+    } catch {
+      // Non-critical — Gmail will still open
+    }
+
+    window.open(gmailUrl, '_blank');
+    fetchMessages(pagination.page);
+  };
+
+  // ─── Messages ──────────────────────────────────────────
 
   const fetchMessages = useCallback(async (page = 1) => {
     setLoading(true);
@@ -90,7 +187,7 @@ export default function ContactMessagesPage() {
     setSelectedIds(new Set());
   }, [fetchMessages]);
 
-  // ─── Quick Actions ──────────────────────────────────────────
+  // ─── Quick Actions ──────────────────────────────────────
 
   const handleMarkAsRead = async (id: string) => {
     try {
@@ -130,7 +227,7 @@ export default function ContactMessagesPage() {
     }
   };
 
-  // ─── Bulk Actions ──────────────────────────────────────────
+  // ─── Bulk Actions ──────────────────────────────────────
 
   const handleSelectAll = () => {
     if (selectedIds.size === messages.length) {
@@ -214,7 +311,105 @@ export default function ContactMessagesPage() {
             {pagination.total} total messages
           </p>
         </div>
+        <button
+          onClick={() => setSettingsOpen(!settingsOpen)}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-400 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:text-white transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Reply Settings
+        </button>
       </div>
+
+      {/* Settings Panel */}
+      {settingsOpen && (
+        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+          <h3 className="text-sm font-black text-white uppercase tracking-wider mb-4">Reply Settings</h3>
+          <p className="text-xs text-gray-500 mb-4">
+            Configure your Gmail reply template. Use placeholders: <code className="text-primary">{'{name}'}</code> <code className="text-primary">{'{email}'}</code> <code className="text-primary">{'{subject}'}</code> <code className="text-primary">{'{message}'}</code>
+          </p>
+
+          {/* Admin Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                Your Name
+              </label>
+              <input
+                type="text"
+                value={adminNameInput}
+                onChange={(e) => setAdminNameInput(e.target.value)}
+                placeholder="e.g. John Doe"
+                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                Your Email
+              </label>
+              <input
+                type="email"
+                value={adminEmailInput}
+                onChange={(e) => setAdminEmailInput(e.target.value)}
+                placeholder="e.g. admin@example.com"
+                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+              />
+            </div>
+          </div>
+
+          {/* Template Fields */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                Subject Template
+              </label>
+              <input
+                type="text"
+                value={subjectTemplateInput}
+                onChange={(e) => setSubjectTemplateInput(e.target.value)}
+                placeholder="Re: {subject}"
+                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                Body Template
+              </label>
+              <textarea
+                value={bodyTemplateInput}
+                onChange={(e) => setBodyTemplateInput(e.target.value)}
+                rows={4}
+                placeholder="Hi {name},&#10;&#10;"
+                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600 resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-4">
+            <button
+              onClick={() => {
+                setSettingsOpen(false);
+                setAdminNameInput(settings.adminName);
+                setAdminEmailInput(settings.adminEmail);
+                setSubjectTemplateInput(settings.replySubjectTemplate);
+                setBodyTemplateInput(settings.replyBodyTemplate);
+              }}
+              className="px-4 py-2 text-sm font-medium text-gray-400 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveSettings}
+              disabled={settingsLoading}
+              className="px-4 py-2 text-sm font-bold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+            >
+              {settingsLoading ? 'Saving...' : 'Save Settings'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filters Bar */}
       <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4">
@@ -403,9 +598,7 @@ export default function ContactMessagesPage() {
                           </button>
                         )}
                         <button
-                          onClick={() =>
-                            setReplyModal({ isOpen: true, message: msg })
-                          }
+                          onClick={() => handleGmailReply(msg)}
                           className="px-2 py-1 text-[10px] font-bold bg-green-500/10 text-green-400 rounded hover:bg-green-500/20 transition-colors"
                         >
                           Reply
@@ -483,16 +676,6 @@ export default function ContactMessagesPage() {
         isLoading={actionLoading}
         variant="danger"
       />
-
-      {/* Reply Modal */}
-      {replyModal.message && (
-        <ContactReplyModal
-          isOpen={replyModal.isOpen}
-          onClose={() => setReplyModal({ isOpen: false, message: null })}
-          message={replyModal.message}
-          onReplySent={() => fetchMessages(pagination.page)}
-        />
-      )}
     </div>
   );
 }
