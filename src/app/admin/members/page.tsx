@@ -126,12 +126,12 @@ export default function MembersPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black text-white">Members</h1>
+        <h1 className="text-2xl sm:text-3xl font-black text-white">Members</h1>
         <p className="text-gray-500 text-sm mt-1">{pagination.total} total members</p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
         {[
           { label: 'Active', value: stats.active, color: 'text-green-400' },
           { label: 'Suspended', value: stats.suspended, color: 'text-red-400' },
@@ -197,7 +197,7 @@ export default function MembersPage() {
             ))}
           </div>
         ) : members.length === 0 ? (
-          <div className="p-12 text-center">
+          <div className="p-6 sm:p-12 text-center">
             <span className="text-4xl mb-4 block">👥</span>
             <p className="text-gray-400 font-medium">No members found</p>
             <p className="text-gray-600 text-sm mt-1">
@@ -295,7 +295,7 @@ export default function MembersPage() {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-4 border-t border-white/5 gap-4">
             <p className="text-xs text-gray-500">
               Page {pagination.page} of {pagination.totalPages} ({pagination.total} members)
             </p>

@@ -38,7 +38,6 @@ const communicationItems = [
   { name: 'Contact Messages', href: '/admin/contact-messages', icon: '✉️' },
 ];
 
-/** Inline unread count badge that fetches from the API */
 function UnreadBadge() {
   const [count, setCount] = useState(0);
 
@@ -51,12 +50,11 @@ function UnreadBadge() {
           setCount(data.count || 0);
         }
       } catch {
-        // Silently fail — badge is non-critical
+        // Silently fail
       }
     };
 
     fetchCount();
-    // Poll every 30 seconds for freshness
     const interval = setInterval(fetchCount, 30_000);
     return () => clearInterval(interval);
   }, []);
@@ -70,10 +68,20 @@ function UnreadBadge() {
   );
 }
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    onClose();
+  }, [pathname, onClose]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -90,8 +98,8 @@ export default function Sidebar() {
     }
   };
 
-  return (
-    <aside className="w-64 bg-[#0a0a0a] border-r border-white/5 h-[95vh] fixed left-0 top-0 overflow-y-auto">
+  const navContent = (
+    <>
       <div className="p-6 border-b border-white/5">
         <h1 className="text-xl font-black text-white">
           DRC <span className="text-primary">ADMIN</span>
@@ -101,7 +109,7 @@ export default function Sidebar() {
         </p>
       </div>
 
-      <nav className="p-4 mb-4">
+      <nav className="p-4 mb-4 overflow-y-auto flex-1">
         {menuItems.map((item) => (
           <Link
             key={item.href}
@@ -117,7 +125,6 @@ export default function Sidebar() {
           </Link>
         ))}
 
-        {/* Member Management Section */}
         <div className="mt-4 pt-4 border-t border-white/5">
           <p className="px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
             Member Management
@@ -138,7 +145,6 @@ export default function Sidebar() {
           ))}
         </div>
 
-        {/* Communication Section */}
         <div className="mt-4 pt-4 border-t border-white/5">
           <p className="px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
             Communication
@@ -163,16 +169,42 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      <div className="fixed w-64 bottom-0 left-0 bg-red-500 right-0 p-0 border-t border-white/5">
+      <div className="border-t border-white/5 p-0">
         <button
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="flex items-center space-x-3 px-4 py-3 w-full rounded-lg text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all"
+          className="flex items-center space-x-3 px-4 py-3 w-full text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all"
         >
           <span>🚪</span>
           <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex w-64 bg-[#0a0a0a] border-r border-white/5 h-screen fixed left-0 top-0 flex-col overflow-hidden z-50">
+        {navContent}
+      </aside>
+
+      {/* Mobile Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 z-50 h-screen w-64 bg-[#0a0a0a] border-r border-white/5 flex flex-col overflow-hidden transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {navContent}
+      </aside>
+    </>
   );
 }

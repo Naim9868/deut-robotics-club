@@ -161,7 +161,7 @@ export default function RegistrationDetailPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <button
             onClick={() => router.push('/admin/registration')}
@@ -170,14 +170,14 @@ export default function RegistrationDetailPage({
             ← Back to Applications
           </button>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-white">{app.applicationId}</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-white">{app.applicationId}</h1>
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${STATUS_STYLES[app.status]}`}>
               {app.status.replace(/_/g, ' ')}
             </span>
           </div>
           <p className="text-gray-500 text-sm mt-1">Submitted {formatDate(app.createdAt)}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           {app.status === 'submitted' && (
             <>
               <button
@@ -224,7 +224,7 @@ export default function RegistrationDetailPage({
       )}
 
       {/* Personal Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Personal Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -257,7 +257,7 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* University Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">University Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -284,7 +284,7 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* Contact Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Contact Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -311,7 +311,7 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* Payment Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Payment Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -346,7 +346,7 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* Additional Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Additional Information</h2>
         <div className="space-y-4">
           {app.additional.skills.length > 0 && (
@@ -387,11 +387,11 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* Admin Notes */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Admin Notes</h2>
 
         {/* Add note form */}
-        <div className="flex gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <input
             type="text"
             value={noteAuthor}

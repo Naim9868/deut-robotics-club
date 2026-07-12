@@ -62,12 +62,12 @@ export default function ConfirmationDialog({
     >
       <div
         ref={dialogRef}
-        className="bg-[#121212] border border-white/10 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl"
+        className="bg-[#121212] border border-white/10 rounded-2xl p-4 sm:p-6 w-full max-w-md mx-4 shadow-2xl"
       >
         <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
         <p className="text-sm text-gray-400 mb-6">{message}</p>
 
-        <div className="flex justify-end space-x-3">
+        <div className="flex flex-col sm:flex-row justify-end gap-3">
           <button
             onClick={onClose}
             disabled={isLoading}

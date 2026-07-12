@@ -335,7 +335,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         /* Reduced motion preference */
         @media (prefers-reduced-motion: reduce) {
           .animate-wave, .wave-glow {
-            animation: none !important;
+            animation: #ff4900 !important;
           }
           .transition-all {
             transition-duration: 0.01ms !important;

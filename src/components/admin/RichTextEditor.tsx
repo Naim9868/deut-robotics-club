@@ -62,7 +62,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
   return (
     <div className="border-b border-white/10 bg-[#1a1a1a] sticky top-0 z-10">
-      <div className="p-2 flex flex-wrap gap-1">
+      <div className="p-1.5 sm:p-2 flex flex-wrap gap-0.5 sm:gap-1">
         {/* Headings Dropdown */}
         <select
           onChange={(e) => {
@@ -73,7 +73,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             else if (value === 'h3') editor.chain().focus().toggleHeading({ level: 3 }).run();
             else if (value === 'h4') editor.chain().focus().toggleHeading({ level: 4 }).run();
           }}
-          className="bg-[#2a2a2a] text-white text-sm border border-white/10 rounded px-2 py-1 focus:outline-none focus:border-primary"
+          className="bg-[#2a2a2a] text-white text-xs sm:text-sm border border-white/10 rounded px-1.5 sm:px-2 py-1 focus:outline-none focus:border-primary"
           value={
             editor.isActive('heading', { level: 1 }) ? 'h1' :
             editor.isActive('heading', { level: 2 }) ? 'h2' :
@@ -91,56 +91,56 @@ const MenuBar = ({ editor }: { editor: any }) => {
         <span className="w-px h-6 bg-white/10 mx-1" />
 
         {/* Text Formatting */}
-        <button onClick={() => editor.chain().focus().toggleBold().run()} className={`p-2 rounded ${editor.isActive('bold') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Bold"><span className="font-bold text-sm">B</span></button>
-        <button onClick={() => editor.chain().focus().toggleItalic().run()} className={`p-2 rounded ${editor.isActive('italic') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Italic"><span className="italic text-sm">I</span></button>
-        <button onClick={() => editor.chain().focus().toggleUnderline().run()} className={`p-2 rounded ${editor.isActive('underline') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Underline"><span className="underline text-sm">U</span></button>
-        <button onClick={() => editor.chain().focus().toggleStrike().run()} className={`p-2 rounded ${editor.isActive('strike') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Strikethrough"><span className="line-through text-sm">S</span></button>
+        <button onClick={() => editor.chain().focus().toggleBold().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('bold') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Bold"><span className="font-bold text-xs sm:text-sm">B</span></button>
+        <button onClick={() => editor.chain().focus().toggleItalic().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('italic') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Italic"><span className="italic text-xs sm:text-sm">I</span></button>
+        <button onClick={() => editor.chain().focus().toggleUnderline().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('underline') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Underline"><span className="underline text-xs sm:text-sm">U</span></button>
+        <button onClick={() => editor.chain().focus().toggleStrike().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('strike') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Strikethrough"><span className="line-through text-xs sm:text-sm">S</span></button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Text Color */}
-        <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()} value={editor.getAttributes('textStyle').color || '#ffffff'} className="w-8 h-8 rounded cursor-pointer" title="Text Color" />
-        <button onClick={() => editor.chain().focus().unsetColor().run()} className="p-2 rounded text-gray-400 hover:bg-white/10 text-sm" title="Clear Color">Clear</button>
+        <input type="color" onChange={(e) => editor.chain().focus().setColor(e.target.value).run()} value={editor.getAttributes('textStyle').color || '#ffffff'} className="w-7 h-7 sm:w-8 sm:h-8 rounded cursor-pointer" title="Text Color" />
+        <button onClick={() => editor.chain().focus().unsetColor().run()} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10 text-xs sm:text-sm" title="Clear Color">Clear</button>
 
         <span className="w-px h-6 bg-white/10 mx-1" />
 
         {/* Alignment */}
-        <button onClick={() => editor.chain().focus().setTextAlign('left').run()} className={`p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Align Left">⬅️</button>
-        <button onClick={() => editor.chain().focus().setTextAlign('center').run()} className={`p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Center">⬆️</button>
-        <button onClick={() => editor.chain().focus().setTextAlign('right').run()} className={`p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Align Right">➡️</button>
-        <button onClick={() => editor.chain().focus().setTextAlign('justify').run()} className={`p-2 rounded ${editor.isActive({ textAlign: 'justify' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Justify">🔄</button>
+        <button onClick={() => editor.chain().focus().setTextAlign('left').run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive({ textAlign: 'left' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Align Left">⬅️</button>
+        <button onClick={() => editor.chain().focus().setTextAlign('center').run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive({ textAlign: 'center' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Center">⬆️</button>
+        <button onClick={() => editor.chain().focus().setTextAlign('right').run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive({ textAlign: 'right' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Align Right">➡️</button>
+        <button onClick={() => editor.chain().focus().setTextAlign('justify').run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive({ textAlign: 'justify' }) ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Justify">🔄</button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Lists */}
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Bullet List">• List</button>
-        <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={`p-2 rounded ${editor.isActive('orderedList') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Numbered List">1. List</button>
+        <button onClick={() => editor.chain().focus().toggleBulletList().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('bulletList') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Bullet List">• List</button>
+        <button onClick={() => editor.chain().focus().toggleOrderedList().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('orderedList') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Numbered List">1. List</button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Blocks */}
-        <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Code Block">&lt;/&gt;</button>
-        <button onClick={() => editor.chain().focus().toggleCode().run()} className={`p-2 rounded ${editor.isActive('code') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Inline Code">`code`</button>
-        <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={`p-2 rounded ${editor.isActive('blockquote') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Quote">❝</button>
+        <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('codeBlock') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Code Block">&lt;/&gt;</button>
+        <button onClick={() => editor.chain().focus().toggleCode().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('code') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Inline Code">`code`</button>
+        <button onClick={() => editor.chain().focus().toggleBlockquote().run()} className={`p-1.5 sm:p-2 rounded ${editor.isActive('blockquote') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Quote">❝</button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Links */}
-        <button onClick={() => { const url = window.prompt('Enter URL:'); if (url) editor.chain().focus().setLink({ href: url }).run(); }} className={`p-2 rounded ${editor.isActive('link') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Add Link">🔗 Link</button>
-        <button onClick={() => editor.chain().focus().unsetLink().run()} disabled={!editor.isActive('link')} className="p-2 rounded text-gray-400 hover:bg-white/10 disabled:opacity-50" title="Remove Link">Unlink</button>
+        <button onClick={() => { const url = window.prompt('Enter URL:'); if (url) editor.chain().focus().setLink({ href: url }).run(); }} className={`p-1.5 sm:p-2 rounded ${editor.isActive('link') ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`} title="Add Link">🔗 Link</button>
+        <button onClick={() => editor.chain().focus().unsetLink().run()} disabled={!editor.isActive('link')} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10 disabled:opacity-50" title="Remove Link">Unlink</button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Media */}
-        <button onClick={() => setShowImageInput(!showImageInput)} className="p-2 rounded text-gray-400 hover:bg-white/10" title="Insert Image">🖼️ Image</button>
-        <button onClick={() => editor.chain().focus().setHorizontalRule().run()} className="p-2 rounded text-gray-400 hover:bg-white/10" title="Horizontal Line">―</button>
-        <button onClick={() => editor.chain().focus().setHardBreak().run()} className="p-2 rounded text-gray-400 hover:bg-white/10" title="Line Break">↵</button>
+        <button onClick={() => setShowImageInput(!showImageInput)} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10" title="Insert Image">🖼️ Image</button>
+        <button onClick={() => editor.chain().focus().setHorizontalRule().run()} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10" title="Horizontal Line">―</button>
+        <button onClick={() => editor.chain().focus().setHardBreak().run()} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10" title="Line Break">↵</button>
 
-        <span className="w-px h-6 bg-white/10 mx-1" />
+        <span className="w-px h-5 sm:h-6 bg-white/10 mx-0.5 sm:mx-1" />
 
         {/* Undo/Redo */}
-        <button onClick={() => editor.chain().focus().undo().run()} className="p-2 rounded text-gray-400 hover:bg-white/10" title="Undo" disabled={!editor.can().undo()}>↩ Undo</button>
-        <button onClick={() => editor.chain().focus().redo().run()} className="p-2 rounded text-gray-400 hover:bg-white/10" title="Redo" disabled={!editor.can().redo()}>↪ Redo</button>
+        <button onClick={() => editor.chain().focus().undo().run()} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10" title="Undo" disabled={!editor.can().undo()}>↩ Undo</button>
+        <button onClick={() => editor.chain().focus().redo().run()} className="p-1.5 sm:p-2 rounded text-gray-400 hover:bg-white/10" title="Redo" disabled={!editor.can().redo()}>↪ Redo</button>
 
         {/* HTML View Toggle */}
         <button
@@ -150,7 +150,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             }
             setShowHTML(!showHTML);
           }}
-          className={`p-2 rounded ml-auto ${showHTML ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`}
+          className={`p-1.5 sm:p-2 rounded ml-auto ${showHTML ? 'bg-primary text-white' : 'text-gray-400 hover:bg-white/10'}`}
           title="Toggle HTML View"
         >
           &lt;/&gt; HTML
@@ -178,8 +178,8 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
       {/* HTML View - Fixed: No more cursor jumping */}
       {showHTML && (
-        <div className="p-4 border-t border-white/10 bg-[#121212]">
-          <div className="mb-2 flex justify-between items-center">
+        <div className="p-3 sm:p-4 border-t border-white/10 bg-[#121212]">
+          <div className="mb-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
             <h3 className="text-xs text-gray-400">HTML Editor</h3>
             <div className="flex gap-2">
               <button
@@ -202,7 +202,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <textarea
             value={htmlContent}
             onChange={handleHTMLChange}
-            className="w-full h-64 bg-[#1a1a1a] text-white font-mono text-sm p-4 rounded border border-white/10 focus:outline-none focus:border-primary resize-none"
+            className="w-full h-48 sm:h-64 bg-[#1a1a1a] text-white font-mono text-sm p-3 sm:p-4 rounded border border-white/10 focus:outline-none focus:border-primary resize-none"
             placeholder="HTML code..."
             spellCheck="false"
           />
@@ -324,8 +324,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       <EditorContent editor={editor} />
       
       {/* Status Bar */}
-      <div className="border-t border-white/10 bg-[#1a1a1a] px-4 py-2 text-xs text-gray-500 flex justify-between items-center">
-        <div className="flex gap-4">
+      <div className="border-t border-white/10 bg-[#1a1a1a] px-3 sm:px-4 py-2 text-[10px] sm:text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <div className="flex flex-wrap gap-2 sm:gap-4">
           <span>Words: {editor?.storage.characterCount?.words() || 0}</span>
           <span>Characters: {editor?.storage.characterCount?.characters() || 0}</span>
           {isDirty && (
@@ -335,7 +335,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
             </span>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           {isDirty && (
             <>
               <button
@@ -346,13 +346,13 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
               </button>
               <button
                 onClick={handleSave}
-                className="bg-primary text-white px-3 py-1 rounded hover:bg-primary/80 transition-colors font-medium flex items-center gap-1"
+                className="bg-primary text-white px-2 sm:px-3 py-1 rounded hover:bg-primary/80 transition-colors font-medium flex items-center gap-1"
               >
                 <span>💾</span> Save
               </button>
             </>
           )}
-          <span className="text-gray-600">Ctrl+S</span>
+          <span className="text-gray-600 hidden sm:inline">Ctrl+S</span>
         </div>
       </div>
 

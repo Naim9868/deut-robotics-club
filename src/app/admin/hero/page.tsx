@@ -56,7 +56,7 @@ export default function HeroPage() {
         const item = data[0];
        
         setExistingId(item._id);
-        
+       
         // Sort images by order before setting
         if (item.images) {
           item.images.sort((a: any, b: any) => a.order - b.order);
@@ -224,11 +224,11 @@ export default function HeroPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Hero Section</h1>
+    <div className="max-w-4xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Hero Section</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           {/* Title */}
           <div>
             <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
@@ -273,7 +273,7 @@ export default function HeroPage() {
             </label>
             
             {/* Image Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
               {fields.map((field, index) => (
                 <div key={field.id} className="relative group aspect-video">
                   <img 
@@ -354,7 +354,7 @@ export default function HeroPage() {
           </div>
 
           {/* Buttons Section */}
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-white/5">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Primary Button Text
@@ -377,7 +377,7 @@ export default function HeroPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Secondary Button Text
@@ -401,7 +401,7 @@ export default function HeroPage() {
           </div>
 
           {/* Settings */}
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-white/5">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Auto Slide Interval (ms)
@@ -431,7 +431,7 @@ export default function HeroPage() {
 
         {/* Preview */}
         {!loading && watch('title') && (
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
             <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
               <span>🔍</span> Live Preview
             </h2>
@@ -455,7 +455,7 @@ export default function HeroPage() {
                 <p className="text-gray-300 max-w-xl mb-8">
                   {watch('description')}
                 </p>
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button className="px-6 py-3 bg-primary text-white text-sm font-black rounded hover:bg-primary/90 transition-colors">
                     {watch('primaryButton.text')}
                   </button>
@@ -474,7 +474,7 @@ export default function HeroPage() {
         )}
 
         {/* Form Actions */}
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
           <button 
             type="button" 
             onClick={() => router.push('/admin')} 

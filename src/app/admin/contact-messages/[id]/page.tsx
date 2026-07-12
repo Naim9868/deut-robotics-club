@@ -183,7 +183,7 @@ export default function ContactMessageDetailPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <Link
             href="/admin/contact-messages"
@@ -203,7 +203,7 @@ export default function ContactMessageDetailPage({
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {message.status === 'unread' && (
             <button
               onClick={handleMarkAsRead}
@@ -235,11 +235,11 @@ export default function ContactMessageDetailPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           {/* Message */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6">
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
               Message
             </h3>
@@ -250,7 +250,7 @@ export default function ContactMessageDetailPage({
 
           {/* Reply (if exists) */}
           {message.reply && (
-            <div className="bg-[#0a0a0a] border border-green-500/10 rounded-2xl p-6">
+            <div className="bg-[#0a0a0a] border border-green-500/10 rounded-2xl p-4 sm:p-6">
               <h3 className="text-xs font-black text-green-400 uppercase tracking-wider mb-4">
                 Reply
               </h3>
@@ -266,9 +266,9 @@ export default function ContactMessageDetailPage({
         </div>
 
         {/* Sidebar Info */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Sender Info */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6">
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
               Sender Information
             </h3>
@@ -290,7 +290,7 @@ export default function ContactMessageDetailPage({
           </div>
 
           {/* Metadata */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6">
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
               Metadata
             </h3>

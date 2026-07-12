@@ -74,7 +74,7 @@ export default function ContactReplyModal({
 
   if (isMinimized) {
     return (
-      <div className="fixed bottom-0 right-6 z-50 w-[320px]">
+      <div className="fixed bottom-0 right-2 sm:right-6 z-50 w-[calc(100vw-16px)] sm:w-[320px]">
         <button
           onClick={() => setIsMinimized(false)}
           className="w-full bg-[#1a1a2e] border border-white/10 rounded-t-lg px-4 py-3 flex items-center justify-between hover:bg-[#1e1e32] transition-colors shadow-2xl"
@@ -99,7 +99,7 @@ export default function ContactReplyModal({
   }
 
   return (
-    <div className="fixed bottom-0 right-6 z-50 w-[480px] max-w-[calc(100vw-48px)]">
+    <div className="fixed bottom-0 right-2 sm:right-6 z-50 w-[calc(100vw-16px)] sm:w-[480px] sm:max-w-[calc(100vw-48px)]">
       <div className="bg-[#1a1a2e] border border-white/10 rounded-t-xl shadow-2xl flex flex-col max-h-[80vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-2.5 bg-[#16162a] border-b border-white/5 rounded-t-xl cursor-move">

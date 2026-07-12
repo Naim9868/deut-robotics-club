@@ -66,13 +66,13 @@ export default function ImageUpload({
   return (
     <div className="space-y-2">
       {preview && (
-        <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-white/10 group">
+        <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg overflow-hidden border border-white/10 group">
           <img src={preview} alt="Preview" className="w-full h-full object-cover" />
           {onRemove && (
             <button
               type="button"
               onClick={handleRemove}
-              className="absolute top-1 right-1 w-6 h-6 bg-red-500/80 rounded-full text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-1 right-1 w-5 h-5 sm:w-6 sm:h-6 bg-red-500/80 rounded-full text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"
             >
               ×
             </button>
@@ -88,7 +88,7 @@ export default function ImageUpload({
           onChange={handleUpload}
           disabled={uploading}
         />
-        <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-gray-300 hover:bg-white/10 transition-all">
+        <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/5 border border-white/10 rounded-lg text-xs sm:text-sm text-gray-300 hover:bg-white/10 transition-all">
           {uploading ? 'Uploading...' : preview ? 'Change Image' : 'Upload Image'}
         </div>
       </label>

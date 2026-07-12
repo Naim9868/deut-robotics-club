@@ -216,21 +216,21 @@ export default function SponsorsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-black text-white">Sponsors</h1>
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Sponsors</h1>
         <p className="text-gray-500 text-sm">{sponsors.length} sponsors</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">
           {editingId ? 'Edit Sponsor' : 'Add New Sponsor'}
         </h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name and Category */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Sponsor Name <span className="text-red-500">*</span>
@@ -329,7 +329,7 @@ export default function SponsorsPage() {
           </div>
 
           {/* Order and Status */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Display Order
@@ -353,7 +353,7 @@ export default function SponsorsPage() {
           </div>
 
           {/* Form Actions */}
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 pt-4">
             <button 
               type="submit" 
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
@@ -379,7 +379,7 @@ export default function SponsorsPage() {
       </div>
 
       {/* Sponsors Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {sponsors.map((sponsor, index) => {
           // Type assertion to ensure category is treated as CategoryType
           const category = sponsor.category as CategoryType;
@@ -387,7 +387,7 @@ export default function SponsorsPage() {
           return (
             <div 
               key={sponsor._id} 
-              className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 text-center group relative hover:border-primary/50 transition-all"
+              className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6 text-center group relative hover:border-primary/50 transition-all"
             >
               {/* Order Controls */}
               <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">

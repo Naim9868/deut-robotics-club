@@ -94,7 +94,7 @@ export default function RegistrationAppsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black text-white">Registration Applications</h1>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-white">Registration Applications</h1>
         <p className="text-gray-500 text-sm mt-1">{pagination.total} total applications</p>
       </div>
 
@@ -249,7 +249,7 @@ export default function RegistrationAppsPage() {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 py-4 border-t border-white/5 gap-3">
             <p className="text-xs text-gray-500">
               Page {pagination.page} of {pagination.totalPages} ({pagination.total} applications)
             </p>

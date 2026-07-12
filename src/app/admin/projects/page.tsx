@@ -286,21 +286,21 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-black text-white">Projects</h1>
+    <div className="max-w-6xl mx-auto space-y-8 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Projects</h1>
         <p className="text-gray-500 text-sm">{projects.length} projects</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">
           {editingId ? 'Edit Project' : 'Add New Project'}
         </h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Title <span className="text-red-500">*</span>
@@ -329,7 +329,7 @@ export default function ProjectsPage() {
                 <button
                   type="button"
                   onClick={generateId}
-                  className="px-4 py-2 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 text-sm"
+                  className="px-4 py-2 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 text-sm whitespace-nowrap"
                 >
                   Generate
                 </button>
@@ -341,7 +341,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Tag and Category */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Tag <span className="text-red-500">*</span>
@@ -369,7 +369,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Status and Latency */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Status
@@ -412,7 +412,7 @@ export default function ProjectsPage() {
 
           {/* Image Upload with Toggle */}
           <div className="border-t border-white/5 pt-4">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
               <label className="text-xs font-black text-gray-400 uppercase">
                 Project Image
               </label>
@@ -457,7 +457,7 @@ export default function ProjectsPage() {
             <label className="block text-xs font-black text-gray-400 uppercase mb-2">
               Technologies
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 value={techInput}
                 onChange={(e) => setTechInput(e.target.value)}
@@ -468,7 +468,7 @@ export default function ProjectsPage() {
               <button
                 type="button"
                 onClick={addTechnology}
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium"
+                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium whitespace-nowrap"
               >
                 Add
               </button>
@@ -497,7 +497,7 @@ export default function ProjectsPage() {
             <label className="block text-xs font-black text-gray-400 uppercase mb-2">
               Team Members
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 value={teamInput}
                 onChange={(e) => setTeamInput(e.target.value)}
@@ -508,7 +508,7 @@ export default function ProjectsPage() {
               <button
                 type="button"
                 onClick={addTeamMember}
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium"
+                className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium whitespace-nowrap"
               >
                 Add
               </button>
@@ -533,7 +533,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Links */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 GitHub URL
@@ -558,7 +558,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Order and Status */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Display Order
@@ -573,7 +573,7 @@ export default function ProjectsPage() {
               <p className="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
             </div>
 
-            <div className="flex items-center gap-6 pt-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 pt-4 sm:pt-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
                 <span className="text-sm text-gray-300">Featured Project</span>
@@ -586,7 +586,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Form Actions */}
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
             <button 
               type="submit" 
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
@@ -614,7 +614,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {projects.map((project, index) => (
           <div 
             key={project._id} 
@@ -676,7 +676,7 @@ export default function ProjectsPage() {
 
             <div className="flex p-4 gap-4">
               {/* Image */}
-              <div className="w-24 h-24 flex-shrink-0 bg-[#121212] rounded-lg overflow-hidden">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-[#121212] rounded-lg overflow-hidden">
                 <img 
                   src={project.image?.url || getProjectImage(project.title)} 
                   alt={project.title} 
@@ -690,8 +690,8 @@ export default function ProjectsPage() {
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-1">
-                  <div>
-                    <h3 className="text-lg font-bold text-white truncate">{project.title}</h3>
+                  <div className="min-w-0">
+                    <h3 className="text-base sm:text-lg font-bold text-white truncate">{project.title}</h3>
                     <p className="text-xs text-gray-500">{project.id}</p>
                   </div>
                 </div>

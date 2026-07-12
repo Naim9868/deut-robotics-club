@@ -305,9 +305,9 @@ export default function ContactMessagesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">Contact Messages</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white">Contact Messages</h1>
           <p className="text-gray-500 text-sm mt-1">
             {pagination.total} total messages
           </p>
@@ -326,7 +326,7 @@ export default function ContactMessagesPage() {
 
       {/* Settings Panel */}
       {settingsOpen && (
-        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-6">
+        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl p-4 sm:p-6">
           <h3 className="text-sm font-black text-white uppercase tracking-wider mb-4">Reply Settings</h3>
           <p className="text-xs text-gray-500 mb-4">
             Configure your Gmail reply template. Use placeholders: <code className="text-primary">{'{name}'}</code> <code className="text-primary">{'{email}'}</code> <code className="text-primary">{'{subject}'}</code> <code className="text-primary">{'{message}'}</code>
@@ -388,7 +388,7 @@ export default function ContactMessagesPage() {
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 mt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4">
             <button
               onClick={() => {
                 setSettingsOpen(false);
@@ -459,7 +459,7 @@ export default function ContactMessagesPage() {
 
         {/* Bulk Actions */}
         {selectedIds.size > 0 && (
-          <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-4 pt-4 border-t border-white/5">
             <span className="text-xs text-gray-400">{selectedIds.size} selected</span>
             <button
               onClick={() => handleBulkStatus('read')}
@@ -487,9 +487,9 @@ export default function ContactMessagesPage() {
       <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden">
         {loading ? (
           /* Loading Skeletons */
-          <div className="p-6 space-y-4">
+          <div className="p-4 sm:p-6 space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="animate-pulse flex space-x-4">
+              <div key={i} className="animate-pulse flex space-x-2 sm:space-x-4">
                 <div className="w-4 h-4 bg-white/5 rounded" />
                 <div className="flex-1 space-y-2">
                   <div className="h-4 bg-white/5 rounded w-1/4" />
@@ -501,8 +501,8 @@ export default function ContactMessagesPage() {
           </div>
         ) : messages.length === 0 ? (
           /* Empty State */
-          <div className="p-12 text-center">
-            <span className="text-4xl mb-4 block">📭</span>
+          <div className="p-6 sm:p-12 text-center">
+            <span className="text-2xl sm:text-3xl md:text-4xl mb-4 block">📭</span>
             <p className="text-gray-400 font-medium">No messages found</p>
             <p className="text-gray-600 text-sm mt-1">
               {search || statusFilter !== 'all'
@@ -631,7 +631,7 @@ export default function ContactMessagesPage() {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-4 border-t border-white/5 gap-3">
             <p className="text-xs text-gray-500">
               Page {pagination.page} of {pagination.totalPages} ({pagination.total} messages)
             </p>

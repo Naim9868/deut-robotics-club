@@ -45,15 +45,15 @@ export default function DataTable({ columns, data, basePath, onDelete }: DataTab
   return (
     <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full min-w-[600px]">
           <thead className="bg-white/5">
             <tr>
               {columns.map((col) => (
-                <th key={col.key} className="px-6 py-4 text-left text-xs font-black text-gray-400 uppercase tracking-wider">
+                <th key={col.key} className="px-4 sm:px-6 py-3 sm:py-4 text-left text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-wider">
                   {col.label}
                 </th>
               ))}
-              <th className="px-6 py-4 text-right text-xs font-black text-gray-400 uppercase tracking-wider">
+              <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -62,21 +62,21 @@ export default function DataTable({ columns, data, basePath, onDelete }: DataTab
             {data.map((item) => (
               <tr key={item._id} className="hover:bg-white/5 transition-colors">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-6 py-4 text-sm text-gray-300">
+                  <td key={col.key} className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-300">
                     {col.render ? col.render(item[col.key], item) : item[col.key]}
                   </td>
                 ))}
-                <td className="px-6 py-4 text-right space-x-2">
+                <td className="px-4 sm:px-6 py-3 sm:py-4 text-right space-x-1 sm:space-x-2">
                   <Link
                     href={`/admin/${basePath}/${item._id}`}
-                    className="inline-flex items-center px-3 py-1 bg-blue-500/10 text-blue-500 rounded text-xs font-bold hover:bg-blue-500/20 transition-all"
+                    className="inline-flex items-center px-2 sm:px-3 py-1 bg-blue-500/10 text-blue-500 rounded text-[10px] sm:text-xs font-bold hover:bg-blue-500/20 transition-all"
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => handleDelete(item._id)}
                     disabled={deletingId === item._id}
-                    className="inline-flex items-center px-3 py-1 bg-red-500/10 text-red-500 rounded text-xs font-bold hover:bg-red-500/20 transition-all disabled:opacity-50"
+                    className="inline-flex items-center px-2 sm:px-3 py-1 bg-red-500/10 text-red-500 rounded text-[10px] sm:text-xs font-bold hover:bg-red-500/20 transition-all disabled:opacity-50"
                   >
                     {deletingId === item._id ? '...' : 'Delete'}
                   </button>

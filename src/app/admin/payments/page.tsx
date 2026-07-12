@@ -115,19 +115,21 @@ export default function PaymentsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-black text-white">Payment Verification</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-white">Payment Verification</h1>
         <p className="text-gray-500 text-sm mt-1">
           {pagination.total} total payments · {payments.filter((p) => p.verificationStatus === 'pending').length} pending
         </p>
+        </div>
       </div>
 
       {/* Table */}
       <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden">
         {loading ? (
-          <div className="p-6 space-y-4">
+          <div className="p-4 sm:p-6 space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="animate-pulse flex space-x-4">
+              <div key={i} className="animate-pulse flex space-x-2 sm:space-x-4">
                 <div className="flex-1 space-y-2">
                   <div className="h-4 bg-white/5 rounded w-1/4" />
                   <div className="h-3 bg-white/5 rounded w-1/2" />
@@ -136,8 +138,8 @@ export default function PaymentsPage() {
             ))}
           </div>
         ) : payments.length === 0 ? (
-          <div className="p-12 text-center">
-            <span className="text-4xl mb-4 block">💳</span>
+          <div className="p-6 sm:p-12 text-center">
+            <span className="text-2xl sm:text-3xl md:text-4xl mb-4 block">💳</span>
             <p className="text-gray-400 font-medium">No payments found</p>
             <p className="text-gray-600 text-sm mt-1">Payment records will appear here</p>
           </div>
@@ -214,7 +216,7 @@ export default function PaymentsPage() {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-4 border-t border-white/5 gap-3">
             <p className="text-xs text-gray-500">
               Page {pagination.page} of {pagination.totalPages}
             </p>

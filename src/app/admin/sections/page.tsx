@@ -106,14 +106,14 @@ export default function SectionsPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-white">Sections</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Sections</h1>
           <p className="text-gray-500 text-sm mt-1">
             {visibleCount} of {SECTION_CONFIG.length} sections visible on frontend
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <button
             onClick={() => toggleAll(true)}
             disabled={saving}
@@ -136,7 +136,7 @@ export default function SectionsPage() {
           {SECTION_CONFIG.map((section) => (
             <div
               key={section.key}
-              className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.02] transition-colors"
+              className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-white/[0.02] transition-colors"
             >
               <div className="flex items-center gap-4">
                 <span className="text-2xl">{section.icon}</span>

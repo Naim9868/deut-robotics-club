@@ -202,21 +202,21 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-black text-white">Testimonials</h1>
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Testimonials</h1>
         <p className="text-gray-500 text-sm">{testimonials.length} testimonials</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">
           {editingId ? 'Edit Testimonial' : 'Add New Testimonial'}
         </h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Name <span className="text-red-500">*</span>
@@ -305,7 +305,7 @@ export default function TestimonialsPage() {
           </div>
 
           {/* Rating and Order */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase mb-2">
                 Rating
@@ -338,7 +338,7 @@ export default function TestimonialsPage() {
           </div>
 
           {/* Status Toggles */}
-          <div className="border-t border-white/5 pt-4 flex items-center gap-6">
+          <div className="border-t border-white/5 pt-4 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
               <span className="text-sm text-gray-300">Featured Testimonial</span>
@@ -350,7 +350,7 @@ export default function TestimonialsPage() {
           </div>
 
           {/* Form Actions */}
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 pt-4">
             <button 
               type="submit" 
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
@@ -376,7 +376,7 @@ export default function TestimonialsPage() {
       </div>
 
       {/* Testimonials Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {testimonials.map((testimonial, index) => (
           <div 
             key={testimonial._id} 
@@ -436,7 +436,7 @@ export default function TestimonialsPage() {
               </div>
             )}
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {/* Quote Icon */}
               <div className="text-primary text-4xl mb-2">"</div>
               

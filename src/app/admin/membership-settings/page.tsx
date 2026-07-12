@@ -128,9 +128,9 @@ export default function MembershipSettingsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">Membership Settings</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-white">Membership Settings</h1>
           <p className="text-gray-500 text-sm mt-1">
             Configure registration and membership parameters
           </p>
@@ -145,7 +145,7 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Registration Toggle */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-black text-white">Registration Status</h2>
@@ -176,9 +176,9 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Registration Fee & Limits */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Fee & Limits</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
               Registration Fee (BDT)
@@ -219,7 +219,7 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Payment Methods */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Payment Methods</h2>
 
         {/* Existing methods */}
@@ -264,7 +264,7 @@ export default function MembershipSettingsPage() {
         </div>
 
         {/* Add new method */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             value={newMethodName}
@@ -289,7 +289,7 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Registration Instructions */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Registration Instructions</h2>
         <p className="text-xs text-gray-500 mb-3">
           These instructions will be displayed to users on the registration page.

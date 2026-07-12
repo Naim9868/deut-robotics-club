@@ -364,10 +364,10 @@ export default function BlogFormPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-20">
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto space-y-8 pb-20 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2">
             {isNew ? 'Create New Post' : 'Edit Post'}
           </h1>
           <p className="text-gray-500 text-sm uppercase tracking-wider">
@@ -380,7 +380,7 @@ export default function BlogFormPage() {
             href={`/blog/${watch('slug')}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center gap-2"
+            className="px-4 py-2 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center justify-center gap-2"
           >
             <span>🔍</span> Preview
           </a>
@@ -389,7 +389,7 @@ export default function BlogFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* Basic Information */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>📝</span> Basic Information
           </h2>
@@ -398,7 +398,7 @@ export default function BlogFormPage() {
             <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
               Title <span className="text-red-500">*</span>
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 {...register('title', { required: 'Title is required' })}
                 className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
@@ -408,7 +408,7 @@ export default function BlogFormPage() {
               <button
                 type="button"
                 onClick={generateSlug}
-                className="px-4 py-3 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm"
+                className="px-4 py-3 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm whitespace-nowrap"
               >
                 Generate Slug
               </button>
@@ -432,7 +432,7 @@ export default function BlogFormPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
                 Category <span className="text-red-500">*</span>
@@ -465,12 +465,12 @@ export default function BlogFormPage() {
         </div>
 
         {/* Author Information - NO 404 ERRORS */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>👤</span> Author Information
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
                 Author Name <span className="text-red-500">*</span>
@@ -504,7 +504,7 @@ export default function BlogFormPage() {
 
           {/* Author Image Section - NO 404s */}
           <div className="pt-4 border-t border-white/5">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
               <label className="text-xs font-black text-gray-400 uppercase tracking-wider">
                 Author Image
               </label>
@@ -557,7 +557,7 @@ export default function BlogFormPage() {
                   (e.target as HTMLImageElement).src = getAvatarUrl(watch('author') || 'User');
                 }}
               />
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-400">Current author image</p>
                 <p className="text-xs text-gray-600 truncate">
                   {currentAuthorImageUrl.includes('ui-avatars.com') ? 'Auto-generated avatar' : 'Custom image'}
@@ -568,12 +568,12 @@ export default function BlogFormPage() {
         </div>
 
         {/* Featured Image */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>🖼️</span> Featured Image
           </h2>
 
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
             <label className="text-xs font-black text-gray-400 uppercase tracking-wider">
               Image Source
             </label>
@@ -651,7 +651,7 @@ export default function BlogFormPage() {
         </div>
 
         {/* Content */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>📄</span> Content
           </h2>
@@ -688,7 +688,7 @@ export default function BlogFormPage() {
             <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
               Tags
             </label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
@@ -699,7 +699,7 @@ export default function BlogFormPage() {
               <button
                 type="button"
                 onClick={addTag}
-                className="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-bold hover:bg-primary/20 transition-all"
+                className="px-4 py-2 bg-primary/10 text-primary rounded-lg text-sm font-bold hover:bg-primary/20 transition-all whitespace-nowrap"
               >
                 Add Tag
               </button>
@@ -725,12 +725,12 @@ export default function BlogFormPage() {
         </div>
 
         {/* SEO & Metadata */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>🔍</span> SEO & Metadata
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
                 Meta Title
@@ -777,12 +777,12 @@ export default function BlogFormPage() {
         </div>
 
         {/* Dates */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>📅</span> Dates
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
                 Publish Date
@@ -808,12 +808,12 @@ export default function BlogFormPage() {
         </div>
 
         {/* Status */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>⚙️</span> Status
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -850,7 +850,7 @@ export default function BlogFormPage() {
         </div>
 
         {/* Form Actions */}
-        <div className="flex items-center justify-end space-x-4 sticky bottom-8 bg-dark/80 backdrop-blur-lg p-4 rounded-2xl border border-white/5">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 sticky bottom-8 bg-dark/80 backdrop-blur-lg p-4 rounded-2xl border border-white/5">
           <button
             type="button"
             onClick={() => router.push('/admin/blog')}

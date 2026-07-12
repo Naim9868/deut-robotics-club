@@ -238,9 +238,9 @@ const handleImageRemove = async () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-black text-white">About Section</h1>
+    <div className="max-w-4xl mx-auto space-y-8 p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">About Section</h1>
         {existingId && (
           <button
             onClick={handleDelete}
@@ -253,7 +253,7 @@ const handleImageRemove = async () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           {/* Title */}
           <div>
             <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
@@ -318,7 +318,7 @@ const handleImageRemove = async () => {
           </div>
 
           {/* Button Settings */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Button Text
@@ -355,7 +355,7 @@ const handleImageRemove = async () => {
         </div>
 
         {/* Form Actions */}
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
           <button 
             type="button" 
             onClick={() => router.push('/admin')} 
@@ -375,7 +375,7 @@ const handleImageRemove = async () => {
 
       {/* Preview Section */}
       {!loading && watch('title') && (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 mt-8">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 mt-8">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
             <span>🔍</span> Live Preview
           </h2>

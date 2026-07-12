@@ -169,12 +169,12 @@ export default function TechStackPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Tech Stack</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Tech Stack</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Category</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input {...register('category')} placeholder="Category (e.g., Programming)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input type="number" {...register('order')} placeholder="Order" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
           </div>
@@ -182,7 +182,7 @@ export default function TechStackPage() {
           <div>
             <label className="block text-sm text-gray-400 mb-2">Tech Items</label>
             {fields.map((field, index) => (
-              <div key={field.id} className="grid grid-cols-1 md:grid-cols-6 gap-2 mb-4">
+              <div key={field.id} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 mb-4">
                 <input {...register(`items.${index}.name`)} placeholder="Name" className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" required />
                 <input {...register(`items.${index}.use`)} placeholder="Use" className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" required />
                 
@@ -247,7 +247,7 @@ export default function TechStackPage() {
           {showIconPicker && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
               <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
-                <div className="p-6 border-b border-white/10 flex justify-between items-center">
+                <div className="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center">
                   <h3 className="text-xl font-bold text-white">Select Icon</h3>
                   <button
                     type="button"
@@ -261,7 +261,7 @@ export default function TechStackPage() {
                   </button>
                 </div>
                 
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   {/* Category tabs */}
                   <div className="flex flex-wrap gap-2 mb-6 max-h-24 overflow-y-auto">
                     {Object.keys(iconCategories).map((category) => (
@@ -281,7 +281,7 @@ export default function TechStackPage() {
                   </div>
                   
                   {/* Icon grid */}
-                  <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 max-h-96 overflow-y-auto p-2">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 max-h-96 overflow-y-auto p-2">
                     {iconCategories[selectedCategory as keyof typeof iconCategories].map((icon, idx) => (
                       <button
                         key={idx}
@@ -323,7 +323,7 @@ export default function TechStackPage() {
             </label>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
               {editingId ? 'Update' : 'Create'}
             </button>
@@ -345,8 +345,8 @@ export default function TechStackPage() {
 
       <div className="space-y-4">
         {stacks.map((stack) => (
-          <div key={stack._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-colors">
-            <div className="flex items-center justify-between mb-4">
+          <div key={stack._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6 hover:border-primary/30 transition-colors">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
               <div>
                 <h3 className="text-xl font-bold text-primary">{stack.category}</h3>
                 <div className="flex items-center gap-2 mt-1">

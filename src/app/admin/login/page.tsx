@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-dark flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-4 sm:mb-6 lg:mb-8">
           <div className="inline-block">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
@@ -58,8 +58,8 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Login Form */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 shadow-2xl">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div>
               <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
                 Email Address
@@ -130,7 +130,7 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[8px] text-gray-700 uppercase tracking-wider mt-8">
+        <p className="text-center text-[8px] text-gray-700 uppercase tracking-wider mt-4 sm:mt-6 lg:mt-8">
           © 2026 DUET Robotics Club. Authorized personnel only.
         </p>
       </div>

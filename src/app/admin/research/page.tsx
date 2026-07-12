@@ -140,12 +140,12 @@ export default function ResearchPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Research Frontiers</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Research Frontiers</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Research</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input {...register('title')} placeholder="Title" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input {...register('technology')} placeholder="Technology (e.g., LIDAR/ROS)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input {...register('icon')} placeholder="Icon" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
@@ -203,7 +203,7 @@ export default function ResearchPage() {
             </label>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
             {editingId && (
               <button 
@@ -234,7 +234,7 @@ export default function ResearchPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {research.map((item) => (
-          <div key={item._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 group relative">
+          <div key={item._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6 group relative">
             <div className="absolute top-4 right-4 text-6xl text-white/5">{item.icon || '🔬'}</div>
             <div className="flex justify-between items-start">
               <div>

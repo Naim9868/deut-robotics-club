@@ -97,12 +97,12 @@ export default function NavbarPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Navbar</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Navbar</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6">
           <h2 className="text-xl font-bold text-white">Logo Settings</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <input {...register('logo.text')} placeholder="Logo Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             <input {...register('logo.icon')} placeholder="Icon Letter" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             <input {...register('logo.iconBgColor')} type="color" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white h-12" />
@@ -129,7 +129,7 @@ export default function NavbarPage() {
 
           <div className="border-t border-white/5 pt-6">
             <h2 className="text-xl font-bold text-white mb-4">CTA Button</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <input {...register('ctaButton.text')} placeholder="Button Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
               <input {...register('ctaButton.link')} placeholder="Button Link" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             </div>
@@ -139,7 +139,7 @@ export default function NavbarPage() {
             </label>
           </div>
 
-          <div className="flex items-center gap-6 pt-4 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-4 border-t border-white/5">
             <label className="flex items-center gap-2">
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
               <span className="text-sm text-gray-300">Active</span>
@@ -147,7 +147,7 @@ export default function NavbarPage() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="flex flex-col sm:flex-row sm:justify-end gap-3 sm:gap-4">
           <button type="button" onClick={() => router.push('/admin')} className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg">Cancel</button>
           <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg">Save Navbar</button>
         </div>
@@ -155,7 +155,7 @@ export default function NavbarPage() {
 
       {/* Preview */}
       {navbar && (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
           <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">🔍 Preview</h2>
           <div className="bg-dark/95 border border-white/5 rounded-lg p-4">
             <div className="flex items-center justify-between">

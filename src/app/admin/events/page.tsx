@@ -220,13 +220,13 @@ export default function EventsPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-black text-white">Events</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">Events</h1>
         <p className="text-gray-500 text-sm">{events.length} events</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">
           {editingId ? 'Edit Event' : 'Add New Event'}
         </h2>
@@ -426,7 +426,7 @@ export default function EventsPage() {
           </div>
 
           {/* Form Actions */}
-          <div className="flex gap-2 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
             <button 
               type="submit" 
               className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"

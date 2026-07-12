@@ -87,12 +87,12 @@ export default function FAQPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">FAQ</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white">FAQ</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} FAQ</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input {...register('question')} placeholder="Question" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input {...register('category')} placeholder="Category" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
           </div>
@@ -106,7 +106,7 @@ export default function FAQPage() {
             </label>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
             {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg">Cancel</button>}
           </div>
@@ -116,7 +116,7 @@ export default function FAQPage() {
       <div className="space-y-4">
         {faqs.map((faq, idx) => (
           <div key={faq._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden">
-            <div className="flex items-center justify-between p-6">
+            <div className="flex items-center justify-between p-4 sm:p-6">
               <button onClick={() => setOpenIndex(openIndex === idx ? null : idx)} className="flex-1 text-left">
                 <h3 className="text-white font-bold">{faq.question}</h3>
                 <p className="text-primary text-xs mt-1">{faq.category}</p>
@@ -127,7 +127,7 @@ export default function FAQPage() {
               </div>
             </div>
             {openIndex === idx && (
-              <div className="px-6 pb-6 pt-2 border-t border-white/5">
+              <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-white/5">
                 <p className="text-gray-400">{faq.answer}</p>
               </div>
             )}

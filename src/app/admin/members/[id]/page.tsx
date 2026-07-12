@@ -124,7 +124,7 @@ export default function MemberDetailPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <button
             onClick={() => router.push('/admin/members')}
@@ -133,7 +133,7 @@ export default function MemberDetailPage({
             ← Back to Members
           </button>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-white">{member.membershipId}</h1>
+            <h1 className="text-2xl sm:text-3xl font-black text-white">{member.membershipId}</h1>
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${STATUS_STYLES[member.membershipStatus]}`}>
               {member.membershipStatus}
             </span>
@@ -142,7 +142,7 @@ export default function MemberDetailPage({
             {member.personal.fullName} · Joined {formatDate(member.joinedAt)}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {!editing ? (
             <button
               onClick={() => {
@@ -174,9 +174,9 @@ export default function MemberDetailPage({
       </div>
 
       {/* Membership Info */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Membership Details</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div>
             <label className="text-xs text-gray-500 uppercase">Membership ID</label>
             <p className="text-primary text-sm mt-1 font-mono font-bold">{member.membershipId}</p>
@@ -215,9 +215,9 @@ export default function MemberDetailPage({
       </div>
 
       {/* Personal Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Personal Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-gray-500 uppercase">Full Name</label>
             <p className="text-white text-sm mt-1">{member.personal.fullName}</p>
@@ -244,9 +244,9 @@ export default function MemberDetailPage({
       </div>
 
       {/* University Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">University Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-gray-500 uppercase">Student ID</label>
             <p className="text-white text-sm mt-1 font-mono">{member.university.studentId}</p>
@@ -271,9 +271,9 @@ export default function MemberDetailPage({
       </div>
 
       {/* Contact Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Contact Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-gray-500 uppercase">Email</label>
             <p className="text-white text-sm mt-1">{member.contact.email}</p>
@@ -298,7 +298,7 @@ export default function MemberDetailPage({
       </div>
 
       {/* Additional Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 sm:p-6">
         <h2 className="text-lg font-black text-white mb-4">Skills & Interests</h2>
         <div className="space-y-4">
           {member.additional.skills.length > 0 && (
