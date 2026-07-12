@@ -1,4 +1,5 @@
 import React from 'react';
+import ContactForm from './ContactForm';
 
 const Footer: React.FC = () => {
   return (
@@ -61,29 +62,7 @@ const Footer: React.FC = () => {
             <h4 className="text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 sm:mb-6 md:mb-8 text-center md:text-left">
               Send Message
             </h4>
-            <form className="space-y-3 sm:space-y-4">
-              <input 
-                type="text" 
-                placeholder="Name" 
-                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
-              />
-              <input 
-                type="email" 
-                placeholder="Email" 
-                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
-              />
-              <textarea 
-                rows={3} 
-                placeholder="Message" 
-                className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600 resize-none"
-              />
-              <button 
-                type="button" 
-                className="w-full py-3 sm:py-4 bg-primary text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded hover:bg-white hover:text-dark transition-all active:scale-95"
-              >
-                Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
 

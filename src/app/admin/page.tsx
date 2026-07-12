@@ -30,12 +30,15 @@ export default function AdminDashboard() {
     { name: 'FAQ', icon: '❓', href: '/admin/faq', color: 'from-orange-500 to-red-500' },
   ];
 
+  const [contactStats, setContactStats] = useState<{ total: number; unread: number; today: number; thisWeek: number } | null>(null);
+
   useEffect(() => {
     fetchStats();
   }, []);
 
   const fetchStats = async () => {
     try {
+      // Fetch section stats
       const promises = sections.map(async (section) => {
         try {
           const res = await fetch(`/api/${section.name.toLowerCase().replace(' ', '-')}`);
@@ -56,12 +59,22 @@ export default function AdminDashboard() {
       });
 
       const results = await Promise.all(promises);
-      // Filter out null values and merge
       const statsData = results
         .filter(result => result !== null)
         .reduce((acc, curr) => ({ ...acc, ...curr }), {});
       
-      setStats(statsData); // Now statsData is never null
+      setStats(statsData);
+
+      // Fetch contact message stats
+      try {
+        const res = await fetch('/api/admin/contact?action=stats');
+        if (res.ok) {
+          const data = await res.json();
+          setContactStats(data);
+        }
+      } catch {
+        // Non-critical
+      }
     } catch (error) {
       toast.error('Failed to fetch stats');
     } finally {
@@ -113,6 +126,60 @@ export default function AdminDashboard() {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* Contact Messages Stats Card */}
+      <div className="mt-2">
+        <h2 className="text-sm font-black text-gray-500 uppercase tracking-wider mb-4">Communication</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Link
+            href="/admin/contact-messages"
+            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-primary/50 transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative z-10">
+              <span className="text-2xl">✉️</span>
+              <p className="text-2xl font-black text-white mt-2">{contactStats?.total ?? '—'}</p>
+              <p className="text-xs text-gray-500">Total Messages</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/contact-messages?status=unread"
+            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-blue-500/50 transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative z-10">
+              <span className="text-2xl">📬</span>
+              <p className="text-2xl font-black text-blue-400 mt-2">{contactStats?.unread ?? '—'}</p>
+              <p className="text-xs text-gray-500">Unread</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/contact-messages"
+            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-green-500/50 transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative z-10">
+              <span className="text-2xl">📅</span>
+              <p className="text-2xl font-black text-green-400 mt-2">{contactStats?.today ?? '—'}</p>
+              <p className="text-xs text-gray-500">Today</p>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/contact-messages"
+            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-purple-500/50 transition-all"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative z-10">
+              <span className="text-2xl">📊</span>
+              <p className="text-2xl font-black text-purple-400 mt-2">{contactStats?.thisWeek ?? '—'}</p>
+              <p className="text-xs text-gray-500">This Week</p>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );
