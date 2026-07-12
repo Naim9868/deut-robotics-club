@@ -8,6 +8,7 @@ const publicPaths = [
   '/api/auth/login',
   '/api/auth/verify',
   '/api/section-visibility',
+  '/api/registration',
   '/_next/static',
   '/_next/image',
   '/favicon.ico'

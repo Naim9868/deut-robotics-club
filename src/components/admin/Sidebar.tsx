@@ -27,6 +27,13 @@ const menuItems = [
   { name: 'Navbar', href: '/admin/navbar', icon: '🧭' },
 ];
 
+const memberItems = [
+  { name: 'Registration Apps', href: '/admin/registration', icon: '📋' },
+  { name: 'Members', href: '/admin/members', icon: '👥' },
+  { name: 'Payment Verification', href: '/admin/payments', icon: '💳' },
+  { name: 'Membership Settings', href: '/admin/membership-settings', icon: '⚙️' },
+];
+
 const communicationItems = [
   { name: 'Contact Messages', href: '/admin/contact-messages', icon: '✉️' },
 ];
@@ -109,6 +116,27 @@ export default function Sidebar() {
             <span className="font-medium">{item.name}</span>
           </Link>
         ))}
+
+        {/* Member Management Section */}
+        <div className="mt-4 pt-4 border-t border-white/5">
+          <p className="px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
+            Member Management
+          </p>
+          {memberItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center space-x-3 px-4 py-2 rounded-lg mb-1 text-sm transition-all ${
+                pathname === item.href
+                  ? 'bg-primary text-white'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span className="font-medium">{item.name}</span>
+            </Link>
+          ))}
+        </div>
 
         {/* Communication Section */}
         <div className="mt-4 pt-4 border-t border-white/5">

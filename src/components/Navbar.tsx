@@ -186,18 +186,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="/register"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (pathname === '/') {
-                    const element = document.getElementById('contact');
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                      window.history.pushState(null, '', '#contact');
-                    }
-                  } else {
-                    router.push('/#contact');
-                  }
+                  router.push('/register');
                 }}
                 className="px-6 py-2.5 bg-primary text-white text-sm font-black uppercase tracking-widest rounded-sm hover:shadow-[0_0_25px_rgba(230,57,70,0.5)] transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
               >
@@ -233,19 +225,11 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           </a>
         ))}
         <a
-          href="#contact"
+          href="/register"
           onClick={(e) => {
             e.preventDefault();
             setIsMobileMenuOpen(false);
-            if (pathname === '/') {
-              const element = document.getElementById('contact');
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-                window.history.pushState(null, '', '#contact');
-              }
-            } else {
-              router.push('/#contact');
-            }
+            router.push('/register');
           }}
           className="block py-4 text-sm font-black uppercase tracking-widest text-primary border-t border-white/5 mt-4 pt-4"
         >
