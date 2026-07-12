@@ -3,7 +3,8 @@
 :root {
   --background: #050505; /* Changed to match DRC dark theme */
   --foreground: #f1faee; /* Changed to match DRC accent color */
-  --primary: #e63946;
+  /* --primary: #e63946; */
+  --primary: #fa7137; /* Changed to match DRC primary color */
   --secondary: #1d3557;
   --card: #0a0a0a;
 }

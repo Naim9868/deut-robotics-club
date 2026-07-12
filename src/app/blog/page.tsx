@@ -95,6 +95,13 @@ const Blog: React.FC = () => {
     <div id="blog" className="py-32 min-h-screen bg-[#050505] overflow-hidden">
          <Navbar activeSection={activeSection} />
       <div className="container mx-auto px-4">
+        <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 text-primary text-sm mb-8 hover:underline group"
+            >
+              <span className="group-hover:-translate-x-1 transition-transform">←</span> 
+              Back to Home
+            </Link>
         <ScrollReveal animation="up">
           <div className="mb-20">
             <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 section-title">Latest Blog</h2>
@@ -143,7 +150,7 @@ const Blog: React.FC = () => {
                   </p>
                  <Link 
                     href={`/blog/${post.slug}`}
-                    target="_blank" 
+                    // target="_blank" 
                     className="inline-flex items-center text-primary text-[10px] font-black uppercase tracking-[0.2em] group/link"
                     >
                     Read Full Post 

@@ -24,13 +24,13 @@ const FocusAreas: React.FC = () => {
           throw new Error('Failed to fetch focus areas data');
         }
         const data = await response.json();
-        
-        const activeAreas = Array.isArray(data) 
+
+        const activeAreas = Array.isArray(data)
           ? data
-              .filter((item: FocusAreaData) => item.isActive)
-              .sort((a, b) => a.order - b.order)
+            .filter((item: FocusAreaData) => item.isActive)
+            .sort((a, b) => a.order - b.order)
           : [];
-        
+
         setFocusAreas(activeAreas);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
@@ -117,16 +117,25 @@ const FocusAreas: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         {displayAreas.map((area, index) => (
           <ScrollReveal key={area._id || index} animation="up" delay={index * 100}>
-            <div 
+            <div
               className="group shadow-amber-50 p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/5 rounded-xl hover:border-primary/70 transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[2px_2px_10px_rgba(230,57,73,0.15)] sm:hover:shadow-[4px_4px_15px_rgba(230,57,70,0.2)] h-full flex flex-col"
             >
-              <div 
+              <div
                 className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110 group-hover:rotate-6"
                 style={{ color: area.color }}
               >
-                {area.icon}
+                <span className="w-10 h-10 bg-white rounded flex items-center justify-center text-sm italic flex-shrink-0">
+                  {/* Use standard img to avoid Next.js Image type issues in this component */}
+                  <img
+                    src={area.icon}
+                    alt={area.title}
+                    width={60}
+                    height={40}
+                    className="object-contain"
+                  />
+                </span>
               </div>
-              <h3 
+              <h3
                 className="text-xs sm:text-sm md:text-base lg:text-xl font-bold uppercase mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 text-white group-hover:text-primary transition-colors line-clamp-2"
                 style={{ color: area.color ? undefined : undefined }}
               >
@@ -139,7 +148,7 @@ const FocusAreas: React.FC = () => {
           </ScrollReveal>
         ))}
       </div>
-      
+
       {displayAreas.length === 0 && (
         <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
           No focus areas available.

@@ -121,7 +121,7 @@ export default function BlogPostPage() {
         <Navbar activeSection={activeSection} />
         <div className="min-h-screen bg-dark pt-32 text-center">
           <h1 className="text-4xl text-white mb-4">Post not found</h1>
-          <Link href="/#blog" className="text-primary hover:underline">
+          <Link href="/blog" className="text-primary hover:underline">
             ← Back to Blog
           </Link>
         </div>
@@ -141,7 +141,7 @@ export default function BlogPostPage() {
           {/* Header */}
           <div className="mb-12">
             <Link 
-              href="/#blog" 
+              href="/blog" 
               className="inline-flex items-center gap-2 text-primary text-sm mb-8 hover:underline group"
             >
               <span className="group-hover:-translate-x-1 transition-transform">←</span> 

@@ -205,7 +205,7 @@ const Projects: React.FC = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black uppercase tracking-tighter text-white flex items-center flex-wrap">
                 ACTIVE
                 <span className="mx-2 sm:mx-3 md:mx-4 w-3 h-6 sm:w-4 sm:h-8 md:w-6 md:h-12 bg-primary inline-block"></span>
-                <span className="text-primary">PROTOTYPES</span>
+                <span className="text-primary">PROJECTS</span>
               </h2>
             </div>
 

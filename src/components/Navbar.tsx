@@ -17,7 +17,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const navLinks = [
     { name: 'Home', href: '/', id: 'home', isPage: true },
     { name: 'About', href: '#about', id: 'about', isPage: false },
-    { name: 'Tech', href: '#tech', id: 'tech', isPage: false },
     { name: 'Blog', href: '/blog', id: 'blog', isPage: true },
     { name: 'Projects', href: '#projects', id: 'projects', isPage: false },
     { name: 'Gallery', href: '/gallery', id: 'gallery', isPage: true },
