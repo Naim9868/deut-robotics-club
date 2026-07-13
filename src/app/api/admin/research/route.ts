@@ -3,12 +3,12 @@ import connectDB from '@/lib/mongodb';
 import * as researchController from '@/lib/controllers/research.controller';
 
 /**
- * GET /api/research — List research (public)
- * POST /api/research — Create research (legacy, redirects to admin)
+ * GET /api/admin/research — List all research (admin)
+ * POST /api/admin/research — Create research (admin)
  */
 export async function GET(req: NextRequest) {
   await connectDB();
-  return researchController.handleGetResearch(req);
+  return researchController.handleGetAllResearchAdmin(req);
 }
 
 export async function POST(req: NextRequest) {
