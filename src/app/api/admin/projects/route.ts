@@ -3,8 +3,8 @@ import connectDB from '@/lib/mongodb';
 import * as projectController from '@/lib/controllers/project.controller';
 
 /**
- * GET /api/projects — List all projects (public)
- * POST /api/projects — Create a project (admin)
+ * GET /api/admin/projects — List all projects (admin)
+ * POST /api/admin/projects — Create a project (admin)
  */
 export async function GET(req: NextRequest) {
   await connectDB();

@@ -15,6 +15,7 @@ import type {
   RegistrationStatus,
 } from '@/lib/types/membership';
 import { sanitizeString } from '@/lib/utils/sanitize';
+import { sendPaymentVerifiedEmail, sendPaymentRejectedEmail } from '@/lib/utils/email';
 
 // ─── Create ────────────────────────────────────────────────────
 
@@ -234,69 +235,64 @@ export async function addAdminNote(
 // ─── Payment Verification ──────────────────────────────────────
 
 /**
- * Verify a payment record.
+ * Get registration applications with payment info for verification.
+ * Shows applications that are submitted or pending_verification.
  */
-export async function verifyPayment(
-  paymentId: string,
-  verifiedBy: string
-): Promise<boolean> {
-  const result = await Payment.findOneAndUpdate(
-    { _id: paymentId, isDeleted: false },
-    {
-      $set: {
-        verificationStatus: 'verified',
-        verifiedBy,
-        verifiedAt: new Date(),
-      },
-    }
-  );
-  return !!result;
-}
-
-/**
- * Reject a payment record.
- */
-export async function rejectPayment(
-  paymentId: string,
-  rejectedBy: string,
-  reason: string
-): Promise<boolean> {
-  const result = await Payment.findOneAndUpdate(
-    { _id: paymentId, isDeleted: false },
-    {
-      $set: {
-        verificationStatus: 'rejected',
-        verifiedBy: rejectedBy,
-        verifiedAt: new Date(),
-        rejectionReason: sanitizeString(reason),
-      },
-    }
-  );
-  return !!result;
-}
-
-/**
- * Get all pending payments with application details.
- */
-export async function getPendingPayments(
+export async function getPayments(
   page = 1,
-  limit = 20
+  limit = 20,
+  status?: string
 ): Promise<{
   payments: unknown[];
   pagination: { total: number; page: number; limit: number; totalPages: number };
 }> {
-  const filter = { isDeleted: false, verificationStatus: 'pending' as const };
+  const filter: Record<string, unknown> = { isDeleted: false };
+
+  if (status && ['pending', 'verified', 'rejected'].includes(status)) {
+    // Map payment verification statuses to registration statuses
+    if (status === 'pending') {
+      filter.status = { $in: ['submitted', 'pending_payment', 'pending_verification'] };
+    } else if (status === 'verified') {
+      filter.status = 'approved';
+    } else if (status === 'rejected') {
+      filter.status = 'rejected';
+    }
+  } else {
+    // No filter — show all non-deleted applications that have payment info
+    filter.status = { $nin: ['draft'] };
+  }
+
   const skip = (page - 1) * limit;
 
-  const [payments, total] = await Promise.all([
-    Payment.find(filter)
-      .populate('registrationApplication')
+  const [applications, total] = await Promise.all([
+    RegistrationApplication.find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean(),
-    Payment.countDocuments(filter),
+    RegistrationApplication.countDocuments(filter),
   ]);
+
+  // Shape the data to match the payment verification UI
+  const payments = applications.map((app: Record<string, unknown>) => {
+    const payment = (app.payment as Record<string, unknown>) || {};
+    const personal = (app.personal as Record<string, unknown>) || {};
+    const contact = (app.contact as Record<string, unknown>) || {};
+    return {
+      _id: app._id,
+      applicationId: app.applicationId,
+      name: personal.fullName,
+      email: contact.email,
+      phone: contact.phone,
+      senderNumber: payment.senderNumber,
+      method: payment.method,
+      transactionId: payment.transactionId,
+      amount: payment.amount,
+      screenshot: payment.screenshot,
+      status: app.status,
+      createdAt: app.createdAt,
+    };
+  });
 
   return {
     payments,
@@ -307,6 +303,138 @@ export async function getPendingPayments(
       totalPages: Math.ceil(total / limit),
     },
   };
+}
+
+/**
+ * Verify a registration application's payment and send confirmation email.
+ */
+export async function verifyPayment(
+  applicationId: string,
+  verifiedBy: string
+): Promise<boolean> {
+  const application = await RegistrationApplication.findOne({
+    _id: applicationId,
+    isDeleted: false,
+  });
+
+  if (!application) return false;
+
+  // Update status to approved
+  application.status = 'approved';
+  application.reviewedBy = verifiedBy;
+  application.reviewedAt = new Date();
+
+  // Create Member record
+  const Member = (await import('@/lib/models/Member')).default;
+  const settings = await membershipSettingsService.getSettings();
+
+  const member = await Member.create({
+    registrationApplication: application._id,
+    personal: application.personal,
+    university: application.university,
+    contact: application.contact,
+    additional: application.additional,
+    membershipStatus: 'active',
+    membershipType: 'regular',
+    joinedAt: new Date(),
+    expiresAt: new Date(
+      Date.now() + settings.membershipDurationMonths * 30 * 24 * 60 * 60 * 1000
+    ),
+  });
+
+  application.membershipId = (member.toObject() as { membershipId: string }).membershipId;
+
+  // Create Payment record
+  await Payment.create({
+    registrationApplication: application._id,
+    method: application.payment.method,
+    transactionId: application.payment.transactionId,
+    senderNumber: application.payment.senderNumber,
+    amount: application.payment.amount,
+    screenshot: application.payment.screenshot,
+    verificationStatus: 'verified',
+    verifiedBy,
+    verifiedAt: new Date(),
+  });
+
+  await application.save();
+
+  // Send verification email
+  const appObj = application.toObject() as Record<string, unknown>;
+  const contactInfo = appObj.contact as { email?: string } | undefined;
+  const personalInfo = appObj.personal as { fullName?: string } | undefined;
+  if (contactInfo?.email) {
+    await sendPaymentVerifiedEmail({
+      to: contactInfo.email,
+      name: personalInfo?.fullName || 'Member',
+      transactionId: application.payment.transactionId,
+      amount: application.payment.amount,
+      method: application.payment.method,
+      membershipId: application.membershipId || undefined,
+    });
+  }
+
+  return true;
+}
+
+/**
+ * Reject a registration application's payment and send rejection email.
+ */
+export async function rejectPayment(
+  applicationId: string,
+  rejectedBy: string,
+  reason: string
+): Promise<boolean> {
+  const application = await RegistrationApplication.findOne({
+    _id: applicationId,
+    isDeleted: false,
+  });
+
+  if (!application) return false;
+
+  application.status = 'rejected';
+  application.reviewedBy = rejectedBy;
+  application.reviewedAt = new Date();
+
+  // Add rejection note
+  application.adminNotes.push({
+    note: `Payment rejected: ${reason}`,
+    addedBy: rejectedBy,
+    addedAt: new Date(),
+  });
+
+  // Create rejected Payment record
+  await Payment.create({
+    registrationApplication: application._id,
+    method: application.payment.method,
+    transactionId: application.payment.transactionId,
+    senderNumber: application.payment.senderNumber,
+    amount: application.payment.amount,
+    screenshot: application.payment.screenshot,
+    verificationStatus: 'rejected',
+    verifiedBy: rejectedBy,
+    verifiedAt: new Date(),
+    rejectionReason: sanitizeString(reason),
+  });
+
+  await application.save();
+
+  // Send rejection email
+  const appObj = application.toObject() as Record<string, unknown>;
+  const contactInfo = appObj.contact as { email?: string } | undefined;
+  const personalInfo = appObj.personal as { fullName?: string } | undefined;
+  if (contactInfo?.email) {
+    await sendPaymentRejectedEmail({
+      to: contactInfo.email,
+      name: personalInfo?.fullName || 'Member',
+      transactionId: application.payment.transactionId,
+      amount: application.payment.amount,
+      method: application.payment.method,
+      reason,
+    });
+  }
+
+  return true;
 }
 
 // ─── Delete (Soft) ─────────────────────────────────────────────

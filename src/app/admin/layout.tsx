@@ -66,7 +66,7 @@ function AdminContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-dark text-white">
+    <div className="min-h-screen pt-10 bg-dark text-white">
       <Sidebar />
       
       {/* Mobile top bar */}

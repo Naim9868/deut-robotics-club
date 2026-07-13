@@ -363,20 +363,21 @@ export async function handleGetStats() {
 }
 
 /**
- * Get pending payments for verification.
+ * Get payments for verification (all or filtered by status).
  */
-export async function handleGetPendingPayments(req: NextRequest) {
+export async function handleGetPayments(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const status = searchParams.get('status') || undefined;
 
-    const result = await registrationService.getPendingPayments(page, limit);
+    const result = await registrationService.getPayments(page, limit, status);
     return NextResponse.json(result);
   } catch (error) {
-    console.error('[Registration] PendingPayments error:', error);
+    console.error('[Registration] Payments error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch pending payments' },
+      { error: 'Failed to fetch payments' },
       { status: 500 }
     );
   }

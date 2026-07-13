@@ -1,34 +1,34 @@
 import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import { handleGetPendingPayments } from '@/lib/controllers/registration.controller';
+import { handleGetPayments } from '@/lib/controllers/registration.controller';
 import * as registrationService from '@/lib/services/registration.service';
 
 /**
- * GET /api/admin/payments — List pending payments (admin)
- * PATCH /api/admin/payments — Verify or reject a payment (admin)
+ * GET /api/admin/payments — List registration applications for payment verification
+ * PATCH /api/admin/payments — Verify or reject a registration application's payment
  */
 export async function GET(req: NextRequest) {
   await connectDB();
-  return handleGetPendingPayments(req);
+  return handleGetPayments(req);
 }
 
 export async function PATCH(req: NextRequest) {
   await connectDB();
   try {
     const body = await req.json();
-    const { paymentId, action, reason } = body;
+    const { applicationId, action, reason } = body;
 
-    if (!paymentId || !action) {
+    if (!applicationId || !action) {
       return Response.json(
-        { error: 'paymentId and action are required' },
+        { error: 'applicationId and action are required' },
         { status: 400 }
       );
     }
 
     if (action === 'verify') {
-      const success = await registrationService.verifyPayment(paymentId, 'Admin');
+      const success = await registrationService.verifyPayment(applicationId, 'Admin');
       if (!success) {
-        return Response.json({ error: 'Payment not found' }, { status: 404 });
+        return Response.json({ error: 'Application not found' }, { status: 404 });
       }
       return Response.json({ message: 'Payment verified successfully' });
     }
@@ -40,9 +40,9 @@ export async function PATCH(req: NextRequest) {
           { status: 400 }
         );
       }
-      const success = await registrationService.rejectPayment(paymentId, 'Admin', reason);
+      const success = await registrationService.rejectPayment(applicationId, 'Admin', reason);
       if (!success) {
-        return Response.json({ error: 'Payment not found' }, { status: 404 });
+        return Response.json({ error: 'Application not found' }, { status: 404 });
       }
       return Response.json({ message: 'Payment rejected' });
     }

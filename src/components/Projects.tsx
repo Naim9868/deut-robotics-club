@@ -4,6 +4,7 @@ import ScrollReveal from './ScrollReveal';
 interface ProjectData {
   _id: string;
   id: string;
+  slug?: string;
   title: string;
   tag: string;
   category: string;
@@ -232,6 +233,7 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
           {filteredProjects.map((p, idx) => (
             <ScrollReveal key={p.id} animation="scale" delay={idx * 100}>
+              <a href={`/projects/${p.slug || p.id}`} className="block">
               <div className="group relative border border-white/5 bg-black overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
                 {/* Background Image */}
                 <img 
@@ -331,6 +333,7 @@ const Projects: React.FC = () => {
                   )}
                 </div>
               </div>
+              </a>
             </ScrollReveal>
           ))}
         </div>
