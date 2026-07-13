@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const adminCount = await Admin.countDocuments();
     if (adminCount === 0) {
       const defaultEmail = process.env.ADMIN_EMAIL || 'admin@drc.duet.ac.bd';
-      const defaultPassword = process.env.ADMIN_PASSWORD || 'ChangeThisPassword123';
+      const defaultPassword = process.env.ADMIN_PASSWORD || 'drcadmin-2026';
       
       const hashedPassword = await hashPassword(defaultPassword);
       await Admin.create({

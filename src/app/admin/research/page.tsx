@@ -145,7 +145,7 @@ export default function ResearchPage() {
       <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
         <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Research</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input {...register('title')} placeholder="Title" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input {...register('technology')} placeholder="Technology (e.g., LIDAR/ROS)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input {...register('icon')} placeholder="Icon" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />

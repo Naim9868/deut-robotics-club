@@ -354,7 +354,7 @@ export default function HeroPage() {
           </div>
 
           {/* Buttons Section */}
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Primary Button Text
@@ -377,7 +377,7 @@ export default function HeroPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Secondary Button Text
@@ -401,7 +401,7 @@ export default function HeroPage() {
           </div>
 
           {/* Settings */}
-          <div className="grid grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Auto Slide Interval (ms)
@@ -455,7 +455,7 @@ export default function HeroPage() {
                 <p className="text-gray-300 max-w-xl mb-8">
                   {watch('description')}
                 </p>
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button className="px-6 py-3 bg-primary text-white text-sm font-black rounded hover:bg-primary/90 transition-colors">
                     {watch('primaryButton.text')}
                   </button>

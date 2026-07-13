@@ -102,7 +102,7 @@ export default function NavbarPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
           <h2 className="text-xl font-bold text-white">Logo Settings</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <input {...register('logo.text')} placeholder="Logo Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             <input {...register('logo.icon')} placeholder="Icon Letter" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             <input {...register('logo.iconBgColor')} type="color" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white h-12" />
@@ -111,15 +111,15 @@ export default function NavbarPage() {
           <div className="border-t border-white/5 pt-6">
             <h2 className="text-xl font-bold text-white mb-4">Navigation Links</h2>
             {fields.map((field, index) => (
-              <div key={field.id} className="flex items-center gap-2 mb-2 bg-[#121212] p-2 rounded">
-                <div className="flex flex-col">
+              <div key={field.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-2 bg-[#121212] p-2 rounded">
+                <div className="flex sm:flex-col gap-1 sm:gap-0">
                   <button type="button" onClick={() => moveUp(index)} className="text-gray-400 hover:text-white">↑</button>
                   <button type="button" onClick={() => moveDown(index)} className="text-gray-400 hover:text-white">↓</button>
                 </div>
                 <input {...register(`navLinks.${index}.name`)} placeholder="Name" className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
                 <input {...register(`navLinks.${index}.href`)} placeholder="Href" className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
-                <input {...register(`navLinks.${index}.id`)} placeholder="ID" className="w-24 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
-                <button type="button" onClick={() => remove(index)} className="text-red-500">×</button>
+                <input {...register(`navLinks.${index}.id`)} placeholder="ID" className="w-full sm:w-24 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
+                <button type="button" onClick={() => remove(index)} className="text-red-500">✕</button>
               </div>
             ))}
             <button type="button" onClick={() => append({ name: '', href: '', id: '', order: fields.length })} className="mt-2 text-sm text-primary">
@@ -129,7 +129,7 @@ export default function NavbarPage() {
 
           <div className="border-t border-white/5 pt-6">
             <h2 className="text-xl font-bold text-white mb-4">CTA Button</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input {...register('ctaButton.text')} placeholder="Button Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
               <input {...register('ctaButton.link')} placeholder="Button Link" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
             </div>

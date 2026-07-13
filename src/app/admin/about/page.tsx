@@ -239,7 +239,7 @@ const handleImageRemove = async () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-4xl font-black text-white">About Section</h1>
         {existingId && (
           <button
@@ -318,7 +318,7 @@ const handleImageRemove = async () => {
           </div>
 
           {/* Button Settings */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
                 Button Text
@@ -380,7 +380,7 @@ const handleImageRemove = async () => {
             <span>🔍</span> Live Preview
           </h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-6 bg-[#121212] rounded-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center p-6 bg-[#121212] rounded-xl">
             <div>
               <h3 className="text-3xl font-black text-white mb-4">{watch('title')}</h3>
               <div className="space-y-4 text-gray-400">

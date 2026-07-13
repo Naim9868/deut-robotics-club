@@ -174,7 +174,7 @@ export default function TechStackPage() {
       <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
         <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Category</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input {...register('category')} placeholder="Category (e.g., Programming)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
             <input type="number" {...register('order')} placeholder="Order" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
           </div>

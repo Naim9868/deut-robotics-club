@@ -48,9 +48,9 @@ export default function BlogAdminPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-4xl font-black text-white">Blog Posts</h1>
-        <Link href="/admin/blog/new" className="px-6 py-3 bg-primary text-white rounded-lg">
+        <Link href="/admin/blog/new" className="px-6 py-3 bg-primary text-white rounded-lg text-center">
           + New Post
         </Link>
       </div>

@@ -305,7 +305,7 @@ export default function ContactMessagesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Contact Messages</h1>
           <p className="text-gray-500 text-sm mt-1">
@@ -583,7 +583,7 @@ export default function ContactMessagesPage() {
                       {formatDate(msg.createdAt)}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                      <div className="flex items-center justify-end gap-1 flex-wrap">
                         <Link
                           href={`/admin/contact-messages/${msg._id}`}
                           className="px-2 py-1 text-[10px] font-bold bg-blue-500/10 text-blue-400 rounded hover:bg-blue-500/20 transition-colors"

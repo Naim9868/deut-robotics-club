@@ -211,7 +211,7 @@ export default function CommitteePage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-4xl font-black text-white">Committee Members</h1>
         <p className="text-gray-500 text-sm">{members.length} members</p>
       </div>
