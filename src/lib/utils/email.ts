@@ -1,6 +1,13 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend;
+
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'DUET Robotics Club <noreply@drc.duet.ac.bd>';
 
@@ -237,7 +244,7 @@ export async function sendPaymentVerifiedEmail(data: {
   membershipId?: string;
 }) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.to,
       subject: 'Payment Verified — Welcome to DUET Robotics Club!',
@@ -258,7 +265,7 @@ export async function sendPaymentRejectedEmail(data: {
   reason: string;
 }) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.to,
       subject: 'Payment Rejected — DUET Robotics Club',
