@@ -1,24 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import FocusArea from '@/lib/models/FocusArea';
+import * as focusAreaController from '@/lib/controllers/focus-area.controller';
 
-export async function GET() {
-  try {
-    await connectDB();
-    const data = await FocusArea.find().sort({ order: 1 });
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
-  }
+/**
+ * GET /api/focus-areas — List focus areas (public)
+ * POST /api/focus-areas — Create a focus area (admin)
+ */
+export async function GET(req: NextRequest) {
+  await connectDB();
+  return focusAreaController.handleGetFocusAreas(req);
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    await connectDB();
-    const body = await req.json();
-    const data = await FocusArea.create(body);
-    return NextResponse.json(data, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create' }, { status: 500 });
-  }
+  await connectDB();
+  return focusAreaController.handleCreateFocusArea(req);
 }

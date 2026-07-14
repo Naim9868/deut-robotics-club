@@ -44,11 +44,12 @@ export default function AdminDashboard() {
           const res = await fetch(`/api/${section.name.toLowerCase().replace(' ', '-')}`);
           if (res.ok) {
             const data = await res.json();
+            const items = Array.isArray(data) ? data : [];
             return {
               [section.name]: {
-                total: data.length,
-                active: data.filter((item: any) => item.isActive !== false).length,
-                lastUpdated: data[0]?.updatedAt || 'Never',
+                total: items.length,
+                active: items.filter((item: any) => item.isActive !== false).length,
+                lastUpdated: items[0]?.updatedAt || 'Never',
               },
             };
           }

@@ -11,6 +11,9 @@ const publicPaths = [
   '/api/registration',
   '/api/research',
   '/api/projects',
+  '/api/focus-areas',
+  '/api/executive-committees',
+  '/api/about',
   '/_next/static',
   '/_next/image',
   '/favicon.ico'

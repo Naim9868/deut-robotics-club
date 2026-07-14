@@ -1,39 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import FocusArea from '@/lib/models/FocusArea';
+import * as focusAreaController from '@/lib/controllers/focus-area.controller';
 
+/**
+ * GET /api/focus-areas/[id] — Get focus area by ID or slug (public)
+ * PUT /api/focus-areas/[id] — Update focus area (admin)
+ * DELETE /api/focus-areas/[id] — Soft-delete focus area (admin)
+ */
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const { id } = await params;
-    await connectDB();
-    const data = await FocusArea.findById(id);
-    if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
-  }
+  await connectDB();
+  return focusAreaController.handleGetFocusArea(req, { params });
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const { id } = await params;
-    await connectDB();
-    const body = await req.json();
-    const data = await FocusArea.findByIdAndUpdate(id, body, { new: true });
-    if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
-  }
+  await connectDB();
+  return focusAreaController.handleUpdateFocusArea(req, { params });
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const { id } = await params;
-    await connectDB();
-    await FocusArea.findByIdAndDelete(id);
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
-  }
+  await connectDB();
+  return focusAreaController.handleDeleteFocusArea(req, { params });
 }

@@ -20,6 +20,7 @@ const menuItems = [
   { name: 'Events', href: '/admin/events', icon: '📅' },
   { name: 'Timeline', href: '/admin/timeline', icon: '⏳' },
   { name: 'Committee', href: '/admin/committee', icon: '👥' },
+  { name: 'Exec. Committee', href: '/admin/executive-committee', icon: '🏛️' },
   { name: 'Testimonials', href: '/admin/testimonials', icon: '💬' },
   { name: 'Sponsors', href: '/admin/sponsors', icon: '🤝' },
   { name: 'FAQ', href: '/admin/faq', icon: '❓' },

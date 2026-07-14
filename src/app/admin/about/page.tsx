@@ -1,418 +1,721 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
-import axios from 'axios';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
-interface AboutForm {
-  title: string;
-  description: string;
-  paragraphs: string[];
-  buttonText: string;
-  buttonLink: string;
-  image: { url: string; alt: string };
-  isActive: boolean;
-  order: number;
-}
+// ─── Constants ────────────────────────────────────────────────
 
-export default function AboutPage() {
-  const router = useRouter();
+const SECTIONS = [
+  { key: 'hero', label: 'Hero', icon: '🏠' },
+  { key: 'introduction', label: 'Introduction', icon: '📖' },
+  { key: 'story', label: 'Our Story', icon: '📖' },
+  { key: 'mission', label: 'Mission', icon: '🎯' },
+  { key: 'vision', label: 'Vision', icon: '👁️' },
+  { key: 'coreValues', label: 'Core Values', icon: '💎' },
+  { key: 'objectives', label: 'Objectives', icon: '📋' },
+  { key: 'journeyTimeline', label: 'Journey Timeline', icon: '⏳' },
+  { key: 'achievements', label: 'Achievements', icon: '🏆' },
+  { key: 'statistics', label: 'Statistics', icon: '📊' },
+  { key: 'whyJoin', label: 'Why Join DRC', icon: '❓' },
+  { key: 'facultyAdvisors', label: 'Faculty Advisors', icon: '👨‍🏫' },
+  { key: 'facilities', label: 'Facilities', icon: '🏢' },
+  { key: 'laboratories', label: 'Laboratories', icon: '🔬' },
+  { key: 'sponsorsPartners', label: 'Sponsors & Partners', icon: '🤝' },
+  { key: 'gallery', label: 'Gallery', icon: '🖼️' },
+  { key: 'promotionalVideo', label: 'Promotional Video', icon: '🎬' },
+  { key: 'faqs', label: 'FAQs', icon: '❓' },
+  { key: 'callToAction', label: 'Call to Action', icon: '📢' },
+];
+
+const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
+const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
+const smallInputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary';
+
+// ─── Main Component ───────────────────────────────────────────
+
+export default function AboutAdminPage() {
+  const [about, setAbout] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [paragraphs, setParagraphs] = useState<string[]>(['']);
-  const [existingId, setExistingId] = useState<string | null>(null);
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>('');
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<{ section: string; index: number; item: Record<string, unknown> } | null>(null);
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<AboutForm>({
-    defaultValues: {
-      title: 'About Us',
-      description: '',
-      buttonText: 'Learn More',
-      buttonLink: '#',
-      image: { url: '', alt: 'About Us' },
-      isActive: true,
-      order: 0
-    }
-  });
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  // ── Fetch ────────────────────────────────────────────────
+  const fetchAbout = useCallback(async () => {
     try {
-      const res = await fetch('/api/about');
-      if (!res.ok) throw new Error('Failed to fetch');
-      
+      const res = await fetch('/api/admin/about');
       const data = await res.json();
-      if (data.length > 0) {
-        const item = data[0];
-        setExistingId(item._id);
-        setParagraphs(item.paragraphs || ['']);
-        setCurrentImageUrl(item.image?.url || '');
-        
-        // Reset form with fetched data
-        reset({
-          title: item.title || 'About Us',
-          description: item.description || '',
-          buttonText: item.buttonText || 'Learn More',
-          buttonLink: item.buttonLink || '#',
-          image: item.image || { url: '', alt: item.title || 'About Us' },
-          isActive: item.isActive ?? true,
-          order: item.order || 0
-        });
-      }
-    } catch (error) {
-      console.error('Fetch error:', error);
-      toast.error('Failed to fetch data');
+      setAbout(data);
+    } catch {
+      toast.error('Failed to fetch about data');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const addParagraph = () => setParagraphs([...paragraphs, '']);
-  
-  const updateParagraph = (index: number, value: string) => {
-    const newParagraphs = [...paragraphs];
-    newParagraphs[index] = value;
-    setParagraphs(newParagraphs);
-  };
+  useEffect(() => { fetchAbout(); }, [fetchAbout]);
 
-  const removeParagraph = (index: number) => {
-    if (paragraphs.length > 1) {
-      setParagraphs(paragraphs.filter((_, i) => i !== index));
-    }
-  };
-
-  const handleImageUpload = (url: string) => {
-    setValue('image', { 
-      url, 
-      alt: watch('title') || 'About Us' 
-    });
-    setCurrentImageUrl(url);
-  };
-
-const handleImageRemove = async () => {
-  if (!currentImageUrl) return;
-  
-  try {
-    // Extract public ID from Cloudinary URL
-    // Cloudinary URL format: https://res.cloudinary.com/cloud_name/image/upload/v123456789/folder/public_id.jpg
-    const urlParts = currentImageUrl.split('/');
-    const publicIdWithExtension = urlParts[urlParts.length - 1]; // Gets "public_id.jpg"
-    const publicId = publicIdWithExtension.split('.')[0]; // Gets "public_id"
-    
-    // Get the folder path if it exists
-    const uploadIndex = urlParts.indexOf('upload');
-    if (uploadIndex !== -1 && urlParts.length > uploadIndex + 2) {
-      // If there's a folder after 'upload', include it in the public ID
-      const folderPath = urlParts.slice(uploadIndex + 2, -1).join('/');
-      const fullPublicId = folderPath ? `${folderPath}/${publicId}` : publicId;
-      
-      console.log('Extracted publicId:', fullPublicId);
-      
-      // Make DELETE request to your API
-      await axios.delete('/api/upload', {
-        data: { publicId: fullPublicId }
-      });
-    } else {
-      // No folder path
-      await axios.delete('/api/upload', {
-        data: { publicId }
-      });
-    }
-    
-    // Clear image from form
-    setValue('image', { url: '', alt: watch('title') || 'About Us' });
-    setCurrentImageUrl('');
-    
-    toast.success('Image removed');
-  } catch (error: any) {
-    console.error('Error removing image:', error);
-    toast.error(error.response?.data?.error || 'Failed to remove image');
-  }
-};
-
-  const onSubmit = async (data: AboutForm) => {
+  // ── Save Section ─────────────────────────────────────────
+  const saveSection = async (sectionKey: string, data: Record<string, unknown>) => {
     setSaving(true);
     try {
-      // Clean paragraphs
-      data.paragraphs = paragraphs.filter(p => p.trim() !== '');
-      
-      // Ensure image object exists
-      if (!data.image) {
-        data.image = { url: '', alt: data.title };
-      }
-
-      const url = existingId 
-        ? `/api/about/${existingId}`
-        : '/api/about';
-      
-      const method = existingId ? 'PUT' : 'POST';
-      
-      const res = await fetch(url, {
-        method,
-        headers: { 
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+      const res = await fetch('/api/admin/about', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [sectionKey]: data }),
       });
-
-      const responseData = await res.json();
-
       if (res.ok) {
-        toast.success(existingId ? 'About section updated' : 'About section created');
-        router.push('/admin');
-        router.refresh(); // Refresh server components
+        const updated = await res.json();
+        setAbout(updated);
+        toast.success('Saved');
       } else {
-        console.error('Server error:', responseData);
-        
-        // Handle validation errors
-        if (responseData.details) {
-          const errorMessages = Object.values(responseData.details)
-            .map((err: any) => err.message)
-            .join(', ');
-          toast.error(errorMessages);
-        } else {
-          toast.error(responseData.error || responseData.message || 'Failed to save');
-        }
+        toast.error('Failed to save');
       }
-    } catch (error) {
-      console.error('Client error:', error);
-      toast.error('Network error - please check console');
+    } catch {
+      toast.error('Failed to save');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!existingId) return;
-    
-    if (!confirm('Are you sure you want to delete this about section? This action cannot be undone.')) {
-      return;
-    }
-
-    setDeleting(true);
+  // ── Toggle Section ───────────────────────────────────────
+  const toggleSection = async (sectionKey: string, isEnabled: boolean) => {
     try {
-      // Delete image from Cloudinary first if exists
-      if (currentImageUrl) {
-        const publicId = currentImageUrl.split('/').pop()?.split('.')[0];
-        if (publicId) {
-          await axios.delete('/api/upload', {
-              data: { publicId }
-          });
-        }
-      }
-
-      // Delete from database
-      const res = await fetch(`/api/about/${existingId}`, {
-        method: 'DELETE',
+      const res = await fetch('/api/admin/about', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [sectionKey]: { isEnabled } }),
       });
-
       if (res.ok) {
-        toast.success('About section deleted');
-        router.push('/admin');
-        router.refresh();
-      } else {
-        const data = await res.json();
-        toast.error(data.error || 'Failed to delete');
+        const updated = await res.json();
+        setAbout(updated);
+        toast.success(isEnabled ? 'Section enabled' : 'Section disabled');
       }
-    } catch (error) {
-      console.error('Delete error:', error);
-      toast.error('Failed to delete');
-    } finally {
-      setDeleting(false);
+    } catch {
+      toast.error('Failed to toggle section');
     }
   };
 
+  // ── Add Item ─────────────────────────────────────────────
+  const addItem = async (sectionKey: string, item: Record<string, unknown>) => {
+    try {
+      const res = await fetch('/api/admin/about/items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sectionKey, item }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setAbout(updated);
+        toast.success('Item added');
+      }
+    } catch {
+      toast.error('Failed to add item');
+    }
+  };
+
+  // ── Update Item ──────────────────────────────────────────
+  const updateItem = async (sectionKey: string, itemId: string, data: Record<string, unknown>) => {
+    try {
+      const res = await fetch('/api/admin/about/items', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sectionKey, itemId, data }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setAbout(updated);
+        toast.success('Item updated');
+      }
+    } catch {
+      toast.error('Failed to update item');
+    }
+  };
+
+  // ── Remove Item ──────────────────────────────────────────
+  const removeItem = async (sectionKey: string, itemId: string) => {
+    if (!confirm('Remove this item?')) return;
+    try {
+      const res = await fetch('/api/admin/about/items', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sectionKey, itemId }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setAbout(updated);
+        toast.success('Item removed');
+      }
+    } catch {
+      toast.error('Failed to remove item');
+    }
+  };
+
+  // ── Get Section Data ─────────────────────────────────────
+  const getSection = (key: string): Record<string, unknown> => {
+    return (about?.[key] as Record<string, unknown>) || { isEnabled: false, displayOrder: 0 };
+  };
+
+  const getItems = (key: string): Record<string, unknown>[] => {
+    const section = getSection(key);
+    return (section.items as Record<string, unknown>[]) || [];
+  };
+
+  // ── Render ───────────────────────────────────────────────
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-4xl font-black text-white">About Section</h1>
-        {existingId && (
-          <button
-            onClick={handleDelete}
-            disabled={deleting}
-            className="px-6 py-3 bg-red-600/20 border border-red-600/30 text-red-500 rounded-lg hover:bg-red-600/30 transition-colors disabled:opacity-50"
-          >
-            {deleting ? 'Deleting...' : 'Delete Section'}
-          </button>
-        )}
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-white">About CMS</h1>
+          <p className="text-gray-500 text-sm mt-1">Manage all sections of the About page. Toggle, reorder, and edit content.</p>
+        </div>
+        <div className="text-sm text-gray-500">
+          {SECTIONS.filter(s => getSection(s.key).isEnabled).length} / {SECTIONS.length} sections enabled
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          {/* Title */}
-          <div>
-            <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
-              Title <span className="text-red-500">*</span>
-            </label>
-            <input 
-              {...register('title', { required: 'Title is required' })} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
-              placeholder="Enter section title"
-            />
-          </div>
-
-          {/* Image Upload */}
-          <div>
-            <label className="block text-xs font-black text-gray-400 mb-4 uppercase tracking-wider">
-              Featured Image
-            </label>
-            <ImageUpload 
-              onUpload={handleImageUpload}
-              onRemove={handleImageRemove}
-              defaultValue={currentImageUrl}
-            />
-            {currentImageUrl && (
-              <p className="text-xs text-gray-500 mt-2">
-                Current image: {currentImageUrl.split('/').pop()}
-              </p>
-            )}
-          </div>
-
-          {/* Paragraphs */}
-          <div>
-            <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
-              Paragraphs
-            </label>
-            {paragraphs.map((p, i) => (
-              <div key={i} className="flex gap-2 mb-3">
-                <textarea
-                  value={p}
-                  onChange={(e) => updateParagraph(i, e.target.value)}
-                  rows={3}
-                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
-                  placeholder={`Paragraph ${i + 1}`}
-                />
-                {paragraphs.length > 1 && (
-                  <button 
-                    type="button" 
-                    onClick={() => removeParagraph(i)} 
-                    className="px-3 text-red-500 hover:text-red-400 transition-colors"
-                  >
-                    ✕
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left: Section List */}
+        <div className="lg:w-72 flex-shrink-0">
+          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 space-y-1">
+            <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] px-4 mb-2">Sections</p>
+            {SECTIONS.map((s) => {
+              const section = getSection(s.key);
+              const isActive = activeSection === s.key;
+              return (
+                <div key={s.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all ${isActive ? 'bg-primary/20 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                  onClick={() => setActiveSection(isActive ? null : s.key)}>
+                  <span className="text-sm">{s.icon}</span>
+                  <span className="flex-1 text-sm font-medium truncate">{s.label}</span>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleSection(s.key, !section.isEnabled); }}
+                    className={`w-9 h-5 rounded-full transition-colors relative ${section.isEnabled ? 'bg-primary' : 'bg-white/10'}`}>
+                    <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${section.isEnabled ? 'left-[18px]' : 'left-0.5'}`} />
                   </button>
-                )}
-              </div>
-            ))}
-            <button 
-              type="button" 
-              onClick={addParagraph} 
-              className="mt-2 text-sm text-primary hover:text-primary/80 transition-colors"
-            >
-              + Add Paragraph
-            </button>
-          </div>
-
-          {/* Button Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
-                Button Text
-              </label>
-              <input 
-                {...register('buttonText')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
-                placeholder="e.g., Learn More"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
-                Button Link
-              </label>
-              <input 
-                {...register('buttonLink')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
-                placeholder="e.g., /about"
-              />
-            </div>
-          </div>
-
-          {/* Active Status */}
-          <div className="flex items-center space-x-8 pt-4 border-t border-white/5">
-            <label className="flex items-center space-x-2 cursor-pointer">
-              <input 
-                type="checkbox" 
-                {...register('isActive')} 
-                className="w-4 h-4 rounded border-white/10 bg-[#121212] text-primary focus:ring-primary"
-              />
-              <span className="text-sm text-gray-300">Active (visible on site)</span>
-            </label>
-          </div>
-        </div>
-
-        {/* Form Actions */}
-        <div className="flex justify-end space-x-4">
-          <button 
-            type="button" 
-            onClick={() => router.push('/admin')} 
-            className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
-          >
-            Cancel
-          </button>
-          <button 
-            type="submit" 
-            disabled={saving} 
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[100px]"
-          >
-            {saving ? 'Saving...' : existingId ? 'Update' : 'Create'}
-          </button>
-        </div>
-      </form>
-
-      {/* Preview Section */}
-      {!loading && watch('title') && (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 mt-8">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
-            <span>🔍</span> Live Preview
-          </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center p-6 bg-[#121212] rounded-xl">
-            <div>
-              <h3 className="text-3xl font-black text-white mb-4">{watch('title')}</h3>
-              <div className="space-y-4 text-gray-400">
-                {paragraphs.filter(p => p.trim()).map((p, i) => (
-                  <p key={i} className="leading-relaxed">{p}</p>
-                ))}
-              </div>
-              {watch('buttonText') && (
-                <div className="mt-6">
-                  <a 
-                    href={watch('buttonLink') || '#'} 
-                    className="inline-block px-6 py-3 border border-white/20 text-white text-sm font-bold rounded hover:bg-white/5 transition-colors"
-                  >
-                    {watch('buttonText')}
-                  </a>
                 </div>
-              )}
-            </div>
-            
-            {watch('image')?.url && (
-              <div className="relative group">
-                <img 
-                  src={watch('image').url} 
-                  alt={watch('image').alt || watch('title')}
-                  className="rounded-lg w-full object-cover shadow-2xl"
-                />
-                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors rounded-lg"></div>
-              </div>
-            )}
+              );
+            })}
           </div>
         </div>
-      )}
+
+        {/* Right: Section Editor */}
+        <div className="flex-1 min-w-0">
+          {!activeSection ? (
+            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-12 text-center">
+              <p className="text-gray-500 text-lg">Select a section from the left to edit its content.</p>
+              <p className="text-gray-600 text-sm mt-2">Toggle sections on/off using the switches.</p>
+            </div>
+          ) : (
+            <SectionEditor
+              sectionKey={activeSection}
+              data={getSection(activeSection)}
+              items={getItems(activeSection)}
+              saving={saving}
+              onSave={(data) => saveSection(activeSection, data)}
+              onAddItem={(item) => addItem(activeSection, item)}
+              onUpdateItem={(itemId, data) => updateItem(activeSection, itemId, data)}
+              onRemoveItem={(itemId) => removeItem(activeSection, itemId)}
+              editingItem={editingItem?.section === activeSection ? editingItem : null}
+              setEditingItem={(item) => setEditingItem(item ? { ...item, section: activeSection } : null)}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
+}
+
+// ─── Section Editor Component ─────────────────────────────────
+
+function SectionEditor({
+  sectionKey, data, items, saving, onSave, onAddItem, onUpdateItem, onRemoveItem, editingItem, setEditingItem,
+}: {
+  sectionKey: string;
+  data: Record<string, unknown>;
+  items: Record<string, unknown>[];
+  saving: boolean;
+  onSave: (data: Record<string, unknown>) => void;
+  onAddItem: (item: Record<string, unknown>) => void;
+  onUpdateItem: (itemId: string, data: Record<string, unknown>) => void;
+  onRemoveItem: (itemId: string) => void;
+  editingItem: { section: string; index: number; item: Record<string, unknown> } | null;
+  setEditingItem: (item: { section: string; index: number; item: Record<string, unknown> } | null) => void;
+}) {
+  const [localData, setLocalData] = useState<Record<string, unknown>>(data);
+  const [newItem, setNewItem] = useState<Record<string, unknown>>({});
+
+  useEffect(() => { setLocalData(data); }, [data]);
+
+  const update = (key: string, value: unknown) => setLocalData(prev => ({ ...prev, [key]: value }));
+
+  const sectionInfo = SECTIONS.find(s => s.key === sectionKey);
+
+  return (
+    <div className="space-y-6">
+      {/* Section Header */}
+      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-black text-white flex items-center gap-2">
+            <span>{sectionInfo?.icon}</span>
+            <span>{sectionInfo?.label}</span>
+          </h2>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-500">
+              Order:
+              <input type="number" value={localData.displayOrder as number || 0}
+                onChange={(e) => update('displayOrder', parseInt(e.target.value) || 0)}
+                className="w-16 bg-[#121212] border border-white/10 rounded px-2 py-1 text-xs text-white ml-2 text-center" />
+            </span>
+            <button onClick={() => onSave(localData)} disabled={saving}
+              className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary/80 disabled:opacity-50 font-bold">
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </div>
+        </div>
+
+        {/* Section-specific form */}
+        <div className="space-y-4">
+          {(sectionKey === 'hero') && <HeroForm data={localData} update={update} />}
+          {(sectionKey === 'introduction') && <IntroductionForm data={localData} update={update} />}
+          {['story', 'mission', 'vision'].includes(sectionKey) && <ContentForm data={localData} update={update} />}
+          {sectionKey === 'promotionalVideo' && <VideoForm data={localData} update={update} />}
+          {sectionKey === 'callToAction' && <CTAForm data={localData} update={update} />}
+          {['coreValues', 'objectives', 'journeyTimeline', 'achievements', 'statistics', 'whyJoin', 'facultyAdvisors', 'facilities', 'laboratories', 'sponsorsPartners', 'gallery', 'faqs'].includes(sectionKey) && (
+            <ItemsList
+              sectionKey={sectionKey}
+              items={items}
+              onAddItem={onAddItem}
+              onUpdateItem={onUpdateItem}
+              onRemoveItem={onRemoveItem}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Hero Form ────────────────────────────────────────────────
+
+function HeroForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const hero = data as any;
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className={labelClass}>Banner Image</label>
+        <ImageUpload onUpload={(url) => update('bannerImage', { ...hero.bannerImage, url })} folder="about/hero" />
+        {hero.bannerImage?.url && <img src={hero.bannerImage.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Title</label>
+          <input value={hero.title || ''} onChange={(e) => update('title', e.target.value)} className={inputClass} placeholder="About DUET Robotics Club" />
+        </div>
+        <div>
+          <label className={labelClass}>Subtitle</label>
+          <input value={hero.subtitle || ''} onChange={(e) => update('subtitle', e.target.value)} className={inputClass} placeholder="Building the future..." />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>CTA Button Text</label>
+          <input value={hero.ctaButton?.text || ''} onChange={(e) => update('ctaButton', { ...hero.ctaButton, text: e.target.value })} className={inputClass} placeholder="Learn More" />
+        </div>
+        <div>
+          <label className={labelClass}>CTA Button Link</label>
+          <input value={hero.ctaButton?.link || ''} onChange={(e) => update('ctaButton', { ...hero.ctaButton, link: e.target.value })} className={inputClass} placeholder="#about" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Introduction Form ────────────────────────────────────────
+
+function IntroductionForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const intro = data as any;
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className={labelClass}>Short Introduction</label>
+        <textarea value={intro.shortIntro || ''} onChange={(e) => update('shortIntro', e.target.value)} rows={3} className={inputClass} placeholder="Brief introduction paragraph..." />
+      </div>
+      <div>
+        <label className={labelClass}>Long Description</label>
+        <RichTextEditor value={intro.longDescription || ''} onChange={(val) => update('longDescription', val)} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Content Form (Story/Mission/Vision) ──────────────────────
+
+function ContentForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const content = data as any;
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className={labelClass}>Content</label>
+        <RichTextEditor value={content.content || ''} onChange={(val) => update('content', val)} />
+      </div>
+      <div>
+        <label className={labelClass}>Image</label>
+        <ImageUpload onUpload={(url) => update('image', { ...content.image, url })} folder="about/sections" />
+        {content.image?.url && <img src={content.image.url} alt="" className="mt-2 w-full h-40 object-cover rounded-lg" />}
+      </div>
+    </div>
+  );
+}
+
+// ─── Video Form ───────────────────────────────────────────────
+
+function VideoForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const video = data as any;
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Title</label>
+          <input value={video.title || ''} onChange={(e) => update('title', e.target.value)} className={inputClass} />
+        </div>
+        <div>
+          <label className={labelClass}>Video URL (YouTube/Vimeo embed)</label>
+          <input value={video.videoUrl || ''} onChange={(e) => update('videoUrl', e.target.value)} className={inputClass} placeholder="https://www.youtube.com/embed/..." />
+        </div>
+      </div>
+      <div>
+        <label className={labelClass}>Description</label>
+        <textarea value={video.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={inputClass} />
+      </div>
+      <div>
+        <label className={labelClass}>Thumbnail</label>
+        <ImageUpload onUpload={(url) => update('thumbnailUrl', url)} folder="about/video" />
+        {video.thumbnailUrl && <img src={video.thumbnailUrl} alt="" className="mt-2 w-48 h-28 object-cover rounded-lg" />}
+      </div>
+    </div>
+  );
+}
+
+// ─── CTA Form ─────────────────────────────────────────────────
+
+function CTAForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const cta = data as any;
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Title</label>
+          <input value={cta.title || ''} onChange={(e) => update('title', e.target.value)} className={inputClass} placeholder="Ready to Join?" />
+        </div>
+        <div>
+          <label className={labelClass}>Button Text</label>
+          <input value={cta.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} className={inputClass} placeholder="Join Now" />
+        </div>
+      </div>
+      <div>
+        <label className={labelClass}>Description</label>
+        <textarea value={cta.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={inputClass} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className={labelClass}>Button Link</label>
+          <input value={cta.buttonLink || ''} onChange={(e) => update('buttonLink', e.target.value)} className={inputClass} placeholder="/register" />
+        </div>
+        <div>
+          <label className={labelClass}>Background Image</label>
+          <ImageUpload onUpload={(url) => update('image', { ...cta.image, url })} folder="about/cta" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Items List ───────────────────────────────────────────────
+
+function ItemsList({ sectionKey, items, onAddItem, onUpdateItem, onRemoveItem }: {
+  sectionKey: string;
+  items: Record<string, unknown>[];
+  onAddItem: (item: Record<string, unknown>) => void;
+  onUpdateItem: (itemId: string, data: Record<string, unknown>) => void;
+  onRemoveItem: (itemId: string) => void;
+}) {
+  const [editingIdx, setEditingIdx] = useState<number | null>(null);
+  const [editData, setEditData] = useState<Record<string, unknown>>({});
+
+  const startEdit = (index: number) => {
+    setEditingIdx(index);
+    setEditData({ ...items[index] });
+  };
+
+  const saveEdit = () => {
+    if (editingIdx !== null && items[editingIdx]._id) {
+      onUpdateItem(items[editingIdx]._id as string, editData);
+      setEditingIdx(null);
+    }
+  };
+
+  const handleAdd = () => {
+    const item: Record<string, unknown> = {
+      isPublished: true,
+      displayOrder: items.length,
+    };
+    // Add section-specific defaults
+    if (['coreValues', 'objectives', 'whyJoin'].includes(sectionKey)) {
+      Object.assign(item, { title: '', description: '', icon: '' });
+    } else if (sectionKey === 'journeyTimeline') {
+      Object.assign(item, { year: '', title: '', description: '' });
+    } else if (sectionKey === 'achievements') {
+      Object.assign(item, { title: '', description: '', year: '' });
+    } else if (sectionKey === 'statistics') {
+      Object.assign(item, { label: '', value: '', icon: '' });
+    } else if (sectionKey === 'facultyAdvisors') {
+      Object.assign(item, { name: '', designation: '', department: '', message: '' });
+    } else if (sectionKey === 'facilities' || sectionKey === 'laboratories') {
+      Object.assign(item, { name: '', description: '', equipment: sectionKey === 'laboratories' ? [] : undefined });
+    } else if (sectionKey === 'sponsorsPartners') {
+      Object.assign(item, { name: '', website: '', tier: '' });
+    } else if (sectionKey === 'gallery') {
+      Object.assign(item, { url: '', alt: '', caption: '', type: 'image' });
+    } else if (sectionKey === 'faqs') {
+      Object.assign(item, { question: '', answer: '' });
+    }
+    onAddItem(item);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-gray-500">{items.length} items</p>
+        <button onClick={handleAdd} className="px-3 py-1.5 bg-primary/20 text-primary text-xs rounded-lg hover:bg-primary/30 font-bold">
+          + Add Item
+        </button>
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-gray-600 text-sm text-center py-4">No items yet. Click "Add Item" to create one.</p>
+      )}
+
+      <div className="space-y-2">
+        {items.map((item, idx) => (
+          <div key={item._id as string || idx} className="bg-[#121212] border border-white/5 rounded-lg p-4 group hover:border-primary/30 transition-all">
+            {editingIdx === idx ? (
+              /* Edit Mode */
+              <div className="space-y-3">
+                <ItemForm sectionKey={sectionKey} data={editData} update={(k, v) => setEditData(prev => ({ ...prev, [k]: v }))} />
+                <div className="flex gap-2">
+                  <button onClick={saveEdit} className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 font-bold">Save</button>
+                  <button onClick={() => setEditingIdx(null)} className="px-3 py-1 bg-white/10 text-gray-400 text-xs rounded hover:bg-white/20">Cancel</button>
+                </div>
+              </div>
+            ) : (
+              /* Display Mode */
+              <div className="flex items-center gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-sm font-bold truncate">
+                    {(item as any).title || (item as any).name || (item as any).question || (item as any).label || 'Untitled'}
+                  </p>
+                  <p className="text-gray-500 text-xs truncate">
+                    {(item as any).description || (item as any).answer || (item as any).value || ''}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className={`w-2 h-2 rounded-full ${(item as any).isPublished ? 'bg-green-400' : 'bg-red-400'}`} />
+                  <button onClick={() => startEdit(idx)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
+                  <button onClick={() => (item as any)._id && onRemoveItem((item as any)._id)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Item Form (section-specific) ─────────────────────────────
+
+function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+  const item = data as any;
+
+  const commonFields = (
+    <>
+      <div className="flex items-center gap-4">
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={item.isPublished !== false} onChange={(e) => update('isPublished', e.target.checked)} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
+          <span className="text-xs text-gray-300">Published</span>
+        </label>
+        <div>
+          <label className="text-xs text-gray-500 mr-1">Order:</label>
+          <input type="number" value={item.displayOrder || 0} onChange={(e) => update('displayOrder', parseInt(e.target.value) || 0)} className="w-16 bg-[#121212] border border-white/10 rounded px-2 py-1 text-xs text-white text-center" />
+        </div>
+      </div>
+    </>
+  );
+
+  switch (sectionKey) {
+    case 'coreValues':
+    case 'objectives':
+    case 'whyJoin':
+      return (
+        <div className="space-y-3">
+          <input value={item.title || ''} onChange={(e) => update('title', e.target.value)} className={smallInputClass} placeholder="Title" />
+          <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
+          <input value={item.icon || ''} onChange={(e) => update('icon', e.target.value)} className={smallInputClass} placeholder="Icon (emoji or lucide name)" />
+          {commonFields}
+        </div>
+      );
+
+    case 'journeyTimeline':
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.year || ''} onChange={(e) => update('year', e.target.value)} className={smallInputClass} placeholder="Year (e.g., 2020)" />
+            <input value={item.title || ''} onChange={(e) => update('title', e.target.value)} className={smallInputClass} placeholder="Title" />
+          </div>
+          <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
+          <div>
+            <label className="text-xs text-gray-500">Image</label>
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/timeline" />
+            {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+          </div>
+          {commonFields}
+        </div>
+      );
+
+    case 'achievements':
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.title || ''} onChange={(e) => update('title', e.target.value)} className={smallInputClass} placeholder="Title" />
+            <input value={item.year || ''} onChange={(e) => update('year', e.target.value)} className={smallInputClass} placeholder="Year" />
+          </div>
+          <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
+          <div>
+            <label className="text-xs text-gray-500">Image</label>
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/achievements" />
+            {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+          </div>
+          {commonFields}
+        </div>
+      );
+
+    case 'statistics':
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.label || ''} onChange={(e) => update('label', e.target.value)} className={smallInputClass} placeholder="Label (e.g., Members)" />
+            <input value={item.value || ''} onChange={(e) => update('value', e.target.value)} className={smallInputClass} placeholder="Value (e.g., 150+)" />
+          </div>
+          <input value={item.icon || ''} onChange={(e) => update('icon', e.target.value)} className={smallInputClass} placeholder="Icon" />
+          {commonFields}
+        </div>
+      );
+
+    case 'facultyAdvisors':
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.name || ''} onChange={(e) => update('name', e.target.value)} className={smallInputClass} placeholder="Name" />
+            <input value={item.designation || ''} onChange={(e) => update('designation', e.target.value)} className={smallInputClass} placeholder="Designation" />
+          </div>
+          <input value={item.department || ''} onChange={(e) => update('department', e.target.value)} className={smallInputClass} placeholder="Department" />
+          <textarea value={item.message || ''} onChange={(e) => update('message', e.target.value)} rows={2} className={smallInputClass} placeholder="Message" />
+          <div>
+            <label className="text-xs text-gray-500">Photo</label>
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/faculty" />
+            {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-20 h-20 object-cover rounded-full" />}
+          </div>
+          {commonFields}
+        </div>
+      );
+
+    case 'facilities':
+    case 'laboratories':
+      return (
+        <div className="space-y-3">
+          <input value={item.name || ''} onChange={(e) => update('name', e.target.value)} className={smallInputClass} placeholder="Name" />
+          <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
+          {sectionKey === 'laboratories' && (
+            <textarea
+              value={Array.isArray(item.equipment) ? item.equipment.join('\n') : ''}
+              onChange={(e) => update('equipment', e.target.value.split('\n').filter(Boolean))}
+              rows={3} className={smallInputClass} placeholder="Equipment (one per line)"
+            />
+          )}
+          <div>
+            <label className="text-xs text-gray-500">Photo</label>
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder={`about/${sectionKey}`} />
+            {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+          </div>
+          {commonFields}
+        </div>
+      );
+
+    case 'sponsorsPartners':
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.name || ''} onChange={(e) => update('name', e.target.value)} className={smallInputClass} placeholder="Name" />
+            <select value={item.tier || ''} onChange={(e) => update('tier', e.target.value)} className={smallInputClass}>
+              <option value="">Select tier</option>
+              <option value="platinum">Platinum</option>
+              <option value="gold">Gold</option>
+              <option value="silver">Silver</option>
+              <option value="bronze">Bronze</option>
+              <option value="partner">Partner</option>
+            </select>
+          </div>
+          <input value={item.website || ''} onChange={(e) => update('website', e.target.value)} className={smallInputClass} placeholder="Website URL" />
+          <div>
+            <label className="text-xs text-gray-500">Logo</label>
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/sponsors" />
+            {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-24 h-12 object-contain" />}
+          </div>
+          {commonFields}
+        </div>
+      );
+
+    case 'gallery':
+      return (
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs text-gray-500">Media</label>
+            <ImageUpload onUpload={(url) => update('url', url)} folder="about/gallery" />
+            {item.url && <img src={item.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <input value={item.alt || ''} onChange={(e) => update('alt', e.target.value)} className={smallInputClass} placeholder="Alt text" />
+            <select value={item.type || 'image'} onChange={(e) => update('type', e.target.value)} className={smallInputClass}>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
+          </div>
+          <input value={item.caption || ''} onChange={(e) => update('caption', e.target.value)} className={smallInputClass} placeholder="Caption" />
+          {commonFields}
+        </div>
+      );
+
+    case 'faqs':
+      return (
+        <div className="space-y-3">
+          <input value={item.question || ''} onChange={(e) => update('question', e.target.value)} className={smallInputClass} placeholder="Question" />
+          <textarea value={item.answer || ''} onChange={(e) => update('answer', e.target.value)} rows={3} className={smallInputClass} placeholder="Answer" />
+          {commonFields}
+        </div>
+      );
+
+    default:
+      return <div className="text-gray-500 text-sm">No form available for this section type.</div>;
+  }
 }

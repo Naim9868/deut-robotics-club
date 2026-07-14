@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ScrollReveal from './ScrollReveal';
+import FocusAreaIcon from './FocusAreaIcon';
 
 interface FocusAreaData {
   _id: string;
   title: string;
+  slug?: string;
   description: string;
+  shortDescription?: string;
   icon: string;
+  iconType?: 'lucide' | 'image';
   color: string;
   order: number;
   isActive: boolean;
@@ -29,6 +34,10 @@ const FocusAreas: React.FC = () => {
           ? data
               .filter((item: FocusAreaData) => item.isActive)
               .sort((a, b) => a.order - b.order)
+              .map((item: FocusAreaData) => ({
+                ...item,
+                description: item.description || item.shortDescription || '',
+              }))
           : [];
         
         setFocusAreas(activeAreas);
@@ -66,8 +75,10 @@ const FocusAreas: React.FC = () => {
     {
       _id: '1',
       title: 'Line Follower',
+      slug: 'line-follower',
       description: 'Engineering high-precision autonomous vehicles that navigate complex paths with PID control.',
-      icon: '🏎️',
+      icon: 'Bot',
+      iconType: 'lucide' as const,
       color: '#e63946',
       order: 0,
       isActive: true
@@ -75,8 +86,10 @@ const FocusAreas: React.FC = () => {
     {
       _id: '2',
       title: 'Fire Fighting',
+      slug: 'fire-fighting',
       description: 'Smart robotics integrated with flame detection sensors and autonomous firefighting mechanisms.',
-      icon: '🔥',
+      icon: 'Flame',
+      iconType: 'lucide' as const,
       color: '#e63946',
       order: 1,
       isActive: true
@@ -84,8 +97,10 @@ const FocusAreas: React.FC = () => {
     {
       _id: '3',
       title: 'Aerial Drones',
+      slug: 'aerial-drones',
       description: 'Developing VTOL systems and autonomous flight path algorithms for surveillance and delivery.',
-      icon: '🚁',
+      icon: 'Plane',
+      iconType: 'lucide' as const,
       color: '#e63946',
       order: 2,
       isActive: true
@@ -93,8 +108,10 @@ const FocusAreas: React.FC = () => {
     {
       _id: '4',
       title: 'Soccer Bots',
+      slug: 'soccer-bots',
       description: 'Advanced real-time control systems for high-speed dynamic gameplay and strategic maneuvering.',
-      icon: '⚽',
+      icon: 'Gamepad2',
+      iconType: 'lucide' as const,
       color: '#e63946',
       order: 3,
       isActive: true
@@ -117,18 +134,23 @@ const FocusAreas: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         {displayAreas.map((area, index) => (
           <ScrollReveal key={area._id || index} animation="up" delay={index * 100}>
+            <Link href={area.slug ? `/focus-areas/${area.slug}` : '#'}>
             <div 
-              className="group shadow-amber-50 p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/5 rounded-xl hover:border-primary/70 transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[2px_2px_10px_rgba(230,57,73,0.15)] sm:hover:shadow-[4px_4px_15px_rgba(230,57,70,0.2)] h-full flex flex-col"
+              className="group shadow-amber-50 p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/5 rounded-xl hover:border-primary/70 transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[2px_2px_10px_rgba(230,57,73,0.15)] sm:hover:shadow-[4px_4px_15px_rgba(230,57,70,0.2)] h-full flex flex-col cursor-pointer"
             >
               <div 
                 className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110 group-hover:rotate-6"
-                style={{ color: area.color }}
               >
-                {area.icon}
+                <FocusAreaIcon
+                  icon={area.icon}
+                  iconType={area.iconType}
+                  color={area.color}
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                  grayscale
+                />
               </div>
               <h3 
                 className="text-xs sm:text-sm md:text-base lg:text-xl font-bold uppercase mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 text-white group-hover:text-primary transition-colors line-clamp-2"
-                style={{ color: area.color ? undefined : undefined }}
               >
                 {area.title}
               </h3>
@@ -136,6 +158,7 @@ const FocusAreas: React.FC = () => {
                 {area.description}
               </p>
             </div>
+            </Link>
           </ScrollReveal>
         ))}
       </div>

@@ -2,10 +2,10 @@ import connectDB from '@/lib/mongodb';
 import * as aboutController from '@/lib/controllers/about.controller';
 
 /**
- * GET /api/about
- * Public: Get the About page data (enabled sections only, published items).
+ * GET /api/admin/about/stats
+ * Admin: Get about page statistics.
  */
 export async function GET() {
   await connectDB();
-  return aboutController.handleGetAbout();
+  return aboutController.handleGetStats();
 }
