@@ -441,7 +441,7 @@ export default function SponsorsPage() {
                 <img 
                   src={sponsor.logo?.url || getLogoUrl(sponsor.name)} 
                   alt={sponsor.name} 
-                  className="max-h-full max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="max-h-full max-w-full object-contain transition-all duration-300"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = getLogoUrl(sponsor.name);
                   }}

@@ -1,23 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 interface ImageUploadProps {
   onUpload: (url: string, publicId?: string) => void;
   onRemove?: () => void;
   defaultValue?: string;
-  folder?: string;  // Add folder prop
+  folder?: string;
+  value?: string;
 }
 
 export default function ImageUpload({ 
   onUpload, 
   onRemove, 
   defaultValue, 
-  folder = 'drc'  // Default folder
+  folder = 'drc',
+  value
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState(defaultValue);
+  const [preview, setPreview] = useState(value || defaultValue);
+
+  useEffect(() => {
+    if (value !== undefined) setPreview(value);
+  }, [value]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

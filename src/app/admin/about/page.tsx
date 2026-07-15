@@ -106,10 +106,12 @@ export default function AboutAdminPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sectionKey, item }),
       });
+      const data = await res.json();
       if (res.ok) {
-        const updated = await res.json();
-        setAbout(updated);
+        setAbout(data);
         toast.success('Item added');
+      } else {
+        toast.error(data.error || 'Failed to add item');
       }
     } catch {
       toast.error('Failed to add item');
@@ -124,10 +126,12 @@ export default function AboutAdminPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sectionKey, itemId, data }),
       });
+      const responseData = await res.json();
       if (res.ok) {
-        const updated = await res.json();
-        setAbout(updated);
+        setAbout(responseData);
         toast.success('Item updated');
+      } else {
+        toast.error(responseData.error || 'Failed to update item');
       }
     } catch {
       toast.error('Failed to update item');
@@ -143,10 +147,12 @@ export default function AboutAdminPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sectionKey, itemId }),
       });
+      const data = await res.json();
       if (res.ok) {
-        const updated = await res.json();
-        setAbout(updated);
+        setAbout(data);
         toast.success('Item removed');
+      } else {
+        toast.error(data.error || 'Failed to remove item');
       }
     } catch {
       toast.error('Failed to remove item');
@@ -185,9 +191,44 @@ export default function AboutAdminPage() {
         </div>
       </div>
 
+      {/* Mobile Section Selector */}
+      <div className="lg:hidden">
+        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4">
+          <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-3">Select Section</p>
+          <select
+            value={activeSection || ''}
+            onChange={(e) => setActiveSection(e.target.value || null)}
+            className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+          >
+            <option value="">-- Choose a section --</option>
+            {SECTIONS.map((s) => {
+              const section = getSection(s.key);
+              return (
+                <option key={s.key} value={s.key}>
+                  {s.icon} {s.label} {section.isEnabled ? '(Enabled)' : '(Disabled)'}
+                </option>
+              );
+            })}
+          </select>
+          {activeSection && (
+            <div className="mt-3 flex items-center justify-between">
+              <span className="text-xs text-gray-500">
+                {getSection(activeSection).isEnabled ? 'Enabled' : 'Disabled'}
+              </span>
+              <button
+                onClick={() => toggleSection(activeSection, !getSection(activeSection).isEnabled)}
+                className={`px-3 py-1.5 text-xs rounded-lg font-bold transition-colors ${getSection(activeSection).isEnabled ? 'bg-red-600/20 text-red-400 hover:bg-red-600/30' : 'bg-green-600/20 text-green-400 hover:bg-green-600/30'}`}
+              >
+                {getSection(activeSection).isEnabled ? 'Disable' : 'Enable'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left: Section List */}
-        <div className="lg:w-72 flex-shrink-0">
+        {/* Left: Section List (Desktop) */}
+        <div className="hidden lg:block lg:w-72 flex-shrink-0">
           <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 space-y-1">
             <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] px-4 mb-2">Sections</p>
             {SECTIONS.map((s) => {
@@ -288,7 +329,7 @@ function SectionEditor({
         <div className="space-y-4">
           {(sectionKey === 'hero') && <HeroForm data={localData} update={update} />}
           {(sectionKey === 'introduction') && <IntroductionForm data={localData} update={update} />}
-          {['story', 'mission', 'vision'].includes(sectionKey) && <ContentForm data={localData} update={update} />}
+          {['story', 'mission', 'vision'].includes(sectionKey) && <ContentForm sectionKey={sectionKey} data={localData} update={update} />}
           {sectionKey === 'promotionalVideo' && <VideoForm data={localData} update={update} />}
           {sectionKey === 'callToAction' && <CTAForm data={localData} update={update} />}
           {['coreValues', 'objectives', 'journeyTimeline', 'achievements', 'statistics', 'whyJoin', 'facultyAdvisors', 'facilities', 'laboratories', 'sponsorsPartners', 'gallery', 'faqs'].includes(sectionKey) && (
@@ -314,7 +355,7 @@ function HeroForm({ data, update }: { data: Record<string, unknown>; update: (k:
     <div className="space-y-4">
       <div>
         <label className={labelClass}>Banner Image</label>
-        <ImageUpload onUpload={(url) => update('bannerImage', { ...hero.bannerImage, url })} folder="about/hero" />
+        <ImageUpload onUpload={(url) => update('bannerImage', { ...hero.bannerImage, url })} folder="about/hero" value={hero.bannerImage?.url} />
         {hero.bannerImage?.url && <img src={hero.bannerImage.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -361,7 +402,7 @@ function IntroductionForm({ data, update }: { data: Record<string, unknown>; upd
 
 // ─── Content Form (Story/Mission/Vision) ──────────────────────
 
-function ContentForm({ data, update }: { data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
+function ContentForm({ sectionKey, data, update }: { sectionKey: string; data: Record<string, unknown>; update: (k: string, v: unknown) => void }) {
   const content = data as any;
   return (
     <div className="space-y-4">
@@ -371,8 +412,11 @@ function ContentForm({ data, update }: { data: Record<string, unknown>; update: 
       </div>
       <div>
         <label className={labelClass}>Image</label>
-        <ImageUpload onUpload={(url) => update('image', { ...content.image, url })} folder="about/sections" />
+        <ImageUpload onUpload={(url) => update('image', { ...content.image, url })} folder="about/sections" value={content.image?.url} />
         {content.image?.url && <img src={content.image.url} alt="" className="mt-2 w-full h-40 object-cover rounded-lg" />}
+        {sectionKey === 'story' && (
+          <p className="text-xs text-gray-500 mt-2 italic">This image will show in Home page</p>
+        )}
       </div>
     </div>
   );
@@ -400,7 +444,7 @@ function VideoForm({ data, update }: { data: Record<string, unknown>; update: (k
       </div>
       <div>
         <label className={labelClass}>Thumbnail</label>
-        <ImageUpload onUpload={(url) => update('thumbnailUrl', url)} folder="about/video" />
+        <ImageUpload onUpload={(url) => update('thumbnailUrl', url)} folder="about/video" value={video.thumbnailUrl} />
         {video.thumbnailUrl && <img src={video.thumbnailUrl} alt="" className="mt-2 w-48 h-28 object-cover rounded-lg" />}
       </div>
     </div>
@@ -434,7 +478,8 @@ function CTAForm({ data, update }: { data: Record<string, unknown>; update: (k: 
         </div>
         <div>
           <label className={labelClass}>Background Image</label>
-          <ImageUpload onUpload={(url) => update('image', { ...cta.image, url })} folder="about/cta" />
+          <ImageUpload onUpload={(url) => update('image', { ...cta.image, url })} folder="about/cta" value={cta.image?.url} />
+          {cta.image?.url && <img src={cta.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
         </div>
       </div>
     </div>
@@ -586,7 +631,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
           <div>
             <label className="text-xs text-gray-500">Image</label>
-            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/timeline" />
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/timeline" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
           {commonFields}
@@ -603,7 +648,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
           <div>
             <label className="text-xs text-gray-500">Image</label>
-            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/achievements" />
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/achievements" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
           {commonFields}
@@ -633,7 +678,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           <textarea value={item.message || ''} onChange={(e) => update('message', e.target.value)} rows={2} className={smallInputClass} placeholder="Message" />
           <div>
             <label className="text-xs text-gray-500">Photo</label>
-            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/faculty" />
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/faculty" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-20 h-20 object-cover rounded-full" />}
           </div>
           {commonFields}
@@ -655,7 +700,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           )}
           <div>
             <label className="text-xs text-gray-500">Photo</label>
-            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder={`about/${sectionKey}`} />
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder={`about/${sectionKey}`} value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
           {commonFields}
@@ -679,7 +724,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           <input value={item.website || ''} onChange={(e) => update('website', e.target.value)} className={smallInputClass} placeholder="Website URL" />
           <div>
             <label className="text-xs text-gray-500">Logo</label>
-            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/sponsors" />
+            <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/sponsors" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-24 h-12 object-contain" />}
           </div>
           {commonFields}
@@ -691,7 +736,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
         <div className="space-y-3">
           <div>
             <label className="text-xs text-gray-500">Media</label>
-            <ImageUpload onUpload={(url) => update('url', url)} folder="about/gallery" />
+            <ImageUpload onUpload={(url) => update('url', url)} folder="about/gallery" value={item.url} />
             {item.url && <img src={item.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
           <div className="grid grid-cols-2 gap-3">

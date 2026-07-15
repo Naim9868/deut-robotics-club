@@ -206,7 +206,7 @@ const Projects: React.FC = () => {
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black uppercase tracking-tighter text-white flex items-center flex-wrap">
                 ACTIVE
                 <span className="mx-2 sm:mx-3 md:mx-4 w-3 h-6 sm:w-4 sm:h-8 md:w-6 md:h-12 bg-primary inline-block"></span>
-                <span className="text-primary">PROTOTYPES</span>
+                <span className="text-primary">PROJECTS</span>
               </h2>
             </div>
 
@@ -239,7 +239,7 @@ const Projects: React.FC = () => {
                 <img 
                   src={p.image?.url} 
                   alt={p.image?.alt || p.title} 
-                  className="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                  className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-all duration-1000"
                 />
                 
                 {/* HUD Overlays */}

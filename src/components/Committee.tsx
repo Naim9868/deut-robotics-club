@@ -215,7 +215,7 @@ const Committee: React.FC = () => {
               <img 
                 src={member.image?.url} 
                 alt={member.image?.alt || member.name} 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" 
+                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" 
               />
               
               {/* Overlay Gradient */}

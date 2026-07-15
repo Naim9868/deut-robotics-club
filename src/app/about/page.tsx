@@ -4,6 +4,24 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
+import { LUCIDE_ICON_MAP } from '@/components/FocusAreaIcon';
+
+function RenderIcon({ icon, className = '' }: { icon?: string; className?: string }) {
+  if (!icon) return null;
+  const LucideComponent = LUCIDE_ICON_MAP[icon];
+  if (LucideComponent) {
+    return <LucideComponent className={className} />;
+  }
+  return <span className={className}>{icon}</span>;
+}
+
+function toYouTubeEmbed(url: string): string {
+  if (!url) return '';
+  if (url.includes('/embed/')) return url;
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
+  if (match) return `https://www.youtube.com/embed/${match[1]}`;
+  return url;
+}
 
 interface AboutData {
   hero?: { bannerImage?: { url: string; alt?: string }; title?: string; subtitle?: string; ctaButton?: { text?: string; link?: string } };
@@ -152,7 +170,8 @@ function ContentSection({ data, title }: { data: AboutData['story'] | AboutData[
             <div className="relative">
               <div className="absolute -inset-4 bg-primary/10 blur-2xl rounded-full -z-10" />
               <img src={data.image.url} alt={data.image.alt || title}
-                className="rounded-xl shadow-2xl border border-white/10 w-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-[1.02] aspect-[4/3]" />
+                className="rounded-xl shadow-2xl border border-white/10 w-full object-cover transition-all duration-700 hover:scale-[1.02]"
+                style={{ aspectRatio: '4/3' }} loading="lazy" />
             </div>
           </ScrollReveal>
         )}
@@ -175,7 +194,7 @@ function CoreValuesSection({ data }: { data: AboutData['coreValues'] }) {
         {data.items.map((item, idx) => (
           <ScrollReveal key={idx} animation="up" delay={idx * 100}>
             <div className="p-6 sm:p-8 bg-card border border-white/5 rounded-2xl hover:border-primary/30 transition-all duration-300 group text-center h-full">
-              {item.icon && <div className="text-3xl sm:text-4xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">{item.icon}</div>}
+              <RenderIcon icon={item.icon} className="text-3xl sm:text-4xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500" />
               <h3 className="text-white text-sm sm:text-base md:text-lg font-black uppercase tracking-wider mb-2 sm:mb-3">{item.title}</h3>
               <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.description}</p>
             </div>
@@ -199,8 +218,8 @@ function ObjectivesSection({ data }: { data: AboutData['objectives'] }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
         {data.items.map((item, idx) => (
           <ScrollReveal key={idx} animation="up" delay={idx * 100}>
-            <div className="flex gap-4 sm:gap-5 p-5 sm:p-6 bg-card border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-300 group h-full">
-              {item.icon && <div className="text-2xl sm:text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-500">{item.icon}</div>}
+              <div className="flex gap-4 sm:gap-5 p-5 sm:p-6 bg-card border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-300 group h-full">
+              <RenderIcon icon={item.icon} className="text-2xl sm:text-3xl flex-shrink-0 group-hover:scale-110 transition-transform duration-500" />
               <div>
                 <h3 className="text-white text-xs sm:text-sm md:text-base font-black uppercase tracking-wider mb-1.5 sm:mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-[11px] sm:text-xs md:text-sm leading-relaxed">{item.description}</p>
@@ -301,7 +320,7 @@ function StatisticsSection({ data }: { data: AboutData['statistics'] }) {
           {data.items.map((stat, idx) => (
             <ScrollReveal key={idx} animation="scale" delay={idx * 150}>
               <div className="text-center group w-full">
-                {stat.icon && <div className="text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-500">{stat.icon}</div>}
+                <RenderIcon icon={stat.icon} className="text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-500" />
                 <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl tabular-nums">
                   <CountUp end={stat.value || '0'} />
                 </div>
@@ -329,7 +348,7 @@ function WhyJoinSection({ data }: { data: AboutData['whyJoin'] }) {
         {data.items.map((item, idx) => (
           <ScrollReveal key={idx} animation="up" delay={idx * 100}>
             <div className="p-6 sm:p-8 bg-card border border-white/5 rounded-2xl hover:border-primary/30 transition-all duration-300 group text-center h-full">
-              {item.icon && <div className="text-3xl sm:text-4xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">{item.icon}</div>}
+              <RenderIcon icon={item.icon} className="text-3xl sm:text-4xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500" />
               <h3 className="text-white text-sm sm:text-base md:text-lg font-black uppercase tracking-wider mb-2 sm:mb-3">{item.title}</h3>
               <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">{item.description}</p>
             </div>
@@ -390,8 +409,8 @@ function FacilitiesSection({ data }: { data: AboutData['facilities'] }) {
           <ScrollReveal key={idx} animation="up" delay={idx * 100}>
             <div className="bg-card border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-300 group h-full">
               {item.image?.url && (
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img src={item.image.url} alt={item.image.alt || item.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                <div className="aspect-video overflow-hidden">
+                  <img src={item.image.url} alt={item.image.alt || item.name} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" loading="lazy" />
                 </div>
               )}
               <div className="p-5 sm:p-6">
@@ -421,8 +440,8 @@ function LaboratoriesSection({ data }: { data: AboutData['laboratories'] }) {
           <ScrollReveal key={idx} animation="up" delay={idx * 100}>
             <div className="bg-card border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-300 group h-full">
               {lab.image?.url && (
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img src={lab.image.url} alt={lab.image.alt || lab.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                <div className="aspect-video overflow-hidden">
+                  <img src={lab.image.url} alt={lab.image.alt || lab.name} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" loading="lazy" />
                 </div>
               )}
               <div className="p-5 sm:p-6">
@@ -486,7 +505,7 @@ function SponsorCardInner({ sponsor, tierColors }: {
   return (
     <div className="p-4 sm:p-5 bg-card border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-300 text-center h-full flex flex-col items-center justify-center min-h-[120px] sm:min-h-[140px]">
       {sponsor.image?.url ? (
-        <img src={sponsor.image.url} alt={sponsor.image.alt || sponsor.name} className="max-h-10 sm:max-h-12 w-auto object-contain mb-2 sm:mb-3 grayscale group-hover:grayscale-0 transition-all duration-300" />
+        <img src={sponsor.image.url} alt={sponsor.image.alt || sponsor.name} className="max-h-10 sm:max-h-12 w-auto object-contain mb-2 sm:mb-3 transition-all duration-300" />
       ) : (
         <p className="text-white text-xs sm:text-sm font-black uppercase tracking-wider mb-2 sm:mb-3">{sponsor.name}</p>
       )}
@@ -507,17 +526,17 @@ function GallerySection({ data }: { data: AboutData['gallery'] }) {
           <p className="text-gray-500 uppercase text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em]">Capturing our moments</p>
         </div>
       </ScrollReveal>
-      <div className="columns-2 sm:columns-2 md:columns-2 lg:columns-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
         {data.items.map((item, idx) => (
-          <ScrollReveal key={idx} animation="scale" delay={idx * 100} className="break-inside-avoid">
+          <ScrollReveal key={idx} animation="scale" delay={idx * 100}>
             <div className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-card">
               {item.type === 'video' && item.url ? (
                 <div className="aspect-video">
-                  <iframe src={item.url} className="w-full h-full" allowFullScreen title={item.alt || item.caption || 'Video'} />
+                  <iframe src={toYouTubeEmbed(item.url || '')} className="w-full h-full" allowFullScreen title={item.alt || item.caption || 'Video'} loading="lazy" />
                 </div>
               ) : (
                 <img src={item.url} alt={item.alt || item.caption || 'Gallery image'}
-                  className="w-full h-auto object-cover grayscale hover:grayscale-0 hover:scale-105 transition-all duration-700" />
+                  className="w-full h-auto object-cover hover:scale-105 transition-all duration-700" loading="lazy" />
               )}
               {item.caption && (
                 <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 pointer-events-none">
@@ -545,7 +564,7 @@ function PromotionalVideoSection({ data }: { data: AboutData['promotionalVideo']
       <ScrollReveal animation="scale">
         <div className="max-w-4xl mx-auto">
           <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-            <iframe src={data.videoUrl} className="absolute inset-0 w-full h-full" allowFullScreen title={data.title || 'Promotional Video'}
+            <iframe src={toYouTubeEmbed(data.videoUrl)} className="absolute inset-0 w-full h-full" allowFullScreen title={data.title || 'Promotional Video'}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
           </div>
         </div>

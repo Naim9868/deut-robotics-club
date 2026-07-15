@@ -29,7 +29,7 @@ import {
  * Keys are the icon names stored in the database.
  * Values are the Lucide React components.
  */
-const LUCIDE_ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+export const LUCIDE_ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Bot, Cpu, Eye, Brain, Wifi, Radio, Plane, Zap, Activity,
   Cog, Wrench, Database, Globe, BarChart3, FlaskConical, Rocket,
   GraduationCap, Lightbulb, Target, Trophy, Star, Hammer, Monitor,
@@ -74,8 +74,6 @@ interface FocusAreaIconProps {
   color?: string;
   /** Size class string (e.g., 'text-3xl', 'w-16 h-16') */
   className?: string;
-  /** Whether to apply grayscale effect (for homepage cards) */
-  grayscale?: boolean;
 }
 
 /**
@@ -88,14 +86,12 @@ export default function FocusAreaIcon({
   iconType = 'lucide',
   color = '#e63946',
   className = '',
-  grayscale = false,
 }: FocusAreaIconProps) {
-  const grayscaleClass = grayscale ? 'grayscale group-hover:grayscale-0' : '';
 
   // ─── Image Icon (SVG/PNG upload) ─────────────────
   if (iconType === 'image' && icon) {
     return (
-      <span className={`inline-flex items-center justify-center ${className} ${grayscaleClass} transition-all`}>
+      <span className={`inline-flex items-center justify-center ${className} transition-all`}>
         <img
           src={icon}
           alt="Focus area icon"
@@ -110,7 +106,7 @@ export default function FocusAreaIcon({
     const LucideComponent = LUCIDE_ICON_MAP[icon];
     if (LucideComponent) {
       return (
-        <span className={`inline-flex items-center justify-center ${className} ${grayscaleClass} transition-all`}>
+        <span className={`inline-flex items-center justify-center ${className} transition-all`}>
           <LucideComponent
             className="w-[1em] h-[1em]"
             style={{ color }}
@@ -122,7 +118,7 @@ export default function FocusAreaIcon({
 
   // ─── Fallback ────────────────────────────────────
   return (
-    <span className={`inline-flex items-center justify-center ${className} ${grayscaleClass} transition-all`}>
+    <span className={`inline-flex items-center justify-center ${className} transition-all`}>
       <Target className="w-[1em] h-[1em]" style={{ color }} />
     </span>
   );

@@ -449,7 +449,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                         src={rp.coverImage?.url || rp.image?.url || '/images/project-placeholder.jpg'}
                         alt={rp.title}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all"
+                        className="object-cover transition-all"
                       />
                     </div>
                     <div className="p-4">

@@ -169,7 +169,7 @@ const Gallery: React.FC = () => {
               <img 
                 src={item.image?.url} 
                 alt={item.image?.alt || item.title} 
-                className="w-full h-auto object-cover grayscale hover:grayscale-0 hover:scale-105 transition-all duration-700"
+                className="w-full h-auto object-cover hover:scale-105 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 md:p-5 lg:p-6 pointer-events-none">
                 <h4 className="text-white font-bold uppercase text-[10px] sm:text-xs md:text-sm tracking-wider line-clamp-2">

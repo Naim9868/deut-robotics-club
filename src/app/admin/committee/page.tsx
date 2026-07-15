@@ -412,7 +412,7 @@ export default function CommitteePage() {
               <img 
                 src={member.image?.url || getAvatarUrl(member.name)} 
                 alt={member.name} 
-                className="w-full aspect-square object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                className="w-full aspect-square object-cover transition-all duration-500"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = getAvatarUrl(member.name);
                 }}

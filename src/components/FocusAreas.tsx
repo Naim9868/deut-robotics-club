@@ -139,14 +139,14 @@ const FocusAreas: React.FC = () => {
               className="group shadow-amber-50 p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/5 rounded-xl hover:border-primary/70 transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[2px_2px_10px_rgba(230,57,73,0.15)] sm:hover:shadow-[4px_4px_15px_rgba(230,57,70,0.2)] h-full flex flex-col cursor-pointer"
             >
               <div 
-                className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 grayscale group-hover:grayscale-0 transition-all transform group-hover:scale-110 group-hover:rotate-6"
+                className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 transition-all transform group-hover:scale-110 group-hover:rotate-6"
               >
                 <FocusAreaIcon
                   icon={area.icon}
                   iconType={area.iconType}
                   color={area.color}
                   className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
-                  grayscale
+  
                 />
               </div>
               <h3 

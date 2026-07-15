@@ -143,7 +143,7 @@ const TechStack: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {stack.items.sort((a, b) => (a.order || 0) - (b.order || 0)).map((item, i) => (
                 <div key={i} className="flex flex-col items-center text-center group/item p-4 rounded-xl hover:bg-white/5 transition-all cursor-default">
-                  <div className="text-3xl mb-4 grayscale group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-300">
+                  <div className="text-3xl mb-4 group-hover/item:scale-110 transition-all duration-300">
                     {item.icon}
                   </div>
                   <h4 className="text-white font-black text-sm uppercase mb-1">{item.name}</h4>

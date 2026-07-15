@@ -12,258 +12,284 @@ const SocialLinksSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// ─── Item Sub-Schemas (embedded in sections) ──────────────────
+// ─── Item Sub-Schemas ─────────────────────────────────────────
 
 const CoreValueItemSchema = new mongoose.Schema({
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  icon: { type: String, trim: true, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
+  icon: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const ObjectiveItemSchema = new mongoose.Schema({
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  icon: { type: String, trim: true, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
+  icon: { type: String, default: '' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const TimelineItemSchema = new mongoose.Schema({
-  year: { type: String, trim: true, default: '' },
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
+  year: { type: String, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const AchievementItemSchema = new mongoose.Schema({
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  year: { type: String, trim: true, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
+  year: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const StatItemSchema = new mongoose.Schema({
-  label: { type: String, trim: true, default: '' },
-  value: { type: String, trim: true, default: '' },
-  icon: { type: String, trim: true, default: '' },
+  label: { type: String, default: '' },
+  value: { type: String, default: '' },
+  icon: { type: String, default: '' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const WhyJoinItemSchema = new mongoose.Schema({
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  icon: { type: String, trim: true, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
+  icon: { type: String, default: '' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const FacultyAdvisorItemSchema = new mongoose.Schema({
-  name: { type: String, trim: true, default: '' },
-  designation: { type: String, trim: true, default: '' },
-  department: { type: String, trim: true, default: '' },
+  name: { type: String, default: '' },
+  designation: { type: String, default: '' },
+  department: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
-  message: { type: String, trim: true, default: '' },
+  message: { type: String, default: '' },
   socialLinks: { type: SocialLinksSchema, default: () => ({}) },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const FacilityItemSchema = new mongoose.Schema({
-  name: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
+  name: { type: String, default: '' },
+  description: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const LaboratoryItemSchema = new mongoose.Schema({
-  name: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
+  name: { type: String, default: '' },
+  description: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
-  equipment: [{ type: String, trim: true }],
+  equipment: [{ type: String }],
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const SponsorItemSchema = new mongoose.Schema({
-  name: { type: String, trim: true, default: '' },
+  name: { type: String, default: '' },
   image: { type: ImageFieldSchema, default: () => ({}) },
-  website: { type: String, trim: true, default: '' },
-  tier: { type: String, enum: ['platinum', 'gold', 'silver', 'bronze', 'partner', ''], default: '' },
+  website: { type: String, default: '' },
+  tier: { type: String, default: '' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const GalleryItemSchema = new mongoose.Schema({
-  url: { type: String, trim: true, default: '' },
-  alt: { type: String, trim: true, default: '' },
-  caption: { type: String, trim: true, default: '' },
-  type: { type: String, enum: ['image', 'video', ''], default: 'image' },
+  url: { type: String, default: '' },
+  alt: { type: String, default: '' },
+  caption: { type: String, default: '' },
+  type: { type: String, default: 'image' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
 const FAQItemSchema = new mongoose.Schema({
-  question: { type: String, trim: true, default: '' },
-  answer: { type: String, trim: true, default: '' },
+  question: { type: String, default: '' },
+  answer: { type: String, default: '' },
   isPublished: { type: Boolean, default: true },
   displayOrder: { type: Number, default: 0 },
 }, { _id: true });
 
-// ─── Section Sub-Schemas ──────────────────────────────────────
+// ─── Section Sub-Schemas (non-item sections) ──────────────────
 
-const HeroSectionSchema = new mongoose.Schema({
+const SectionFieldsSchema = {
   isEnabled: { type: Boolean, default: false },
   displayOrder: { type: Number, default: 0 },
-  bannerImage: { type: ImageFieldSchema, default: () => ({}) },
-  title: { type: String, trim: true, default: '' },
-  subtitle: { type: String, trim: true, default: '' },
-  ctaButton: {
-    text: { type: String, trim: true, default: '' },
-    link: { type: String, trim: true, default: '' },
-  },
-}, { _id: false });
+};
 
-const IntroductionSectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-  shortIntro: { type: String, trim: true, default: '' },
-  longDescription: { type: String, trim: true, default: '' },
-}, { _id: false });
-
-const ContentSectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-  content: { type: String, default: '' },
-  image: { type: ImageFieldSchema, default: () => ({}) },
-}, { _id: false });
-
-const ItemsSectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-}, { _id: false });
-
-const GallerySectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-  items: [GalleryItemSchema],
-}, { _id: false });
-
-const VideoSectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  videoUrl: { type: String, trim: true, default: '' },
-  thumbnailUrl: { type: String, trim: true, default: '' },
-}, { _id: false });
-
-const CTASectionSchema = new mongoose.Schema({
-  isEnabled: { type: Boolean, default: false },
-  displayOrder: { type: Number, default: 0 },
-  title: { type: String, trim: true, default: '' },
-  description: { type: String, trim: true, default: '' },
-  buttonText: { type: String, trim: true, default: '' },
-  buttonLink: { type: String, trim: true, default: '' },
-  image: { type: ImageFieldSchema, default: () => ({}) },
-}, { _id: false });
-
-// ─── Main About Schema (Singleton) ───────────────────────────
+// ─── Main About Schema ────────────────────────────────────────
 
 const AboutSchema = new mongoose.Schema(
   {
-    // Singleton guard — only one document should exist
     _singleton: { type: String, default: 'main', unique: true, immutable: true },
 
-    // 19 optional sections — each independently toggleable
-    hero: { type: HeroSectionSchema, default: () => ({}) },
-    introduction: { type: IntroductionSectionSchema, default: () => ({}) },
-    story: { type: ContentSectionSchema, default: () => ({}) },
-    mission: { type: ContentSectionSchema, default: () => ({}) },
-    vision: { type: ContentSectionSchema, default: () => ({}) },
+    // ── Non-item sections ──
+    hero: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        bannerImage: { type: ImageFieldSchema, default: () => ({}) },
+        title: { type: String, default: '' },
+        subtitle: { type: String, default: '' },
+        ctaButton: { type: new mongoose.Schema({
+          text: { type: String, default: '' },
+          link: { type: String, default: '' },
+        }, { _id: false }), default: () => ({}) },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    introduction: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        shortIntro: { type: String, default: '' },
+        longDescription: { type: String, default: '' },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    story: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        content: { type: String, default: '' },
+        image: { type: ImageFieldSchema, default: () => ({}) },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    mission: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        content: { type: String, default: '' },
+        image: { type: ImageFieldSchema, default: () => ({}) },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    vision: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        content: { type: String, default: '' },
+        image: { type: ImageFieldSchema, default: () => ({}) },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    promotionalVideo: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        title: { type: String, default: '' },
+        description: { type: String, default: '' },
+        videoUrl: { type: String, default: '' },
+        thumbnailUrl: { type: String, default: '' },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+    callToAction: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        title: { type: String, default: '' },
+        description: { type: String, default: '' },
+        buttonText: { type: String, default: '' },
+        buttonLink: { type: String, default: '' },
+        image: { type: ImageFieldSchema, default: () => ({}) },
+      }, { _id: false }),
+      default: () => ({}),
+    },
+
+    // ── Item sections (items defined directly, NOT via helper) ──
     coreValues: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [CoreValueItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [CoreValueItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     objectives: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [ObjectiveItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [ObjectiveItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     journeyTimeline: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [TimelineItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [TimelineItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     achievements: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [AchievementItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [AchievementItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     statistics: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [StatItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [StatItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     whyJoin: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [WhyJoinItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [WhyJoinItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     facultyAdvisors: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [FacultyAdvisorItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [FacultyAdvisorItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     facilities: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [FacilityItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [FacilityItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     laboratories: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [LaboratoryItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [LaboratoryItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
     sponsorsPartners: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [SponsorItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [SponsorItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
-    gallery: { type: GallerySectionSchema, default: () => ({}) },
-    promotionalVideo: { type: VideoSectionSchema, default: () => ({}) },
+    gallery: {
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [GalleryItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
+    },
     faqs: {
-      type: ItemsSectionSchema, default: () => ({}),
-      items: [FAQItemSchema],
+      type: new mongoose.Schema({
+        ...SectionFieldsSchema,
+        items: [FAQItemSchema],
+      }, { _id: false }),
+      default: () => ({}),
     },
-    callToAction: { type: CTASectionSchema, default: () => ({}) },
   },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+  { timestamps: true }
 );
 
-// ─── Virtual: ordered enabled sections ────────────────────────
-AboutSchema.virtual('enabledSections').get(function () {
-  const sectionKeys = [
-    'hero', 'introduction', 'story', 'mission', 'vision',
-    'coreValues', 'objectives', 'journeyTimeline', 'achievements',
-    'statistics', 'whyJoin', 'facultyAdvisors', 'facilities',
-    'laboratories', 'sponsorsPartners', 'gallery', 'promotionalVideo',
-    'faqs', 'callToAction',
-  ];
+if (mongoose.models.About) {
+  mongoose.deleteModel('About');
+}
 
-  return sectionKeys
-    .filter((key) => {
-      const section = this.get(key) as any;
-      return section?.isEnabled;
-    })
-    .sort((a, b) => {
-      const sectionA = this.get(a) as any;
-      const sectionB = this.get(b) as any;
-      return (sectionA?.displayOrder || 0) - (sectionB?.displayOrder || 0);
-    });
-});
-
-export default mongoose.models.About || mongoose.model('About', AboutSchema);
+export default mongoose.model('About', AboutSchema);

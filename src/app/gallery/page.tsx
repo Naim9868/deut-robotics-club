@@ -285,7 +285,7 @@ export default function GalleryPage() {
                     src={item.image?.url}
                     alt={item.image?.alt || item.title}
                     loading="lazy"
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
                   />
                   
                   {/* Overlay */}

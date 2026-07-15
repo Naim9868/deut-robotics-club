@@ -155,7 +155,7 @@ export default function ProjectsPage() {
                           src={project.coverImage?.url || project.image?.url || '/images/project-placeholder.jpg'}
                           alt={project.coverImage?.alt || project.title}
                           fill
-                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                          className="object-cover transition-all duration-500 group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
 
