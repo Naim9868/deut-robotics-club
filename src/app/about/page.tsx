@@ -23,6 +23,18 @@ function toYouTubeEmbed(url: string): string {
   return url;
 }
 
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
+}
+
+function getYouTubeThumbnail(url: string): string {
+  const videoId = getYouTubeVideoId(url);
+  if (!videoId) return '';
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+}
+
 interface AboutData {
   hero?: { bannerImage?: { url: string; alt?: string }; title?: string; subtitle?: string; ctaButton?: { text?: string; link?: string } };
   introduction?: { shortIntro?: string; longDescription?: string };
@@ -109,7 +121,7 @@ function HeroSection({ data }: { data: AboutData['hero'] }) {
         {data.bannerImage?.url ? (
           <div className="absolute inset-0 z-0">
             <img src={data.bannerImage.url} alt={data.bannerImage.alt || data.title || 'About DRC'} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark" />
+            <div className="absolute inset-0 bg-gradient-to-b from-dark/50 via-dark/30 to-dark" />
           </div>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-dark to-dark" />
@@ -552,7 +564,9 @@ function GallerySection({ data }: { data: AboutData['gallery'] }) {
 }
 
 function PromotionalVideoSection({ data }: { data: AboutData['promotionalVideo'] }) {
+  const [isPlaying, setIsPlaying] = useState(false);
   if (!data?.videoUrl) return null;
+  const thumbnailUrl = data.thumbnailUrl || getYouTubeThumbnail(data.videoUrl);
   return (
     <div className="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 bg-[#0a0a0a]">
       <ScrollReveal animation="up">
@@ -563,9 +577,32 @@ function PromotionalVideoSection({ data }: { data: AboutData['promotionalVideo']
       </ScrollReveal>
       <ScrollReveal animation="scale">
         <div className="max-w-4xl mx-auto">
-          <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-            <iframe src={toYouTubeEmbed(data.videoUrl)} className="absolute inset-0 w-full h-full" allowFullScreen title={data.title || 'Promotional Video'}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
+          <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+            {isPlaying ? (
+              <iframe src={`${toYouTubeEmbed(data.videoUrl)}?autoplay=1`} className="absolute inset-0 w-full h-full" allowFullScreen title={data.title || 'Promotional Video'}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
+            ) : (
+              <>
+                {thumbnailUrl ? (
+                  <img src={thumbnailUrl} alt={data.title || 'Video Thumbnail'} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-dark flex items-center justify-center">
+                    <svg className="w-16 h-16 sm:w-20 sm:h-20 text-primary/50" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                )}
+                <button onClick={() => setIsPlaying(true)}
+                  className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors duration-300 group cursor-pointer"
+                  aria-label="Play video">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/90 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(230,57,70,0.4)] group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </ScrollReveal>
@@ -601,7 +638,7 @@ function CallToActionSection({ data }: { data: AboutData['callToAction'] }) {
       {data.image?.url ? (
         <div className="absolute inset-0 z-0">
           <img src={data.image.url} alt={data.image.alt || ''} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-dark/80" />
+          <div className="absolute inset-0 bg-dark/60" />
         </div>
       ) : (
         <div className="absolute inset-0 bg-primary/5" />
@@ -694,6 +731,12 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
+      <a href="/" className="fixed top-4 left-4 sm:top-6 sm:left-6 z-50 inline-flex items-center gap-2 px-4 py-2 bg-dark/80 backdrop-blur-md border border-white/10 rounded-full text-gray-300 hover:text-white hover:bg-white/10 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-lg">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Home
+      </a>
       <Navbar activeSection="" />
       <main>
         {data?.hero && <section id="about-hero"><HeroSection data={data.hero} /></section>}

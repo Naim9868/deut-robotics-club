@@ -177,7 +177,7 @@ const Events: React.FC<EventsProps> = ({
       <ScrollReveal animation="up">
         <div className="mb-8 sm:mb-10 md:mb-14 lg:mb-20">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title tracking-tighter  sm:text-left">
-            Mission Updates
+            UPCOMMING EVENTS
           </h2>
           <p className="text-gray-500 uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] mt-2 sm:mt-3 md:mt-4 text-center sm:text-left">
             Stay updated with our latest operational breakthroughs

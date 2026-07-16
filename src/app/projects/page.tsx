@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
 
 interface ProjectData {
@@ -81,10 +83,18 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
+      <Navbar activeSection="" />
+
       {/* Hero */}
       <section className="pt-32 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <ScrollReveal>
+            <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-6 transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Home
+            </Link>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-4">
               OUR <span className="text-red-500">PROJECTS</span>
             </h1>
@@ -211,6 +221,8 @@ export default function ProjectsPage() {
           )}
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

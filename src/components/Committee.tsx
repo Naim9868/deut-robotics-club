@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ScrollReveal from './ScrollReveal';
 
 interface CommitteeData {
@@ -270,6 +271,22 @@ const Committee: React.FC = () => {
         <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
           No committee members found.
         </div>
+      )}
+
+      {displayMembers.length > 0 && (
+        <ScrollReveal animation="up" delay={300}>
+          <div className="text-center mt-10 sm:mt-12 md:mt-16">
+            <Link
+              href="/executive-committee"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-primary text-white text-xs sm:text-sm font-black uppercase tracking-wider rounded-xl hover:bg-primary/80 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
+            >
+              View Full Committee
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </ScrollReveal>
       )}
     </div>
   );

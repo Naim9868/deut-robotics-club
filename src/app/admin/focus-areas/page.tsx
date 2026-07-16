@@ -142,8 +142,9 @@ export default function FocusAreasPage() {
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [bannerImageUrl, setBannerImageUrl] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [galleryImages, setGalleryImages] = useState<{ url: string; alt: string }[]>([]);
   const [useImageLink, setUseImageLink] = useState(false);
-  const [imageTarget, setImageTarget] = useState<'cover' | 'banner' | 'thumbnail'>('cover');
+  const [imageTarget, setImageTarget] = useState<'cover' | 'banner' | 'thumbnail' | 'gallery'>('cover');
 
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FocusAreaForm>({
     defaultValues: {
@@ -254,9 +255,13 @@ export default function FocusAreasPage() {
     } else if (imageTarget === 'banner') {
       setValue('bannerImageUrl', url);
       setBannerImageUrl(url);
-    } else {
+    } else if (imageTarget === 'thumbnail') {
       setValue('thumbnailUrl', url);
       setThumbnailUrl(url);
+    } else if (imageTarget === 'gallery') {
+      const newImages = [...galleryImages, { url, alt: '' }];
+      setGalleryImages(newImages);
+      (setValue as any)('galleryImages', newImages);
     }
     setUseImageLink(false);
   };
@@ -298,6 +303,7 @@ export default function FocusAreasPage() {
         coverImage: { url: data.coverImageUrl || coverImageUrl, alt: data.coverImageAlt || data.title, type: 'cloudinary' },
         bannerImage: { url: data.bannerImageUrl || bannerImageUrl, alt: data.bannerImageAlt || data.title, type: 'cloudinary' },
         thumbnail: { url: data.thumbnailUrl || thumbnailUrl, alt: data.thumbnailAlt || data.title, type: 'cloudinary' },
+        galleryImages: galleryImages.map(img => ({ url: img.url, alt: img.alt || data.title, type: 'cloudinary' })),
         homepage: { featured: data.featured, showOnHomepage: data.showOnHomepage, displayOrder: data.displayOrder },
         visibility: data.visibility,
         seo: { metaTitle: data.seoTitle, metaDescription: data.seoDescription, keywords: data.seoKeywords.split(',').map(k => k.trim()).filter(Boolean) },
@@ -331,7 +337,7 @@ export default function FocusAreasPage() {
     setTechnologies([]); setComponents([]); setLearningResources([]);
     setObjectives([]); setApplicationsList([]); setSkillsList([]);
     setMentorsList([]); setIndustryMentorsList([]);
-    setCoverImageUrl(''); setBannerImageUrl(''); setThumbnailUrl('');
+    setCoverImageUrl(''); setBannerImageUrl(''); setThumbnailUrl(''); setGalleryImages([]);
     setIconType('lucide');
     setActiveTab('basic');
   };
@@ -350,6 +356,7 @@ export default function FocusAreasPage() {
     setCoverImageUrl(coverImage?.url || '');
     setBannerImageUrl(bannerImage?.url || '');
     setThumbnailUrl(thumbnail?.url || '');
+    setGalleryImages(((area.galleryImages as { url: string; alt?: string }[]) || []).map(img => ({ url: img.url, alt: img.alt || '' })));
     setIconType((area.iconType as 'lucide' | 'image') || 'lucide');
     setTechnologies((area.technologies as TechnologyForm[]) || []);
     setComponents((area.components as ComponentForm[]) || []);
@@ -697,17 +704,50 @@ export default function FocusAreasPage() {
 
               {/* Gallery */}
               <div className="border border-white/5 rounded-lg p-4">
-                <label className="text-xs font-black text-gray-400 uppercase mb-3 block">Gallery Images (URLs)</label>
-                <p className="text-xs text-gray-500 mb-2">Enter image URLs separated by newlines</p>
-                <textarea
-                  onChange={(e) => {
-                    const urls = e.target.value.split('\n').filter(u => u.trim()).map(url => ({ url: url.trim(), alt: '', type: 'cloudinary' as const }));
-                    setValue('galleryImages' as any, urls);
-                  }}
-                  rows={4}
-                  placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg"
-                  className={`${inputClass} resize-none`}
-                />
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-xs font-black text-gray-400 uppercase">Gallery Images</label>
+                  <button type="button" onClick={() => { setImageTarget('gallery'); setUseImageLink(!useImageLink); }}
+                    className="text-xs text-primary hover:underline">
+                    {useImageLink && imageTarget === 'gallery' ? 'Use Upload' : 'Use Link'}
+                  </button>
+                </div>
+                {useImageLink && imageTarget === 'gallery' ? (
+                  <div className="flex gap-2">
+                    <input type="url" placeholder="https://example.com/image.jpg" id="gallery-link-input"
+                      className={`${inputClass} flex-1`} />
+                    <button type="button" onClick={() => {
+                      const input = document.getElementById('gallery-link-input') as HTMLInputElement;
+                      if (input?.value?.trim()) {
+                        const newImages = [...galleryImages, { url: input.value.trim(), alt: '' }];
+                        setGalleryImages(newImages);
+                        (setValue as any)('galleryImages', newImages);
+                        input.value = '';
+                      }
+                    }}
+                      className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium whitespace-nowrap">
+                      Add
+                    </button>
+                  </div>
+                ) : (
+                  <ImageUpload onUpload={handleImageUpload} folder="focus-areas/gallery" />
+                )}
+                {galleryImages.length > 0 && (
+                  <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {galleryImages.map((img, idx) => (
+                      <div key={idx} className="relative group rounded-lg overflow-hidden border border-white/10 aspect-video">
+                        <img src={img.url} alt={img.alt || `Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                        <button type="button" onClick={() => {
+                          const newImages = galleryImages.filter((_, i) => i !== idx);
+                          setGalleryImages(newImages);
+                          (setValue as any)('galleryImages', newImages);
+                        }}
+                          className="absolute top-1 right-1 w-5 h-5 bg-red-600 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}

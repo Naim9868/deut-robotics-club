@@ -342,7 +342,7 @@ const Projects: React.FC = () => {
         <ScrollReveal animation="up">
           <div className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 flex items-center justify-center">
             <div className="h-[1px] bg-white/5 flex-1 hidden sm:block"></div>
-            <a href="#" className="mx-4 sm:mx-6 md:mx-8 text-[8px] sm:text-[9px] md:text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] hover:text-primary transition-colors flex items-center group">
+            <a href="/projects" className="mx-4 sm:mx-6 md:mx-8 text-[8px] sm:text-[9px] md:text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] hover:text-primary transition-colors flex items-center group">
               Access Full Database 
               <span className="ml-2 sm:ml-3 md:ml-4 transform group-hover:translate-x-2 transition-transform">{'>>>'}</span>
             </a>

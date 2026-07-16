@@ -113,7 +113,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-primary/20 to-[#0a0a0a]" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent" />
       </div>
 
       {/* Content */}
