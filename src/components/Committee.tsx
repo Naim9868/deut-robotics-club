@@ -53,7 +53,7 @@ const Committee: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 2xl:py-28 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center min-h-[200px]">
           <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
@@ -63,7 +63,7 @@ const Committee: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 2xl:py-28 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center text-red-500 text-sm sm:text-base">
           {error}
         </div>
@@ -97,41 +97,39 @@ const Committee: React.FC = () => {
     };
 
     return (
-      <a 
-        href={url} 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-lg bg-background/5 flex items-center justify-center hover:bg-primary transition-all"
+      <span 
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(url, '_blank'); }}
+        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 rounded-lg bg-background/5 flex items-center justify-center hover:bg-primary transition-all cursor-pointer"
         title={platform}
       >
         {icons[platform]}
-      </a>
+      </span>
     );
   };
 
   return (
-    <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 2xl:py-28 container mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollReveal animation="up">
-        <div className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto tracking-tighter">
+        <div className="text-center mb-10 sm:mb-14 md:mb-18 lg:mb-20 xl:mb-24">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto tracking-tighter">
             Command Center
           </h2>
-          <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.6em] mt-2 sm:mt-3 md:mt-4">
+          <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] xl:text-[12px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.5em] xl:tracking-[0.6em] mt-2 sm:mt-3 md:mt-4">
             The architect minds driving DUET's robotics legacy
           </p>
           {committee && (
-            <p className="text-primary text-xs font-bold mt-2 uppercase tracking-wider">
+            <p className="text-primary text-[10px] sm:text-xs lg:text-sm font-bold mt-2 uppercase tracking-wider">
               {committee.committeeYear} Executive Committee
             </p>
           )}
         </div>
       </ScrollReveal>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 2xl:gap-10">
         {displayMembers.map((member, idx) => (
           <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 100} className="group">
             <Link href={`/executive-committee/${member.slug}`}>
-              <div className="relative overflow-hidden aspect-[4/5] bg-card border border-border rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2">
+              <div className="relative overflow-hidden aspect-[3/4] sm:aspect-[3/4] md:aspect-[3/4] lg:aspect-[3/4] xl:aspect-[3/4] 2xl:aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl group-hover:shadow-primary/5">
                 {member.profilePhoto?.url ? (
                   <img 
                     src={member.profilePhoto.url} 
@@ -139,39 +137,43 @@ const Committee: React.FC = () => {
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" 
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">
+                  <div className="w-full h-full flex items-center justify-center text-4xl sm:text-5xl md:text-6xl text-muted font-black bg-gradient-to-br from-background/10 to-background/30">
                     {member.fullName.charAt(0)}
                   </div>
                 )}
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+                {/* Gradient Overlay - stronger at bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 group-hover:opacity-80 transition-opacity" />
                 
-                <div className="absolute bottom-0 left-0 p-3 sm:p-4 md:p-5 lg:p-6 xl:p-8 w-full">
-                  
-                  <p className="absolute bottom-13 text-primary text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] mb-1 sm:mb-1.5 md:mb-2 truncate sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                {/* Content Container - positioned at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 lg:p-6 xl:p-7 2xl:p-8">
+                  {/* Designation - always visible at bottom */}
+                  <p className="text-primary text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[10px] 2xl:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] xl:tracking-[0.35em] mb-0.5 sm:mb-1 md:mb-1.5 lg:mb-2 truncate">
                     {member.designation}
                   </p>
-                  <h3 className="absolute bottom-8 text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl font-black text-white uppercase leading-none mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 line-clamp-2">
+                  
+                  {/* Name - always visible at bottom */}
+                  <h3 className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-black text-white uppercase leading-none mb-1.5 sm:mb-2 md:mb-2.5 lg:mb-3 xl:mb-3.5 2xl:mb-4 line-clamp-2">
                     {member.fullName}
                   </h3>
                   
-                 <div className="flex flex-row justify-between">
-                   {(member.department || member.session) && (
-                    <p className="mt-2 text-[5px] sm:text-[6px] md:text-[7px] lg:text-[8px] text-white/60 uppercase tracking-wider mt-1.5 sm:mt-2 md:mt-3 lg:mt-4 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 line-clamp-1">
-                      {member.department && `${member.department}`}
-                      {member.session && ` · ${member.session}`}
-                    </p>
-                  )}
-                  <span>
-                    <div className="flex justify-center text-white space-x-0 sm:space-x-2 md:space-x-3 lg:space-x-4 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    {member.socialLinks?.linkedin && renderSocialIcon('linkedin', member.socialLinks.linkedin)}
-                    {member.socialLinks?.github && renderSocialIcon('github', member.socialLinks.github)}
-                    {member.socialLinks?.facebook && renderSocialIcon('facebook', member.socialLinks.facebook)}
+                  {/* Department & Social Icons Row */}
+                  <div className="flex flex-row justify-between items-end">
+                    {(member.department || member.session) && (
+                      <p className="text-[4px] sm:text-[5px] md:text-[6px] lg:text-[7px] xl:text-[8px] 2xl:text-[9px] text-white/60 uppercase tracking-wider line-clamp-1 max-w-[55%] sm:max-w-[50%]">
+                        {member.department && `${member.department}`}
+                        {member.session && ` · ${member.session}`}
+                      </p>
+                    )}
+                    <div className="flex justify-end text-white space-x-0.5 sm:space-x-1 md:space-x-1.5 lg:space-x-2 xl:space-x-2.5">
+                      {member.socialLinks?.linkedin && renderSocialIcon('linkedin', member.socialLinks.linkedin)}
+                      {member.socialLinks?.github && renderSocialIcon('github', member.socialLinks.github)}
+                      {member.socialLinks?.facebook && renderSocialIcon('facebook', member.socialLinks.facebook)}
+                    </div>
                   </div>
-                  </span>
-                 </div>
                 </div>
 
+                {/* Animated border lines */}
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
               </div>
@@ -188,13 +190,13 @@ const Committee: React.FC = () => {
 
       {displayMembers.length > 0 && (
         <ScrollReveal animation="up" delay={300}>
-          <div className="text-center mt-10 sm:mt-12 md:mt-16">
+          <div className="text-center mt-10 sm:mt-12 md:mt-14 lg:mt-16 xl:mt-20">
             <Link
               href="/executive-committee"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 bg-primary text-white text-xs sm:text-sm font-black uppercase tracking-wider rounded-xl hover:bg-primary/80 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 lg:px-10 py-2.5 sm:py-3 md:py-3.5 lg:py-4 bg-primary text-white text-[10px] sm:text-xs md:text-sm lg:text-base font-black uppercase tracking-wider rounded-xl hover:bg-primary/80 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/25"
             >
               View Full Committee
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>

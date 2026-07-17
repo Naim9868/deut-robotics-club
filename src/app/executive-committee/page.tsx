@@ -100,7 +100,7 @@ export default function ExecutiveCommitteePage() {
   return (
     <>
       <Navbar activeSection="" />
-      <Link href="/" className="fixed top-24 left-4 sm:left-8 z-50 bg-card/80 backdrop-blur-md border border-border rounded-full p-2 sm:p-3 text-muted hover:text-primary transition-colors shadow-lg">
+      <Link href="/" className="fixed top-20 left-4 sm:left-8 z-50 bg-card/80 backdrop-blur-md border border-border rounded-full p-2 sm:p-3 text-muted hover:text-primary transition-colors shadow-lg">
         <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
