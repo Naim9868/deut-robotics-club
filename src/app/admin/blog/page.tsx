@@ -49,37 +49,37 @@ export default function BlogAdminPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Blog Posts</h1>
-        <Link href="/admin/blog/new" className="px-6 py-3 bg-primary text-white rounded-lg text-center">
+        <h1 className="text-4xl font-black text-foreground">Blog Posts</h1>
+        <Link href="/admin/blog/new" className="px-6 py-3 bg-primary text-foreground rounded-lg text-center">
           + New Post
         </Link>
       </div>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <table className="w-full">
-          <thead className="bg-white/5">
+          <thead className="bg-background/5">
             <tr>
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Order</th> 
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Image</th>
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Title</th>
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Category</th>
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Date</th>
-              <th className="px-6 py-4 text-left text-xs text-gray-400">Status</th>
-              <th className="px-6 py-4 text-right text-xs text-gray-400">Actions</th>
+              <th className="px-6 py-4 text-left text-xs text-muted">Order</th> 
+              <th className="px-6 py-4 text-left text-xs text-muted">Image</th>
+              <th className="px-6 py-4 text-left text-xs text-muted">Title</th>
+              <th className="px-6 py-4 text-left text-xs text-muted">Category</th>
+              <th className="px-6 py-4 text-left text-xs text-muted">Date</th>
+              <th className="px-6 py-4 text-left text-xs text-muted">Status</th>
+              <th className="px-6 py-4 text-right text-xs text-muted">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
             {posts.map((post) => (
-              <tr key={post._id} className="hover:bg-white/5">
-                <td className="px-6 py-4 text-white font-medium">{post.order || 0}</td>
+              <tr key={post._id} className="hover:bg-background/5">
+                <td className="px-6 py-4 text-foreground font-medium">{post.order || 0}</td>
                 <td className="px-6 py-4">
                   {post.image?.url && (
                     <img src={post.image.url} alt={post.title} className="w-16 h-12 object-cover rounded" />
                   )}
                 </td>
-                <td className="px-6 py-4 text-white font-medium">{post.title}</td>
-                <td className="px-6 py-4 text-gray-400">{post.category}</td>
-                <td className="px-6 py-4 text-gray-400">{new Date(post.date).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-foreground font-medium">{post.title}</td>
+                <td className="px-6 py-4 text-muted">{post.category}</td>
+                <td className="px-6 py-4 text-muted">{new Date(post.date).toLocaleDateString()}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2 py-1 rounded text-xs ${post.isActive ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                     {post.isActive ? 'Active' : 'Inactive'}
@@ -96,7 +96,7 @@ export default function BlogAdminPage() {
         </table>
         
         {posts.length === 0 && (
-          <div className="text-center py-12 text-gray-400">
+          <div className="text-center py-12 text-muted">
             No blog posts found. Create your first post!
           </div>
         )}

@@ -90,20 +90,20 @@ export default function FocusAreasPage() {
   return (
     <>
       <Navbar activeSection={activeSection} />
-      <div className="min-h-screen bg-[#0a0a0a]">
+      <div className="min-h-screen bg-card">
 
         {/* ─── Hero Section ─────────────────────────────── */}
         <section className="relative mt-8 h-[40vh] min-h-[300px] flex items-center justify-center">
            {/* ─── Back to Home Button ────────────────────── */}
-        <Link href="/" className="absolute top-10 left-4 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 text-gray-400 hover:text-white hover:border-white/20 transition-all text-sm">
+        <Link href="/" className="absolute top-10 left-4 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 text-muted hover:text-foreground hover:border-border/20 transition-all text-sm">
           <svg className="w-4 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
           Back to Home
         </Link>
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative z-10 text-center px-4">
             <ScrollReveal animation="up">
-              <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Focus Areas</h1>
-              <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto uppercase tracking-[0.15em]">
+              <h1 className="text-4xl md:text-6xl font-black text-foreground mb-4">Focus Areas</h1>
+              <p className="text-muted text-sm md:text-base max-w-2xl mx-auto uppercase tracking-[0.15em]">
                 We are actively developing and researching these core robotic systems to solve real-world problems.
               </p>
             </ScrollReveal>
@@ -118,13 +118,13 @@ export default function FocusAreasPage() {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
               </div>
             ) : displayAreas.length === 0 ? (
-              <div className="text-center py-20 text-gray-500 text-sm">No focus areas available.</div>
+              <div className="text-center py-20 text-muted text-sm">No focus areas available.</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {displayAreas.map((area, index) => (
                   <ScrollReveal key={area._id} animation="up" delay={index * 80}>
                     <Link href={`/focus-areas/${area.slug}`}>
-                      <div className="group relative bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-500 hover:-translate-y-1 h-full flex flex-col">
+                      <div className="group relative bg-card border border-border/5 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-500 hover:-translate-y-1 h-full flex flex-col">
                         {area.coverImage?.url && (
                           <div className="relative h-48 overflow-hidden">
                             <img
@@ -147,17 +147,17 @@ export default function FocusAreasPage() {
                               />
                             </div>
                             <div>
-                              <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase">{area.category}</p>
-                              <h3 className="text-white font-bold text-base group-hover:text-primary transition-colors">{area.title}</h3>
+                              <p className="text-muted text-[10px] font-bold tracking-widest uppercase">{area.category}</p>
+                              <h3 className="text-foreground font-bold text-base group-hover:text-primary transition-colors">{area.title}</h3>
                             </div>
                           </div>
 
-                          <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-3">
+                          <p className="text-muted text-xs leading-relaxed flex-1 line-clamp-3">
                             {area.shortDescription || area.description}
                           </p>
 
                           {area.statistics && (
-                            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/5 text-[10px] text-gray-500">
+                            <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border/5 text-[10px] text-muted">
                               <span>{area.statistics.totalProjects} projects</span>
                               <span>{area.statistics.totalMembers} members</span>
                               {area.statistics.totalAwards > 0 && <span>{area.statistics.totalAwards} awards</span>}

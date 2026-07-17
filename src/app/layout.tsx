@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -19,7 +20,6 @@ export const metadata: Metadata = {
     icon: '/DRC-Logo-300x221.gif',
   },
   description: "A high-performance, modern web portal for Dhaka University of Engineering & Technology (DUET) Robotics Club, featuring project showcases, event tracking, and an AI-powered club assistant.",
-
 };
 
 export default function RootLayout({
@@ -28,12 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Toaster position="top-right" />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+          <Toaster position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -11,7 +11,6 @@ interface HeroData {
   isActive: boolean;
 }
 
-// Fallback data in case API fails
 const FALLBACK_DATA: HeroData = {
   title: 'Empowering Future Innovators Through Robotics',
   subtitle: 'DUET Robotics Club',
@@ -44,7 +43,6 @@ const Hero: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Fetch hero data from API only on page load
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
@@ -61,7 +59,6 @@ const Hero: React.FC = () => {
         }
       } catch (err) {
         console.error('Error fetching hero data, using fallback:', err);
-        // Keep using fallback data
       } finally {
         setLoading(false);
       }
@@ -70,7 +67,6 @@ const Hero: React.FC = () => {
     fetchHeroData();
   }, []);
 
-  // Image slider effect
   useEffect(() => {
     if (!heroData?.images?.length || !heroData?.isActive) return;
 
@@ -82,10 +78,8 @@ const Hero: React.FC = () => {
     return () => clearInterval(timer);
   }, [heroData?.images?.length, heroData?.autoSlideInterval, heroData?.isActive]);
 
-  // Sort images by order
   const sortedImages = [...(heroData?.images || [])].sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  // Safe title rendering function
   const renderTitle = () => {
     if (!heroData?.title) return null;
 
@@ -111,10 +105,9 @@ const Hero: React.FC = () => {
     );
   };
 
-  // Show loading state if needed
   if (loading) {
     return (
-      <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen min-h-[350px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[700px] flex items-end pb-16 sm:pb-20 md:pb-24 lg:pb-32 justify-center overflow-hidden bg-dark">
+      <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen min-h-[350px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[700px] flex items-end pb-16 sm:pb-20 md:pb-24 lg:pb-32 justify-center overflow-hidden bg-background">
         <div className="text-center">
           <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3 sm:mb-4"></div>
           <p className="text-white text-sm sm:text-base">Loading...</p>
@@ -124,8 +117,7 @@ const Hero: React.FC = () => {
   }
 
   return (
-    <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen min-h-[350px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[700px] flex items-end justify-center overflow-hidden bg-dark">
-      {/* Dynamic Image Slider */}
+    <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen min-h-[350px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[700px] flex items-end justify-center overflow-hidden bg-background">
       {sortedImages.length > 0 && (
         <div className="absolute inset-0 z-0">
           {sortedImages.map((img, index) => (
@@ -138,7 +130,7 @@ const Hero: React.FC = () => {
                     : 'opacity-0 translate-x-full scale-110'
                 }`}
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(5,5,5,0.40), rgba(5,5,5,0.15), rgba(5,5,5,0.70)), url('${img.url}')`,
+                backgroundImage: `linear-gradient(to bottom, rgba(var(--background-rgb, 5,5,5),0.40), rgba(var(--background-rgb, 5,5,5),0.15), rgba(var(--background-rgb, 5,5,5),0.70)), url('${img.url}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: index === currentIndex ? 1 : 0
@@ -150,12 +142,10 @@ const Hero: React.FC = () => {
         </div>
       )}
 
-      {/* Simplified Overlay Grid - Hidden on mobile */}
       <div className="hidden md:block absolute inset-0 z-[2] opacity-10 pointer-events-none"
         style={{ backgroundImage: 'radial-gradient(circle, #e63946 1px, transparent 1px)', backgroundSize: '60px 60px' }}>
       </div>
 
-      {/* Content Container - Positioned at bottom */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center pb-8 sm:pb-10 md:pb-12 lg:pb-16 xl:pb-20">
         {heroData?.subtitle && (
           <p className="text-primary text-[10px] sm:text-xs md:text-sm font-black mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-wider animate-[fadeIn_1s_ease-out_forwards]">
@@ -179,7 +169,7 @@ const Hero: React.FC = () => {
               href={heroData.primaryButton.link || '#contact'}
               className="group relative w-full sm:w-1/2 px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 bg-primary overflow-hidden text-white font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] text-[8px] sm:text-[9px] md:text-[10px] transition-all rounded-sm hover:scale-105 active:scale-95 shadow-2xl"
             >
-              <span className="relative z-10 group-hover:text-dark transition-colors duration-300">
+              <span className="relative z-10 group-hover:text-primary transition-colors duration-300">
                 {heroData.primaryButton.text || 'Join the Mission'}
               </span>
               <div className="absolute inset-0 bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
@@ -192,13 +182,12 @@ const Hero: React.FC = () => {
               className="group relative w-full sm:w-1/2 px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-2.5 md:py-3 border-2 border-white/20 text-white font-black uppercase tracking-[0.1em] sm:tracking-[0.15em] text-[8px] sm:text-[9px] md:text-[10px] hover:border-primary transition-all overflow-hidden rounded-sm bg-black/30 backdrop-blur-md shadow-2xl"
             >
               <span className="relative z-10">{heroData.secondaryButton.text || 'Explore Projects'}</span>
-              <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              <div className="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </a>
           )}
         </div>
       </div>
 
-      {/* Visual Navigation Indicators - Moved slightly up */}
       {sortedImages.length > 1 && (
         <div className="absolute bottom-3 sm:bottom-4 md:bottom-5 lg:bottom-6 xl:bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 sm:space-x-2 md:space-x-2.5 lg:space-x-3">
           {sortedImages.map((_, i) => (
@@ -215,7 +204,6 @@ const Hero: React.FC = () => {
         </div>
       )}
 
-      {/* Add keyframe animations */}
       <style dangerouslySetInnerHTML={{
         __html: `
         @keyframes fadeIn {

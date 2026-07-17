@@ -15,7 +15,6 @@ const CountUp: React.FC<{ end: string, duration?: number }> = ({ end, duration =
   const [hasStarted, setHasStarted] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
   
-  // Extract number and suffix (e.g., "15+" -> 15 and "+")
   const match = end.match(/(\d+)(.*)/);
   const target = match ? parseInt(match[1]) : 0;
   const suffix = match ? match[2] : '';
@@ -47,7 +46,6 @@ const CountUp: React.FC<{ end: string, duration?: number }> = ({ end, duration =
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Easing function: easeOutExpo
       const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       
       const nextCount = Math.floor(easedProgress * target);
@@ -132,7 +130,6 @@ const Stats: React.FC = () => {
 
   return (
     <div className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 overflow-hidden">
-      {/* Background Accent */}
       <div className="absolute top-0 left-0 w-full h-full bg-primary -skew-y-2 sm:-skew-y-3 origin-top-left -z-10 shadow-[0_0_60px_rgba(230,57,70,0.2)] sm:shadow-[0_0_100px_rgba(230,57,70,0.3)]"></div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -140,10 +137,10 @@ const Stats: React.FC = () => {
           {displayStats.map((stat, idx) => (
             <ScrollReveal key={idx} animation="scale" delay={idx * 150}>
               <div className="text-center group w-full">
-                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl tabular-nums">
-                  <CountUp end={stat.value} /> <span className="text-white">{stat.suffix}</span>
+                <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-black/80 dark:text-white/80 mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl tabular-nums">
+                  <CountUp end={stat.value} />
                 </div>
-                <div className="text-white/80 uppercase font-black tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] text-[8px] sm:text-[10px] md:text-xs lg:text-sm">
+                <div className="text-black/80 dark:text-white/80 uppercase font-black tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] text-[8px] sm:text-[10px] md:text-xs lg:text-sm">
                   {stat.label}
                 </div>
               </div>

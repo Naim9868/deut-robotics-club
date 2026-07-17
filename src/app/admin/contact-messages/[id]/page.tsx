@@ -30,7 +30,7 @@ interface ContactMessage {
 
 const STATUS_STYLES: Record<string, string> = {
   unread: 'bg-blue-500/15 text-blue-400 border border-blue-500/20',
-  read: 'bg-gray-500/15 text-gray-400 border border-gray-500/20',
+  read: 'bg-gray-500/15 text-muted border border-gray-500/20',
   replied: 'bg-green-500/15 text-green-400 border border-green-500/20',
   archived: 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20',
 };
@@ -170,9 +170,9 @@ export default function ContactMessageDetailPage({
     return (
       <div className="space-y-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-white/5 rounded w-1/3" />
-          <div className="h-4 bg-white/5 rounded w-1/2" />
-          <div className="h-64 bg-white/5 rounded-xl" />
+          <div className="h-8 bg-background/5 rounded w-1/3" />
+          <div className="h-4 bg-background/5 rounded w-1/2" />
+          <div className="h-64 bg-background/5 rounded-xl" />
         </div>
       </div>
     );
@@ -187,16 +187,16 @@ export default function ContactMessageDetailPage({
         <div>
           <Link
             href="/admin/contact-messages"
-            className="text-xs text-gray-500 hover:text-primary transition-colors mb-2 inline-block"
+            className="text-xs text-muted hover:text-primary transition-colors mb-2 inline-block"
           >
             ← Back to Messages
           </Link>
-          <h1 className="text-2xl font-black text-white">{message.subject}</h1>
+          <h1 className="text-2xl font-black text-foreground">{message.subject}</h1>
           <div className="flex items-center gap-3 mt-2">
             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${STATUS_STYLES[message.status]}`}>
               {message.status}
             </span>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted">
               {formatDate(message.createdAt)}
             </span>
           </div>
@@ -207,14 +207,14 @@ export default function ContactMessageDetailPage({
           {message.status === 'unread' && (
             <button
               onClick={handleMarkAsRead}
-              className="px-3 py-1.5 text-xs font-bold bg-gray-500/10 text-gray-400 rounded-lg hover:bg-gray-500/20 transition-colors"
+              className="px-3 py-1.5 text-xs font-bold bg-gray-500/10 text-muted rounded-lg hover:bg-gray-500/20 transition-colors"
             >
               Mark as Read
             </button>
           )}
           <button
             onClick={handleGmailReply}
-            className="px-3 py-1.5 text-xs font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+            className="px-3 py-1.5 text-xs font-bold bg-primary text-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             Reply
           </button>
@@ -239,25 +239,25 @@ export default function ContactMessageDetailPage({
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Message */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="text-xs font-black text-muted uppercase tracking-wider mb-4">
               Message
             </h3>
-            <div className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">
+            <div className="text-sm text-muted whitespace-pre-wrap leading-relaxed">
               {message.message}
             </div>
           </div>
 
           {/* Reply (if exists) */}
           {message.reply && (
-            <div className="bg-[#0a0a0a] border border-green-500/10 rounded-2xl p-6">
+            <div className="bg-card border border-green-500/10 rounded-2xl p-6">
               <h3 className="text-xs font-black text-green-400 uppercase tracking-wider mb-4">
                 Reply
               </h3>
-              <div className="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed mb-4">
+              <div className="text-sm text-muted whitespace-pre-wrap leading-relaxed mb-4">
                 {message.reply}
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-500">
+              <div className="flex items-center gap-4 text-xs text-muted">
                 <span>By: {message.repliedBy}</span>
                 <span>At: {message.repliedAt ? formatDate(message.repliedAt) : 'N/A'}</span>
               </div>
@@ -268,20 +268,20 @@ export default function ContactMessageDetailPage({
         {/* Sidebar Info */}
         <div className="space-y-6">
           {/* Sender Info */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="text-xs font-black text-muted uppercase tracking-wider mb-4">
               Sender Information
             </h3>
             <div className="space-y-3">
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">Name</p>
-                <p className="text-sm text-white font-medium">{message.name}</p>
+                <p className="text-[10px] text-muted uppercase">Name</p>
+                <p className="text-sm text-foreground font-medium">{message.name}</p>
               </div>
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">Email</p>
+                <p className="text-[10px] text-muted uppercase">Email</p>
                 <a
                   href={`mailto:${message.email}`}
-                  className="text-sm text-primary hover:text-white transition-colors"
+                  className="text-sm text-primary hover:text-foreground transition-colors"
                 >
                   {message.email}
                 </a>
@@ -290,26 +290,26 @@ export default function ContactMessageDetailPage({
           </div>
 
           {/* Metadata */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-wider mb-4">
+          <div className="bg-card border border-border rounded-2xl p-6">
+            <h3 className="text-xs font-black text-muted uppercase tracking-wider mb-4">
               Metadata
             </h3>
             <div className="space-y-3">
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">IP Address</p>
-                <p className="text-sm text-gray-300 font-mono">{message.ipAddress || 'N/A'}</p>
+                <p className="text-[10px] text-muted uppercase">IP Address</p>
+                <p className="text-sm text-muted font-mono">{message.ipAddress || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">User Agent</p>
-                <p className="text-xs text-gray-500 break-all">{message.userAgent || 'N/A'}</p>
+                <p className="text-[10px] text-muted uppercase">User Agent</p>
+                <p className="text-xs text-muted break-all">{message.userAgent || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">Received</p>
-                <p className="text-sm text-gray-300">{formatDate(message.createdAt)}</p>
+                <p className="text-[10px] text-muted uppercase">Received</p>
+                <p className="text-sm text-muted">{formatDate(message.createdAt)}</p>
               </div>
               <div>
-                <p className="text-[10px] text-gray-600 uppercase">Last Updated</p>
-                <p className="text-sm text-gray-300">{formatDate(message.updatedAt)}</p>
+                <p className="text-[10px] text-muted uppercase">Last Updated</p>
+                <p className="text-sm text-muted">{formatDate(message.updatedAt)}</p>
               </div>
             </div>
           </div>

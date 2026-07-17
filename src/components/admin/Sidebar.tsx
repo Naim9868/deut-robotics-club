@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import toast from 'react-hot-toast';
 import { useSidebar } from './SidebarContext';
 
@@ -39,6 +40,35 @@ const memberItems = [
 const communicationItems = [
   { name: 'Contact Messages', href: '/admin/contact-messages', icon: '✉️' },
 ];
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  return (
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="flex items-center space-x-3 px-4 py-3 w-full rounded-lg text-sm text-muted hover:bg-background/5 hover:text-foreground transition-all"
+      aria-label="Toggle theme"
+    >
+      {theme === 'dark' ? (
+        <>
+          <span>☀️</span>
+          <span>Light Mode</span>
+        </>
+      ) : (
+        <>
+          <span>🌙</span>
+          <span>Dark Mode</span>
+        </>
+      )}
+    </button>
+  );
+}
 
 function UnreadBadge() {
   const [count, setCount] = useState(0);
@@ -108,11 +138,11 @@ export default function Sidebar() {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      <div className="p-6 border-b border-white/5">
-        <h1 className="text-xl font-black text-white">
+      <div className="p-6 border-b border-border">
+        <h1 className="text-xl font-black text-foreground">
           DRC <span className="text-primary">ADMIN</span>
         </h1>
-        <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-1">
+        <p className="text-[10px] text-muted uppercase tracking-wider mt-1">
           Control Panel
         </p>
       </div>
@@ -124,8 +154,8 @@ export default function Sidebar() {
             href={item.href}
             className={`flex items-center space-x-3 px-4 py-2 rounded-lg mb-1 text-sm transition-all ${
               pathname === item.href
-                ? 'bg-primary text-white'
-                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                ? 'bg-primary text-foreground'
+                : 'text-muted hover:bg-background/5 hover:text-foreground'
             }`}
           >
             <span className="text-lg">{item.icon}</span>
@@ -133,8 +163,8 @@ export default function Sidebar() {
           </Link>
         ))}
 
-        <div className="mt-4 pt-4 border-t border-white/5">
-          <p className="px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="px-4 mb-2 text-[10px] font-black text-muted uppercase tracking-[0.2em]">
             Member Management
           </p>
           {memberItems.map((item) => (
@@ -143,8 +173,8 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center space-x-3 px-4 py-2 rounded-lg mb-1 text-sm transition-all ${
                 pathname === item.href
-                  ? 'bg-primary text-white'
-                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-primary text-foreground'
+                  : 'text-muted hover:bg-background/5 hover:text-foreground'
               }`}
             >
               <span className="text-lg">{item.icon}</span>
@@ -153,8 +183,8 @@ export default function Sidebar() {
           ))}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-white/5">
-          <p className="px-4 mb-2 text-[10px] font-black text-gray-600 uppercase tracking-[0.2em]">
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="px-4 mb-2 text-[10px] font-black text-muted uppercase tracking-[0.2em]">
             Communication
           </p>
           {communicationItems.map((item) => (
@@ -163,8 +193,8 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center justify-between px-4 py-2 rounded-lg mb-1 text-sm transition-all ${
                 pathname === item.href
-                  ? 'bg-primary text-white'
-                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-primary text-foreground'
+                  : 'text-muted hover:bg-background/5 hover:text-foreground'
               }`}
             >
               <div className="flex items-center space-x-3">
@@ -177,11 +207,12 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      <div className="border-t border-white/5 p-4">
+      <div className="border-t border-border p-4 space-y-1">
+        <ThemeToggle />
         <button
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="flex items-center space-x-3 px-4 py-3 w-full rounded-lg text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-all"
+          className="flex items-center space-x-3 px-4 py-3 w-full rounded-lg text-sm text-muted hover:bg-background/5 hover:text-foreground transition-all"
         >
           <span>🚪</span>
           <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
@@ -193,7 +224,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-64 bg-[#0a0a0a] border-r border-white/5 h-screen fixed left-0 top-0 overflow-y-auto z-40">
+      <aside className="hidden lg:block w-64 bg-card border-r border-border h-screen fixed left-0 top-0 overflow-y-auto z-40">
         {sidebarContent}
       </aside>
 
@@ -207,13 +238,13 @@ export default function Sidebar() {
 
       {/* Mobile sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-[#0a0a0a] border-r border-white/5 z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 w-64 bg-card border-r border-border z-50 lg:hidden transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <button
           onClick={close}
-          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors z-50"
+          className="absolute top-4 right-4 p-2 text-muted hover:text-foreground rounded-lg hover:bg-background/10 transition-colors z-50"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

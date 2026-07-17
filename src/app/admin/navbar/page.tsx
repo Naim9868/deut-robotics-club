@@ -97,28 +97,28 @@ export default function NavbarPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Navbar</h1>
+      <h1 className="text-4xl font-black text-foreground">Navbar</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-bold text-white">Logo Settings</h2>
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-bold text-foreground">Logo Settings</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <input {...register('logo.text')} placeholder="Logo Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
-            <input {...register('logo.icon')} placeholder="Icon Letter" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
-            <input {...register('logo.iconBgColor')} type="color" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white h-12" />
+            <input {...register('logo.text')} placeholder="Logo Text" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
+            <input {...register('logo.icon')} placeholder="Icon Letter" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
+            <input {...register('logo.iconBgColor')} type="color" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground h-12" />
           </div>
 
-          <div className="border-t border-white/5 pt-6">
-            <h2 className="text-xl font-bold text-white mb-4">Navigation Links</h2>
+          <div className="border-t border-border pt-6">
+            <h2 className="text-xl font-bold text-foreground mb-4">Navigation Links</h2>
             {fields.map((field, index) => (
-              <div key={field.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-2 bg-[#121212] p-2 rounded">
+              <div key={field.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-2 bg-input-bg p-2 rounded">
                 <div className="flex sm:flex-col gap-1 sm:gap-0">
-                  <button type="button" onClick={() => moveUp(index)} className="text-gray-400 hover:text-white">↑</button>
-                  <button type="button" onClick={() => moveDown(index)} className="text-gray-400 hover:text-white">↓</button>
+                  <button type="button" onClick={() => moveUp(index)} className="text-muted hover:text-foreground">↑</button>
+                  <button type="button" onClick={() => moveDown(index)} className="text-muted hover:text-foreground">↓</button>
                 </div>
-                <input {...register(`navLinks.${index}.name`)} placeholder="Name" className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
-                <input {...register(`navLinks.${index}.href`)} placeholder="Href" className="flex-1 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
-                <input {...register(`navLinks.${index}.id`)} placeholder="ID" className="w-full sm:w-24 bg-transparent border border-white/10 rounded px-3 py-2 text-white" />
+                <input {...register(`navLinks.${index}.name`)} placeholder="Name" className="flex-1 bg-transparent border border-border rounded px-3 py-2 text-foreground" />
+                <input {...register(`navLinks.${index}.href`)} placeholder="Href" className="flex-1 bg-transparent border border-border rounded px-3 py-2 text-foreground" />
+                <input {...register(`navLinks.${index}.id`)} placeholder="ID" className="w-full sm:w-24 bg-transparent border border-border rounded px-3 py-2 text-foreground" />
                 <button type="button" onClick={() => remove(index)} className="text-red-500">✕</button>
               </div>
             ))}
@@ -127,45 +127,45 @@ export default function NavbarPage() {
             </button>
           </div>
 
-          <div className="border-t border-white/5 pt-6">
-            <h2 className="text-xl font-bold text-white mb-4">CTA Button</h2>
+          <div className="border-t border-border pt-6">
+            <h2 className="text-xl font-bold text-foreground mb-4">CTA Button</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input {...register('ctaButton.text')} placeholder="Button Text" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
-              <input {...register('ctaButton.link')} placeholder="Button Link" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
+              <input {...register('ctaButton.text')} placeholder="Button Text" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
+              <input {...register('ctaButton.link')} placeholder="Button Link" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
             </div>
             <label className="flex items-center gap-2 mt-4">
               <input type="checkbox" {...register('ctaButton.isActive')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Show CTA Button</span>
+              <span className="text-sm text-muted">Show CTA Button</span>
             </label>
           </div>
 
-          <div className="flex items-center gap-6 pt-4 border-t border-white/5">
+          <div className="flex items-center gap-6 pt-4 border-t border-border">
             <label className="flex items-center gap-2">
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Active</span>
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
         </div>
 
         <div className="flex justify-end gap-4">
-          <button type="button" onClick={() => router.push('/admin')} className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg">Cancel</button>
-          <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg">Save Navbar</button>
+          <button type="button" onClick={() => router.push('/admin')} className="px-6 py-3 border border-border text-muted rounded-lg">Cancel</button>
+          <button type="submit" className="px-6 py-3 bg-primary text-foreground rounded-lg">Save Navbar</button>
         </div>
       </form>
 
       {/* Preview */}
       {navbar && (
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">🔍 Preview</h2>
-          <div className="bg-dark/95 border border-white/5 rounded-lg p-4">
+        <div className="bg-card border border-border rounded-2xl p-8">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">🔍 Preview</h2>
+          <div className="bg-background/95 border border-border rounded-lg p-4">
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-black text-white flex items-center gap-2">
+              <div className="text-2xl font-black text-foreground flex items-center gap-2">
                 <span className="w-8 h-8 bg-primary rounded flex items-center justify-center text-sm">{navbar.logo?.icon || 'D'}</span>
                 <span>{navbar.logo?.text}</span>
               </div>
               <div className="flex gap-4">
                 {navbar.navLinks?.slice(0, 3).map((link: any) => (
-                  <span key={link.id} className="text-gray-400 text-sm">{link.name}</span>
+                  <span key={link.id} className="text-muted text-sm">{link.name}</span>
                 ))}
                 <span className="text-primary text-sm">...</span>
               </div>

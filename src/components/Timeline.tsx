@@ -48,7 +48,7 @@ const Timeline: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-32 bg-dark relative overflow-hidden">
+      <div className="py-32 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -60,7 +60,7 @@ const Timeline: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-32 bg-dark relative overflow-hidden">
+      <div className="py-32 bg-background relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center text-red-500">
             {error}
@@ -114,26 +114,24 @@ const Timeline: React.FC = () => {
   ];
 
   return (
-    <div className="py-32 bg-dark relative overflow-hidden">
-      {/* Background decoration - Desktop only */}
+    <div className="py-32 bg-background relative overflow-hidden">
       <div className="absolute left-1/2 top-0 h-full w-[1px] bg-gradient-to-b from-transparent via-primary/50 to-transparent hidden md:block"></div>
      
       <div className="container mx-auto px-4 relative z-10">
         <ScrollReveal animation="up">
           <div className="text-center mb-24">
             <h2 className="text-2xl md:text-5xl font-black uppercase mb-4 section-title after:mx-auto">Our Journey</h2>
-            <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">Milestones that defined our legacy</p>
+            <p className="text-muted uppercase text-xs font-bold tracking-[0.3em]">Milestones that defined our legacy</p>
           </div>
         </ScrollReveal>
 
-        {/* Desktop Layout - Unchanged */}
         <div className="hidden md:block space-y-12 md:space-y-0">
           {displayItems.map((item, idx) => (
             <div key={item._id || idx} className={`flex flex-col md:flex-row items-center justify-center w-full mb-8 ${idx % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
               <div className="w-full md:w-5/12 hidden md:block"></div>
               
               <ScrollReveal animation="blur" delay={idx * 100} className="z-20">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-dark border-2 border-primary text-primary font-black text-xs shrink-0 shadow-[0_0_15px_rgba(230,57,70,0.3)]">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-background border-2 border-primary text-primary font-black text-xs shrink-0 shadow-[0_0_15px_rgba(230,57,70,0.3)]">
                   {item.year}
                 </div>
               </ScrollReveal>
@@ -141,7 +139,7 @@ const Timeline: React.FC = () => {
               <ScrollReveal 
                 animation={idx % 2 === 0 ? 'right' : 'left'} 
                 delay={idx * 150} 
-                className={`w-full md:w-5/12 p-8 bg-card border border-white/5 rounded-2xl md:mx-12 hover:border-primary/30 transition-all relative overflow-hidden ${idx % 2 === 0 ? 'text-left md:text-right' : 'text-left'}`}
+                className={`w-full md:w-5/12 p-8 bg-card border border-border rounded-2xl md:mx-12 hover:border-primary/30 transition-all relative overflow-hidden ${idx % 2 === 0 ? 'text-left md:text-right' : 'text-left'}`}
               >
                 {item.image?.url && (
                   <>
@@ -151,13 +149,13 @@ const Timeline: React.FC = () => {
                         backgroundImage: `url(${item.image.url})`,
                       }}
                     />
-                    <div className="absolute inset-0 bg-black/40 z-0" />
+                    <div className="absolute inset-0 bg-background/40 z-0" />
                   </>
                 )}
                 
                 <div className="relative z-10">
-                  <h3 className="text-xl font-black text-white uppercase mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+                  <h3 className="text-xl font-black text-foreground uppercase mb-2 group-hover:text-primary transition-colors">{item.title}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{item.description}</p>
                   
                   {item.achievements && item.achievements.length > 0 && (
                     <div className="mt-4 space-y-2">
@@ -175,30 +173,25 @@ const Timeline: React.FC = () => {
           ))}
         </div>
 
-        {/* Mobile Layout - New responsive design */}
         <div className="block md:hidden space-y-6">
           {displayItems.map((item, idx) => (
             <div key={item._id || idx} className="flex flex-col gap-3">
-              {/* Year and Title row - alternating sides */}
               <div className={`flex items-center gap-3 ${idx % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                {/* Year Badge */}
                 <ScrollReveal animation="blur" delay={idx * 100} className="flex-shrink-0">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-dark border-2 border-primary text-primary font-black text-[10px] shrink-0 shadow-[0_0_15px_rgba(230,57,70,0.3)]">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background border-2 border-primary text-primary font-black text-[10px] shrink-0 shadow-[0_0_15px_rgba(230,57,70,0.3)]">
                     {item.year}
                   </div>
                 </ScrollReveal>
 
-                {/* Title */}
                 <ScrollReveal animation={idx % 2 === 0 ? 'right' : 'left'} delay={idx * 100}>
-                  <h3 className={`text-sm font-black text-white uppercase ${idx % 2 === 0 ? 'text-left' : 'text-right'} flex-1`}>
+                  <h3 className={`text-sm font-black text-foreground uppercase ${idx % 2 === 0 ? 'text-left' : 'text-right'} flex-1`}>
                     {item.title}
                   </h3>
                 </ScrollReveal>
               </div>
 
-              {/* Description Card */}
               <ScrollReveal animation="up" delay={idx * 150}>
-                <div className="p-4 bg-card border border-white/5 rounded-xl hover:border-primary/30 transition-all relative overflow-hidden">
+                <div className="p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-all relative overflow-hidden">
                   {item.image?.url && (
                     <>
                       <div 
@@ -207,12 +200,12 @@ const Timeline: React.FC = () => {
                           backgroundImage: `url(${item.image.url})`,
                         }}
                       />
-                      <div className="absolute inset-0 bg-black/40 z-0" />
+                      <div className="absolute inset-0 bg-background/40 z-0" />
                     </>
                   )}
                   
                   <div className="relative z-10">
-                    <p className="text-gray-400 text-xs leading-relaxed">{item.description}</p>
+                    <p className="text-muted text-xs leading-relaxed">{item.description}</p>
                     
                     {item.achievements && item.achievements.length > 0 && (
                       <div className="mt-3 space-y-1.5">
@@ -232,7 +225,7 @@ const Timeline: React.FC = () => {
         </div>
         
         {displayItems.length === 0 && (
-          <div className="text-center text-gray-400 py-12">
+          <div className="text-center text-muted py-12">
             No timeline data available.
           </div>
         )}

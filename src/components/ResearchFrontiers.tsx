@@ -46,13 +46,13 @@ const ResearchFrontiers: React.FC = () => {
       case 'completed': case 'published': case 'accepted': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
       case 'proposed': case 'literature_review': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
       case 'experimentation': case 'paper_writing': case 'submitted': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
-      default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+      default: return 'bg-muted/10 text-muted border-muted/20';
     }
   };
 
   if (loading) {
     return (
-      <div className="py-12 sm:py-16 md:py-20 lg:py-32 bg-[#050505] overflow-hidden">
+      <div className="py-12 sm:py-16 md:py-20 lg:py-32 bg-muted/30 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center items-center min-h-[200px]">
             <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-primary" />
@@ -63,14 +63,14 @@ const ResearchFrontiers: React.FC = () => {
   }
 
   return (
-    <div className="py-6 sm:py-16 md:py-20 lg:py-32 bg-[#050505] overflow-hidden">
+    <div className="py-6 sm:py-16 md:py-20 lg:py-32 bg-muted/2 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal animation="up">
           <div className="mb-8 sm:mb-10 md:mb-14 lg:mb-20">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title sm:text-left">
               Research Frontiers
             </h2>
-            <p className="text-gray-500 uppercase text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.4em] sm:text-left">
+            <p className="text-muted uppercase text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.4em] sm:text-left">
               Pushing the limits of traditional engineering
             </p>
           </div>
@@ -80,51 +80,44 @@ const ResearchFrontiers: React.FC = () => {
           {researchItems.map((item, i) => (
             <ScrollReveal key={item._id || i} animation="up" delay={i * 100}>
               <Link href={`/research/${item.slug}`}>
-                <div className="group relative shadow-amber-50 p-2 sm:p-5 md:p-6 lg:p-8 h-auto min-h-[280px] sm:min-h-[300px] md:min-h-[320px] lg:min-h-[340px] glass hover:bg-primary/5 transition-all duration-500 border-l-2 border-l-primary/50 sm:border-l-white/10 hover:border-l-primary rounded-xl hover:shadow-[4px_4px_15px_rgba(230,57,70,0.05)] hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.3)] sm:shadow-none">
+                <div className="group relative shadow-[0_1px_3px_rgba(0,0,0,0.3)] p-2 sm:p-5 md:p-6 lg:p-8 h-auto min-h-[280px] sm:min-h-[300px] md:min-h-[320px] lg:min-h-[340px] glass hover:bg-primary/5 transition-all duration-500 border-l-2 border-l-primary/50 sm:border-l-border hover:border-l-primary rounded-xl hover:shadow-[4px_4px_15px_rgba(230,57,70,0.05)] hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.3)] sm:shadow-none">
                   
-                  {/* Header Section - Status and Number */}
                   <div className="flex justify-between items-start mb-3 sm:mb-4 md:mb-5">
                     <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[6px] sm:text-[7px] md:text-[8px] font-black uppercase tracking-wider rounded-full border ${getStatusColor(item.status)}`}>
                       {item.status.replace(/_/g, ' ')}
                     </span>
-                    <span className="text-primary/20 sm:text-white/8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black group-hover:text-primary/30 transition-colors">
+                    <span className="text-primary/20 sm:text-foreground/8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black group-hover:text-primary/30 transition-colors">
                       0{i + 1}
                     </span>
                   </div>
 
-                  {/* Main Content Section */}
                   <div className="flex-1 relative z-10">
-                    {/* Research Area */}
                     <span className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest block mb-1.5 sm:mb-2 md:mb-3 line-clamp-1">
                       {item.researchArea || item.category || 'Research'}
                     </span>
 
-                    {/* Title */}
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold uppercase text-white mb-2 sm:mb-3 md:mb-4 group-hover:translate-x-2 transition-transform line-clamp-2 sm:line-clamp-2 md:line-clamp-3">
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold uppercase text-foreground mb-2 sm:mb-3 md:mb-4 group-hover:translate-x-2 transition-transform line-clamp-2 sm:line-clamp-2 md:line-clamp-3">
                       {item.title}
                     </h3>
 
-                    {/* Description */}
-                    <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-3 sm:line-clamp-3 md:line-clamp-4 mb-3 sm:mb-4">
+                    <p className="text-muted text-[10px] sm:text-xs md:text-sm leading-relaxed group-hover:text-muted transition-colors line-clamp-3 sm:line-clamp-3 md:line-clamp-4 mb-3 sm:mb-4">
                       {item.shortDescription || ''}
                     </p>
 
-                    {/* Researchers Section */}
                     {item.researchers && item.researchers.length > 0 && (
                       <div className="mb-2 sm:mb-2.5">
-                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">
+                        <p className="text-[7px] sm:text-[8px] text-muted uppercase tracking-wider mb-0.5 sm:mb-1">
                           Researchers
                         </p>
-                        <p className="text-[8px] sm:text-[10px] text-gray-400 line-clamp-2">
+                        <p className="text-[8px] sm:text-[10px] text-muted line-clamp-2">
                           {item.researchers.map(r => r.fullName).join(' • ')}
                         </p>
                       </div>
                     )}
 
-                    {/* Publications Section */}
                     {item.publications && item.publications.length > 0 && (
                       <div>
-                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">
+                        <p className="text-[7px] sm:text-[8px] text-muted uppercase tracking-wider mb-0.5 sm:mb-1">
                           Publications
                         </p>
                         <p className="text-[8px] sm:text-[9px] text-primary/90 font-medium">
@@ -134,8 +127,7 @@ const ResearchFrontiers: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Bottom Accent Line */}
-                  <div className="absolute bottom-3 sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-white/20 group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all" />
+                  <div className="absolute bottom-3 sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-border group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all" />
                 </div>
               </Link>
             </ScrollReveal>
@@ -145,7 +137,7 @@ const ResearchFrontiers: React.FC = () => {
         <div className="mt-10 sm:mt-12 md:mt-14 lg:mt-16 text-center">
           <ScrollReveal animation="up">
             <Link href="/research">
-              <button className="px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 border border-white/100 text-white font-black uppercase tracking-widest text-[10px] sm:text-[11px] rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95">
+              <button className="px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 border border-border text-foreground font-black uppercase tracking-widest text-[10px] sm:text-[11px] rounded hover:bg-foreground hover:text-background transition-all transform hover:scale-105 active:scale-95">
                 Explore All Research
               </button>
             </Link>
@@ -153,7 +145,7 @@ const ResearchFrontiers: React.FC = () => {
         </div>
 
         {researchItems.length === 0 && (
-          <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+          <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
             No research frontiers available.
           </div>
         )}

@@ -116,29 +116,29 @@ export default function GalleryPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Gallery</h1>
+      <h1 className="text-4xl font-black text-foreground">Gallery</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Image</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit' : 'Add'} Image</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <input {...register('title')} placeholder="Title" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
-            <select {...register('category')} className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white">
+            <input {...register('title')} placeholder="Title" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
+            <select {...register('category')} className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground">
               <option value="Events">Events</option>
               <option value="Workshops">Workshops</option>
               <option value="Competitions">Competitions</option>
               <option value="Team">Team</option>
               <option value="Lab">Lab</option>
             </select>
-            <input type="date" {...register('date')} className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
+            <input type="date" {...register('date')} className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
           </div>
 
-          <textarea {...register('description')} placeholder="Description" rows={2} className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
+          <textarea {...register('description')} placeholder="Description" rows={2} className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
 
           {/* Image Upload with Toggle */}
-          <div className="border-t border-white/5 pt-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase">
+              <label className="text-xs font-black text-muted uppercase">
                 Project Image
               </label>
               <button
@@ -157,9 +157,9 @@ export default function GalleryPage() {
                   placeholder="https://example.com/image.jpg"
                   onChange={handleImageLinkChange}
                   value={currentImageUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the project image
                 </p>
               </div>
@@ -170,7 +170,7 @@ export default function GalleryPage() {
                   defaultValue={currentImageUrl}
                   folder="projects"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload an image or toggle to use an external link
                 </p>
               </div>
@@ -180,17 +180,17 @@ export default function GalleryPage() {
           <div className="flex items-center gap-6">
             <label className="flex items-center gap-2">
               <input type="checkbox" {...register('featured')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Featured</span>
+              <span className="text-sm text-muted">Featured</span>
             </label>
             <label className="flex items-center gap-2">
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Active</span>
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
 
           <div className="flex gap-2">
-            <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg">{editingId ? 'Update' : 'Create'}</button>
-            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg">Cancel</button>}
+            <button type="submit" className="px-6 py-2 bg-primary text-foreground rounded-lg">{editingId ? 'Update' : 'Create'}</button>
+            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-border text-muted rounded-lg">Cancel</button>}
           </div>
         </form>
       </div>
@@ -200,8 +200,8 @@ export default function GalleryPage() {
           <div key={item._id} className="break-inside-avoid mb-4 relative group">
             <img src={item.image?.url} alt={item.title} className="w-full rounded-lg" />
             <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
-              <button onClick={() => handleEdit(item)} className="px-3 py-1 bg-blue-500 text-white text-xs rounded">Edit</button>
-              <button onClick={() => handleDelete(item._id)} className="px-3 py-1 bg-red-500 text-white text-xs rounded">Delete</button>
+              <button onClick={() => handleEdit(item)} className="px-3 py-1 bg-blue-500 text-foreground text-xs rounded">Edit</button>
+              <button onClick={() => handleDelete(item._id)} className="px-3 py-1 bg-red-500 text-foreground text-xs rounded">Delete</button>
             </div>
           </div>
         ))}

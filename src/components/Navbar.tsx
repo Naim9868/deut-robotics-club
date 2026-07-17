@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
 interface NavbarProps {
@@ -10,9 +11,13 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isWaving, setIsWaving] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const waveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => setMounted(true), []);
 
   const navLinks = [
     { name: 'Home', href: '/', id: 'home', isPage: true },
@@ -61,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialLoad(false);
-    }, 1000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -71,18 +76,16 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       setIsWaving(true);
       setTimeout(() => {
         setIsWaving(false);
-      }, 3000); // Match the wave animation duration
+      }, 3000);
     };
 
-    // Start first wave after initial load
     const initialDelay = setTimeout(() => {
       startWaveAnimation();
-    }, 1200);
+    }, 4000);
 
-    // Set up recurring wave every 5 seconds
     waveTimeoutRef.current = setInterval(() => {
       startWaveAnimation();
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearTimeout(initialDelay);
@@ -92,22 +95,21 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     };
   }, []);
 
-  // Split text into individual characters with spaces preserved
   const brandText = "DUET ROBOTICS Club";
   const characters = brandText.split('');
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-2xl border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-2xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex-shrink-0">
-            <a 
-              href="/" 
+            <a
+              href="/"
               onClick={(e) => {
                 e.preventDefault();
                 router.push('/');
               }}
-              className="text-2xl font-black tracking-tighter text-white group flex items-center gap-2 cursor-pointer"
+              className="text-xl md:text-2xl font-black tracking-tighter text-foreground group flex items-center gap-2 cursor-pointer"
             >
               <span className="w-10 h-10 bg-white rounded flex items-center justify-center text-sm italic flex-shrink-0">
                 <Image
@@ -118,10 +120,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   priority
                 />
               </span>
-              
-              {/* Animated Brand Name with Natural Wave Effect */}
+
               <span className="relative inline-block">
-                <span 
+                <span
                   className={`
                     inline-flex flex-wrap items-center
                     transition-all duration-1000 ease-out
@@ -129,11 +130,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   `}
                 >
                   {characters.map((char, index) => {
-                    // Skip spaces but render them
                     if (char === ' ') {
                       return (
-                        <span 
-                          key={index} 
+                        <span
+                          key={index}
                           className="inline-block"
                           style={{ width: '0.25em' }}
                         >
@@ -142,16 +142,15 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                       );
                     }
 
-                    // Check if character is part of "ROBOTICS"
                     const isRobotics = index >= 5 && index <= 12;
-                    
+
                     return (
                       <span
                         key={index}
                         className={`
                           inline-block transition-all duration-300
                           ${isWaving ? 'animate-wave' : ''}
-                          ${isRobotics ? 'text-primary group-hover:text-white transition-colors' : 'text-white'}
+                          ${isRobotics ? 'text-primary group-hover:text-foreground transition-colors' : 'text-foreground'}
                           ${isRobotics && isWaving ? 'wave-glow' : ''}
                         `}
                         style={{
@@ -179,12 +178,29 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   href={link.href}
                   onClick={(e) => handleNavigation(e, link)}
                   className={`text-sm font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
-                    activeSection === link.id ? 'text-primary' : 'text-gray-400 hover:text-white'
+                    activeSection === link.id ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {link.name}
                 </a>
               ))}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                  )}
+                </button>
+              )}
               <a
                 href="/register"
                 onClick={(e) => {
@@ -198,10 +214,27 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </div>
           </div>
 
-          <div className="lg:hidden flex items-center">
+          <div className="lg:hidden flex items-center gap-2">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+            )}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-gray-400 hover:text-white"
+              className="p-2 text-muted-foreground hover:text-foreground"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -211,14 +244,14 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         </div>
       </div>
 
-      <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} lg:hidden bg-dark border-b border-white/10 px-4 pb-6 pt-2`}>
+      <div className={`${isMobileMenuOpen ? 'block' : 'hidden'} lg:hidden bg-background border-b border-border px-4 pb-6 pt-2`}>
         {navLinks.map((link) => (
           <a
             key={link.id}
             href={link.href}
             onClick={(e) => handleNavigation(e, link)}
-            className={`block py-4 text-sm font-black uppercase tracking-widest border-b border-white/5 last:border-0 cursor-pointer ${
-               activeSection === link.id ? 'text-primary' : 'text-gray-400'
+            className={`block py-4 text-sm font-black uppercase tracking-widest border-b border-border last:border-0 cursor-pointer ${
+               activeSection === link.id ? 'text-primary' : 'text-muted-foreground'
             }`}
           >
             {link.name}
@@ -231,13 +264,12 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             setIsMobileMenuOpen(false);
             router.push('/register');
           }}
-          className="block py-4 text-sm font-black uppercase tracking-widest text-primary border-t border-white/5 mt-4 pt-4"
+          className="block py-4 text-sm font-black uppercase tracking-widest text-primary border-t border-border mt-4 pt-4"
         >
           Join Now
         </a>
       </div>
 
-      {/* Add animation styles */}
       <style jsx>{`
         @keyframes wave {
           0% {
@@ -282,7 +314,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
         .wave-glow {
           color: #ff4900 !important;
-          text-shadow: 
+          text-shadow:
             0 0 20px rgba(250, 129, 0, 0.3),
             0 0 40px rgba(250, 129, 0, 0.2),
             0 0 60px rgba(250, 129, 0, 0.1);
@@ -313,7 +345,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           }
         }
 
-        /* Staggered animation delays applied inline via style */
         .animate-wave:nth-child(1) { animation-delay: 0.06s; }
         .animate-wave:nth-child(2) { animation-delay: 0.12s; }
         .animate-wave:nth-child(3) { animation-delay: 0.18s; }
@@ -333,7 +364,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         .animate-wave:nth-child(17) { animation-delay: 1.02s; }
         .animate-wave:nth-child(18) { animation-delay: 1.08s; }
 
-        /* Reduced motion preference */
         @media (prefers-reduced-motion: reduce) {
           .animate-wave, .wave-glow {
             animation: none !important;
@@ -343,7 +373,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           }
         }
 
-        /* Mobile optimization */
         @media (max-width: 640px) {
           .animate-wave {
             animation-duration: 2.2s;
@@ -353,7 +382,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           }
         }
 
-        /* Tablet optimization */
         @media (min-width: 641px) and (max-width: 1024px) {
           .animate-wave {
             animation-duration: 2.5s;

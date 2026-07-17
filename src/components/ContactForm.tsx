@@ -1,19 +1,11 @@
 'use client';
 
-/**
- * ContactForm
- * Client-side contact form with Zod validation, loading states,
- * success/error toasts, and duplicate submission prevention.
- * Embedded in the site footer.
- */
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 
-/** Client-side Zod schema for the contact form */
 const contactFormSchema = z.object({
   name: z
     .string()
@@ -82,7 +74,7 @@ export default function ContactForm() {
           type="text"
           placeholder="Name"
           {...register('name')}
-          className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
+          className="w-full bg-input-bg border border-border p-3 sm:p-4 rounded text-sm text-foreground focus:outline-none focus:border-primary transition-all placeholder:text-muted"
           disabled={isSubmitting}
         />
         {errors.name && (
@@ -95,7 +87,7 @@ export default function ContactForm() {
           type="email"
           placeholder="Email"
           {...register('email')}
-          className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
+          className="w-full bg-input-bg border border-border p-3 sm:p-4 rounded text-sm text-foreground focus:outline-none focus:border-primary transition-all placeholder:text-muted"
           disabled={isSubmitting}
         />
         {errors.email && (
@@ -108,7 +100,7 @@ export default function ContactForm() {
           type="text"
           placeholder="Subject"
           {...register('subject')}
-          className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600"
+          className="w-full bg-input-bg border border-border p-3 sm:p-4 rounded text-sm text-foreground focus:outline-none focus:border-primary transition-all placeholder:text-muted"
           disabled={isSubmitting}
         />
         {errors.subject && (
@@ -121,7 +113,7 @@ export default function ContactForm() {
           rows={3}
           placeholder="Message"
           {...register('message')}
-          className="w-full bg-[#121212] border border-white/10 p-3 sm:p-4 rounded text-sm text-white focus:outline-none focus:border-primary transition-all placeholder:text-gray-600 resize-none"
+          className="w-full bg-input-bg border border-border p-3 sm:p-4 rounded text-sm text-foreground focus:outline-none focus:border-primary transition-all placeholder:text-muted resize-none"
           disabled={isSubmitting}
         />
         {errors.message && (
@@ -132,7 +124,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 sm:py-4 bg-primary text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded hover:bg-white hover:text-dark transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+        className="w-full py-3 sm:py-4 bg-primary text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded hover:bg-foreground hover:text-background transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </button>

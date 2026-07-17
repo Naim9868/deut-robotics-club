@@ -145,7 +145,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-[#0a0a0a] pt-32 flex justify-center">
+        <div className="min-h-screen bg-card pt-32 flex justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
         </div>
         <Footer />
@@ -157,9 +157,9 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center gap-4">
+        <div className="min-h-screen bg-card flex flex-col items-center justify-center gap-4">
           <span className="text-5xl">🔍</span>
-          <h1 className="text-2xl font-black text-white">Research Not Found</h1>
+          <h1 className="text-2xl font-black text-foreground">Research Not Found</h1>
           <Link href="/research" className="text-primary hover:underline text-sm">
             Back to Research
           </Link>
@@ -193,7 +193,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
   return (
     <>
       <Navbar activeSection={activeSection} />
-      <div className="min-h-screen bg-[#0a0a0a]">
+      <div className="min-h-screen bg-card">
         {/* ─── Hero Section ─────────────────────────────── */}
         <section className="relative h-screen">
           {allImages[activeImage]?.url && (
@@ -203,11 +203,11 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               className="absolute inset-0 w-full h-full object-cover"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-[#0a0a0a]/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-card/20" />
 
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="max-w-7xl mx-auto">
-              <Link href="/research" className="text-gray-400 hover:text-white text-sm mb-4 inline-block">
+              <Link href="/research" className="text-muted hover:text-foreground text-sm mb-4 inline-block">
                 &larr; Back to Research
               </Link>
 
@@ -219,20 +219,20 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                   {research.status.replace(/_/g, ' ')}
                 </span>
                 {research.researchType && (
-                  <span className="px-3 py-1 rounded text-xs font-bold bg-white/10 text-gray-300">
+                  <span className="px-3 py-1 rounded text-xs font-bold bg-background/10 text-muted">
                     {research.researchType}
                   </span>
                 )}
                 {research.difficulty && (
-                  <span className="px-3 py-1 rounded text-xs font-bold bg-white/5 text-gray-400">
+                  <span className="px-3 py-1 rounded text-xs font-bold bg-background/5 text-muted">
                     {research.difficulty}
                   </span>
                 )}
               </div>
 
-              <h1 className="text-3xl md:text-5xl font-black text-white mb-2">{research.title}</h1>
+              <h1 className="text-3xl md:text-5xl font-black text-foreground mb-2">{research.title}</h1>
               {research.shortDescription && (
-                <p className="text-gray-300 text-lg max-w-3xl">{research.shortDescription}</p>
+                <p className="text-muted text-lg max-w-3xl">{research.shortDescription}</p>
               )}
             </div>
           </div>
@@ -248,9 +248,9 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Abstract */}
               {research.abstract && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-6">
-                    <h2 className="text-xl font-black text-white mb-3">Abstract</h2>
-                    <p className="text-gray-300 leading-relaxed italic">{research.abstract}</p>
+                  <div className="bg-background/5 border border-border rounded-xl p-6">
+                    <h2 className="text-xl font-black text-foreground mb-3">Abstract</h2>
+                    <p className="text-muted leading-relaxed italic">{research.abstract}</p>
                   </div>
                 </ScrollReveal>
               )}
@@ -259,8 +259,8 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {allImages.length > 1 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Gallery</h2>
-                    <div className="rounded-xl overflow-hidden border border-white/5 mb-3 bg-black flex items-center justify-center">
+                    <h2 className="text-xl font-black text-foreground mb-4">Gallery</h2>
+                    <div className="rounded-xl overflow-hidden border border-border mb-3 bg-black flex items-center justify-center">
                       <img
                         src={allImages[activeImage].url}
                         alt={allImages[activeImage].alt || research.title}
@@ -273,7 +273,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                           key={i}
                           onClick={() => setActiveImage(i)}
                           className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                            activeImage === i ? 'border-primary' : 'border-white/10'
+                            activeImage === i ? 'border-primary' : 'border-border'
                           }`}
                         >
                           <img src={img.url} alt={img.alt || ''} className="w-full h-full object-cover" />
@@ -288,8 +288,8 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.fullDescription && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Full Description</h2>
-                    <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">{research.fullDescription}</div>
+                    <h2 className="text-xl font-black text-foreground mb-4">Full Description</h2>
+                    <div className="text-muted leading-relaxed whitespace-pre-wrap">{research.fullDescription}</div>
                   </div>
                 </ScrollReveal>
               )}
@@ -297,9 +297,9 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Summary */}
               {research.summary && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-6">
-                    <h2 className="text-xl font-black text-white mb-3">Summary</h2>
-                    <p className="text-gray-300 leading-relaxed">{research.summary}</p>
+                  <div className="bg-background/5 border border-border rounded-xl p-6">
+                    <h2 className="text-xl font-black text-foreground mb-3">Summary</h2>
+                    <p className="text-muted leading-relaxed">{research.summary}</p>
                   </div>
                 </ScrollReveal>
               )}
@@ -308,7 +308,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.youtubePresentation && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">YouTube Presentation</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">YouTube Presentation</h2>
                     <div className="aspect-video rounded-xl overflow-hidden">
                       <iframe
                         src={research.youtubePresentation.replace('watch?v=', 'embed/')}
@@ -324,29 +324,29 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {(research.startDate || research.expectedCompletion || research.completedAt || research.publishedAt) && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Timeline</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">Timeline</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       {research.startDate && (
-                        <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                          <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Start Date</p>
-                          <p className="text-white text-sm font-medium">{formatDate(research.startDate)}</p>
+                        <div className="bg-background/5 border border-border rounded-lg p-4">
+                           <p className="text-muted text-xs uppercase tracking-wider mb-1">Start Date</p>
+                           <p className="text-foreground text-sm font-medium">{formatDate(research.startDate)}</p>
                         </div>
                       )}
                       {research.expectedCompletion && (
-                        <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                          <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Expected</p>
-                          <p className="text-white text-sm font-medium">{formatDate(research.expectedCompletion)}</p>
+                        <div className="bg-background/5 border border-border rounded-lg p-4">
+                           <p className="text-muted text-xs uppercase tracking-wider mb-1">Expected</p>
+                           <p className="text-foreground text-sm font-medium">{formatDate(research.expectedCompletion)}</p>
                         </div>
                       )}
                       {research.completedAt && (
-                        <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                          <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Completed</p>
+                        <div className="bg-background/5 border border-border rounded-lg p-4">
+                           <p className="text-muted text-xs uppercase tracking-wider mb-1">Completed</p>
                           <p className="text-green-400 text-sm font-medium">{formatDate(research.completedAt)}</p>
                         </div>
                       )}
                       {research.publishedAt && (
-                        <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                          <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Published</p>
+                        <div className="bg-background/5 border border-border rounded-lg p-4">
+                           <p className="text-muted text-xs uppercase tracking-wider mb-1">Published</p>
                           <p className="text-primary text-sm font-medium">{formatDate(research.publishedAt)}</p>
                         </div>
                       )}
@@ -359,13 +359,13 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.technologies && research.technologies.length > 0 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Technologies</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">Technologies</h2>
                     <div className="flex flex-wrap gap-2">
                       {research.technologies.map((tech, i) => (
-                        <div key={i} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                        <div key={i} className="flex items-center gap-2 px-4 py-2 bg-background/5 border border-border rounded-lg">
                           {tech.icon && <span>{tech.icon}</span>}
-                          <span className="text-white text-sm font-medium">{tech.name}</span>
-                          {tech.category && <span className="text-gray-500 text-xs">({tech.category})</span>}
+                          <span className="text-foreground text-sm font-medium">{tech.name}</span>
+                          {tech.category && <span className="text-muted text-xs">({tech.category})</span>}
                         </div>
                       ))}
                     </div>
@@ -377,22 +377,22 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.components && research.components.length > 0 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Components Used</h2>
-                    <div className="bg-white/5 border border-white/5 rounded-xl overflow-hidden">
+                    <h2 className="text-xl font-black text-foreground mb-4">Components Used</h2>
+                    <div className="bg-background/5 border border-border rounded-xl overflow-hidden">
                       <table className="w-full">
-                        <thead className="bg-white/5">
+                        <thead className="bg-background/5">
                           <tr>
-                            <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Component</th>
-                            <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Qty</th>
-                            <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Specification</th>
+                            <th className="px-4 py-3 text-left text-xs font-bold text-muted">Component</th>
+                            <th className="px-4 py-3 text-left text-xs font-bold text-muted">Qty</th>
+                            <th className="px-4 py-3 text-left text-xs font-bold text-muted">Specification</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-border">
                           {research.components.map((comp, i) => (
                             <tr key={i}>
-                              <td className="px-4 py-3 text-sm text-white">{comp.componentName}</td>
-                              <td className="px-4 py-3 text-sm text-gray-300">{comp.quantity || 1}</td>
-                              <td className="px-4 py-3 text-sm text-gray-400">{comp.specification || '-'}</td>
+                              <td className="px-4 py-3 text-sm text-foreground">{comp.componentName}</td>
+                              <td className="px-4 py-3 text-sm text-muted">{comp.quantity || 1}</td>
+                              <td className="px-4 py-3 text-sm text-muted">{comp.specification || '-'}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -406,14 +406,14 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.datasets && research.datasets.length > 0 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Datasets</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">Datasets</h2>
                     <div className="space-y-3">
                       {research.datasets.map((ds, i) => (
-                        <div key={i} className="bg-white/5 border border-white/5 rounded-lg p-4 flex items-center gap-4">
+                        <div key={i} className="bg-background/5 border border-border rounded-lg p-4 flex items-center gap-4">
                           <span className="text-2xl">📦</span>
                           <div className="flex-1">
-                            <p className="text-white text-sm font-medium">{ds.datasetName}</p>
-                            {ds.datasetSource && <p className="text-gray-500 text-xs">Source: {ds.datasetSource}</p>}
+                            <p className="text-foreground text-sm font-medium">{ds.datasetName}</p>
+                            {ds.datasetSource && <p className="text-muted text-xs">Source: {ds.datasetSource}</p>}
                           </div>
                           {ds.datasetURL && (
                             <a href={ds.datasetURL} target="_blank" rel="noopener noreferrer"
@@ -430,15 +430,15 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.publications && research.publications.length > 0 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Publications ({research.publications.length})</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">Publications ({research.publications.length})</h2>
                     <div className="space-y-3">
                       {research.publications.map((pub, i) => (
-                        <div key={i} className="bg-white/5 border border-white/5 rounded-lg p-4">
+                        <div key={i} className="bg-background/5 border border-border rounded-lg p-4">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
-                              <p className="text-white text-sm font-medium mb-1">{pub.title}</p>
-                              {pub.authors && <p className="text-gray-400 text-xs">{pub.authors}</p>}
-                              <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                              <p className="text-foreground text-sm font-medium mb-1">{pub.title}</p>
+                              {pub.authors && <p className="text-muted text-xs">{pub.authors}</p>}
+                              <div className="flex items-center gap-3 mt-2 text-xs text-muted">
                                 {pub.journal && <span>{pub.journal}</span>}
                                 {pub.conference && <span>{pub.conference}</span>}
                                 {pub.year && <span>{pub.year}</span>}
@@ -449,7 +449,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                               </div>
                             </div>
                             {pub.type && (
-                              <span className="px-2 py-0.5 bg-white/5 rounded text-[10px] text-gray-400 whitespace-nowrap">
+                              <span className="px-2 py-0.5 bg-background/5 rounded text-[10px] text-muted whitespace-nowrap">
                                 {pub.type.replace(/_/g, ' ')}
                               </span>
                             )}
@@ -465,16 +465,16 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.funding?.funded && (
                 <ScrollReveal>
                   <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-xl p-6">
-                    <h2 className="text-xl font-black text-white mb-3">💰 Funding</h2>
+                    <h2 className="text-xl font-black text-foreground mb-3">💰 Funding</h2>
                     <div className="space-y-2 text-sm">
                       {research.funding.fundingAgency && (
-                        <p className="text-gray-300"><span className="text-gray-500">Agency:</span> {research.funding.fundingAgency}</p>
+                        <p className="text-muted"><span className="text-muted">Agency:</span> {research.funding.fundingAgency}</p>
                       )}
                       {research.funding.grantNumber && (
-                        <p className="text-gray-300"><span className="text-gray-500">Grant:</span> {research.funding.grantNumber}</p>
+                        <p className="text-muted"><span className="text-muted">Grant:</span> {research.funding.grantNumber}</p>
                       )}
                       {research.funding.projectBudget && (
-                        <p className="text-gray-300"><span className="text-gray-500">Budget:</span> {research.funding.projectBudget}</p>
+                        <p className="text-muted"><span className="text-muted">Budget:</span> {research.funding.projectBudget}</p>
                       )}
                     </div>
                   </div>
@@ -485,14 +485,14 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.awards && research.awards.length > 0 && (
                 <ScrollReveal>
                   <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl p-6">
-                    <h2 className="text-xl font-black text-white mb-3">🏆 Awards</h2>
+                    <h2 className="text-xl font-black text-foreground mb-3">🏆 Awards</h2>
                     <div className="space-y-3">
                       {research.awards.map((award, i) => (
                         <div key={i} className="flex items-center gap-3">
                           <span className="text-yellow-400 text-lg">🏅</span>
                           <div>
-                            <p className="text-white text-sm font-medium">{award.awardName}</p>
-                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <p className="text-foreground text-sm font-medium">{award.awardName}</p>
+                            <div className="flex items-center gap-2 text-xs text-muted">
                               {award.organizer && <span>{award.organizer}</span>}
                               {award.year && <span>• {award.year}</span>}
                             </div>
@@ -508,8 +508,8 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.researchPoster?.url && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Research Poster</h2>
-                    <div className="rounded-xl overflow-hidden border border-white/5">
+                    <h2 className="text-xl font-black text-foreground mb-4">Research Poster</h2>
+                    <div className="rounded-xl overflow-hidden border border-border">
                       <img src={research.researchPoster.url} alt={research.researchPoster.alt || 'Research Poster'} className="w-full" />
                     </div>
                   </div>
@@ -520,10 +520,10 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {research.keywords && research.keywords.length > 0 && (
                 <ScrollReveal>
                   <div>
-                    <h2 className="text-xl font-black text-white mb-4">Keywords</h2>
+                    <h2 className="text-xl font-black text-foreground mb-4">Keywords</h2>
                     <div className="flex flex-wrap gap-2">
                       {research.keywords.map((kw, i) => (
-                        <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">
+                        <span key={i} className="px-3 py-1 bg-background/5 border border-border rounded-full text-xs text-muted">
                           {kw}
                         </span>
                       ))}
@@ -538,48 +538,48 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
 
               {/* Quick Info */}
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                  <h3 className="text-lg font-black text-white mb-3">Research Info</h3>
+                <div className="bg-background/5 border border-border rounded-xl p-5">
+                  <h3 className="text-lg font-black text-foreground mb-3">Research Info</h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Status</span>
+                      <span className="text-muted">Status</span>
                       <span className={`px-2 py-0.5 rounded text-xs font-bold ${STATUS_COLORS[research.status]}`}>
                         {research.status.replace(/_/g, ' ')}
                       </span>
                     </div>
                     {research.researchArea && (
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Area</span>
-                        <span className="text-white">{research.researchArea}</span>
+                        <span className="text-muted">Area</span>
+                        <span className="text-foreground">{research.researchArea}</span>
                       </div>
                     )}
                     {research.category && (
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Category</span>
-                        <span className="text-white">{research.category}</span>
+                        <span className="text-muted">Category</span>
+                        <span className="text-foreground">{research.category}</span>
                       </div>
                     )}
                     {research.researchLevel && (
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Level</span>
-                        <span className="text-white">{research.researchLevel}</span>
+                        <span className="text-muted">Level</span>
+                        <span className="text-foreground">{research.researchLevel}</span>
                       </div>
                     )}
                     {research.difficulty && (
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Difficulty</span>
-                        <span className="text-white">{research.difficulty}</span>
+                        <span className="text-muted">Difficulty</span>
+                        <span className="text-foreground">{research.difficulty}</span>
                       </div>
                     )}
                     {research.researchCode && (
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Code</span>
-                        <span className="text-white font-mono">{research.researchCode}</span>
+                        <span className="text-muted">Code</span>
+                        <span className="text-foreground font-mono">{research.researchCode}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Created</span>
-                      <span className="text-white">{formatDate(research.createdAt)}</span>
+                      <span className="text-muted">Created</span>
+                      <span className="text-foreground">{formatDate(research.createdAt)}</span>
                     </div>
                   </div>
                 </div>
@@ -588,8 +588,8 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Documentation Links */}
               {docLinks.length > 0 && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                    <h3 className="text-lg font-black text-white mb-3">Documentation</h3>
+                  <div className="bg-background/5 border border-border rounded-xl p-5">
+                    <h3 className="text-lg font-black text-foreground mb-3">Documentation</h3>
                     <div className="space-y-2">
                       {docLinks.map((link, i) => (
                         <a
@@ -597,7 +597,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-gray-300 hover:text-white text-sm transition-colors"
+                          className="flex items-center gap-2 text-muted hover:text-foreground text-sm transition-colors"
                         >
                           <span>{link.icon}</span>
                           {link.label}
@@ -611,17 +611,17 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Faculty */}
               {research.faculty && research.faculty.length > 0 && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                    <h3 className="text-lg font-black text-white mb-3">Faculty</h3>
+                  <div className="bg-background/5 border border-border rounded-xl p-5">
+                    <h3 className="text-lg font-black text-foreground mb-3">Faculty</h3>
                     <div className="space-y-3">
                       {research.faculty.map((f, i) => (
                         <div key={i} className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-background/10 flex items-center justify-center text-foreground text-xs font-bold flex-shrink-0">
                             {f.name.charAt(0)}
                           </div>
                           <div>
-                            <p className="text-white text-sm font-medium">{f.name}</p>
-                            <p className="text-gray-500 text-xs">{f.role}{f.department ? ` • ${f.department}` : ''}</p>
+                            <p className="text-foreground text-sm font-medium">{f.name}</p>
+                            <p className="text-muted text-xs">{f.role}{f.department ? ` • ${f.department}` : ''}</p>
                           </div>
                         </div>
                       ))}
@@ -633,12 +633,12 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Research Team */}
               {research.researchers && research.researchers.length > 0 && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                    <h3 className="text-lg font-black text-white mb-3">Research Team ({research.researchers.length})</h3>
+                  <div className="bg-background/5 border border-border rounded-xl p-5">
+                    <h3 className="text-lg font-black text-foreground mb-3">Research Team ({research.researchers.length})</h3>
                     <div className="space-y-3">
                       {research.researchers.map((r, i) => (
                         <div key={i} className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 overflow-hidden">
+                          <div className="w-8 h-8 rounded-full bg-background/10 flex items-center justify-center text-foreground text-xs font-bold flex-shrink-0 overflow-hidden">
                             {r.profilePhoto?.url ? (
                               <img src={r.profilePhoto.url} alt={r.fullName} className="w-full h-full object-cover" />
                             ) : (
@@ -646,23 +646,23 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-white text-sm font-medium truncate">{r.fullName}</p>
-                            <p className="text-gray-500 text-xs truncate">
+                            <p className="text-foreground text-sm font-medium truncate">{r.fullName}</p>
+                            <p className="text-muted text-xs truncate">
                               {r.role || 'Researcher'}{r.department ? ` • ${r.department}` : ''}
                             </p>
                           </div>
                           <div className="flex gap-1">
                             {r.googleScholar && (
-                              <a href={r.googleScholar} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white text-xs">GS</a>
+                              <a href={r.googleScholar} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-foreground text-xs">GS</a>
                             )}
                             {r.researchGate && (
-                              <a href={r.researchGate} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-green-400 text-xs">RG</a>
+                              <a href={r.researchGate} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-green-400 text-xs">RG</a>
                             )}
                             {r.linkedin && (
-                              <a href={r.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-400 text-xs">in</a>
+                              <a href={r.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-blue-400 text-xs">in</a>
                             )}
                             {r.github && (
-                              <a href={r.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white text-xs">GH</a>
+                              <a href={r.github} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-foreground text-xs">GH</a>
                             )}
                           </div>
                         </div>
@@ -674,26 +674,26 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
 
               {/* Share */}
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                  <h3 className="text-lg font-black text-white mb-3">Share</h3>
+                <div className="bg-background/5 border border-border rounded-xl p-5">
+                  <h3 className="text-lg font-black text-foreground mb-3">Share</h3>
                   <div className="flex gap-2">
                     <a
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(research.title)}&url=${typeof window !== 'undefined' ? window.location.href : ''}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="px-3 py-2 bg-white/5 rounded-lg text-xs text-gray-300 hover:bg-white/10 transition-colors"
+                      className="px-3 py-2 bg-background/5 rounded-lg text-xs text-muted hover:bg-background/10 transition-colors"
                     >
                       Twitter
                     </a>
                     <a
                       href={`https://www.linkedin.com/shareArticle?mini=true&url=${typeof window !== 'undefined' ? window.location.href : ''}&title=${encodeURIComponent(research.title)}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="px-3 py-2 bg-white/5 rounded-lg text-xs text-gray-300 hover:bg-white/10 transition-colors"
+                      className="px-3 py-2 bg-background/5 rounded-lg text-xs text-muted hover:bg-background/10 transition-colors"
                     >
                       LinkedIn
                     </a>
                     <button
                       onClick={() => { navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : ''); }}
-                      className="px-3 py-2 bg-white/5 rounded-lg text-xs text-gray-300 hover:bg-white/10 transition-colors"
+                      className="px-3 py-2 bg-background/5 rounded-lg text-xs text-muted hover:bg-background/10 transition-colors"
                     >
                       Copy Link
                     </button>
@@ -704,24 +704,24 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
               {/* Stats */}
               {research.analytics && (
                 <ScrollReveal>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                    <h3 className="text-lg font-black text-white mb-3">Analytics</h3>
+                  <div className="bg-background/5 border border-border rounded-xl p-5">
+                    <h3 className="text-lg font-black text-foreground mb-3">Analytics</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Views</span>
-                        <span className="text-white">{research.analytics.views || 0}</span>
+                        <span className="text-muted">Views</span>
+                        <span className="text-foreground">{research.analytics.views || 0}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Downloads</span>
-                        <span className="text-white">{research.analytics.downloads || 0}</span>
+                        <span className="text-muted">Downloads</span>
+                        <span className="text-foreground">{research.analytics.downloads || 0}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Citations</span>
-                        <span className="text-white">{research.analytics.citations || 0}</span>
+                        <span className="text-muted">Citations</span>
+                        <span className="text-foreground">{research.analytics.citations || 0}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Bookmarks</span>
-                        <span className="text-white">{research.analytics.bookmarks || 0}</span>
+                        <span className="text-muted">Bookmarks</span>
+                        <span className="text-foreground">{research.analytics.bookmarks || 0}</span>
                       </div>
                     </div>
                   </div>
@@ -735,11 +735,11 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
         {related.length > 0 && (
           <section className="px-4 pb-20">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-2xl font-black text-white mb-6">Related Research</h2>
+              <h2 className="text-2xl font-black text-foreground mb-6">Related Research</h2>
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {related.map((item) => (
                   <Link key={item._id} href={`/research/${item.slug}`}>
-                    <div className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all">
+                    <div className="group bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-all">
                       <div className="relative h-32 overflow-hidden">
                         <img
                           src={item.coverImage?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.title)}&background=1e1e1e&color=e63946&size=200&bold=true&length=2`}
@@ -749,7 +749,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                       </div>
                       <div className="p-4">
                         <p className="text-primary text-[10px] font-bold tracking-widest">{item.researchArea || 'Research'}</p>
-                        <h3 className="text-white font-bold text-sm group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
+                        <h3 className="text-foreground font-bold text-sm group-hover:text-primary transition-colors line-clamp-2">{item.title}</h3>
                         <span className={`inline-block mt-2 px-2 py-0.5 rounded text-[10px] font-bold ${STATUS_COLORS[item.status] || STATUS_COLORS.ongoing}`}>
                           {item.status.replace(/_/g, ' ')}
                         </span>

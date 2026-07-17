@@ -24,9 +24,9 @@ const DESIGNATIONS = [
   'Advisor',
 ];
 
-const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
-const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
-const smallInputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary';
+const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
+const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
+const smallInputClass = 'w-full bg-input-bg border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary';
 
 // ─── Interfaces ───────────────────────────────────────────────
 
@@ -356,27 +356,27 @@ export default function ExecutiveCommitteePage() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-black text-white">Executive Committee</h1>
-            <p className="text-gray-500 text-sm mt-1">Manage year-based executive committees and their members</p>
+            <h1 className="text-4xl font-black text-foreground">Executive Committee</h1>
+            <p className="text-muted text-sm mt-1">Manage year-based executive committees and their members</p>
           </div>
-          <button onClick={onCreateCommittee} className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors font-bold">
+          <button onClick={onCreateCommittee} className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors font-bold">
             + New Committee
           </button>
         </div>
 
         {committees.length === 0 ? (
-          <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-            <p className="text-gray-500">No committees yet. Create your first committee year above.</p>
+          <div className="text-center py-12 bg-card border border-border rounded-2xl">
+            <p className="text-muted">No committees yet. Create your first committee year above.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {committees.map((c) => (
-              <div key={c._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all">
+              <div key={c._id} className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all">
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h3 className="text-white font-black text-2xl">{c.committeeYear}</h3>
-                      <p className="text-gray-400 text-sm mt-1">{c.title}</p>
+                      <h3 className="text-foreground font-black text-2xl">{c.committeeYear}</h3>
+                      <p className="text-muted text-sm mt-1">{c.title}</p>
                     </div>
                     <div className="flex gap-1">
                       {c.isCurrent && (
@@ -389,10 +389,10 @@ export default function ExecutiveCommitteePage() {
                   </div>
 
                   {c.description && (
-                    <p className="text-gray-500 text-xs line-clamp-2 mb-3">{c.description}</p>
+                    <p className="text-muted text-xs line-clamp-2 mb-3">{c.description}</p>
                   )}
 
-                  <p className="text-gray-600 text-xs mb-4">{c.members.length} members</p>
+                  <p className="text-muted text-xs mb-4">{c.members.length} members</p>
 
                   <div className="flex flex-wrap gap-2">
                     <button onClick={() => onManageMembers(c)} className="px-3 py-1.5 bg-primary/20 text-primary text-xs rounded-lg hover:bg-primary/30 transition-colors font-bold">
@@ -418,18 +418,18 @@ export default function ExecutiveCommitteePage() {
                   {c.members.length > 0 && (
                     <div className="flex -space-x-2 mt-4">
                       {c.members.filter(m => m.isVisible).slice(0, 6).map((m, i) => (
-                        <div key={i} className="w-8 h-8 rounded-full bg-[#121212] border-2 border-[#0a0a0a] overflow-hidden" title={m.fullName}>
+                        <div key={i} className="w-8 h-8 rounded-full bg-input-bg border-2 border-card overflow-hidden" title={m.fullName}>
                           {m.profilePhoto?.url ? (
                             <img src={m.profilePhoto.url} alt={m.fullName} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 font-bold">
+                            <div className="w-full h-full flex items-center justify-center text-xs text-muted font-bold">
                               {m.fullName.charAt(0)}
                             </div>
                           )}
                         </div>
                       ))}
                       {c.members.filter(m => m.isVisible).length > 6 && (
-                        <div className="w-8 h-8 rounded-full bg-[#121212] border-2 border-[#0a0a0a] flex items-center justify-center text-xs text-gray-500 font-bold">
+                        <div className="w-8 h-8 rounded-full bg-input-bg border-2 border-card flex items-center justify-center text-xs text-muted font-bold">
                           +{c.members.filter(m => m.isVisible).length - 6}
                         </div>
                       )}
@@ -449,11 +449,11 @@ export default function ExecutiveCommitteePage() {
     return (
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex items-center gap-4">
-          <button onClick={() => setView('list')} className="text-gray-400 hover:text-white transition-colors">&larr; Back</button>
-          <h1 className="text-3xl font-black text-white">{editingCommitteeId ? 'Edit Committee' : 'New Committee'}</h1>
+          <button onClick={() => setView('list')} className="text-muted hover:text-foreground transition-colors">&larr; Back</button>
+          <h1 className="text-3xl font-black text-foreground">{editingCommitteeId ? 'Edit Committee' : 'New Committee'}</h1>
         </div>
 
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
+        <div className="bg-card border border-border rounded-2xl p-8">
           <form onSubmit={handleSubmitCommittee(onSubmitCommittee)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -469,7 +469,7 @@ export default function ExecutiveCommitteePage() {
             <div>
               <label className={labelClass}>Title</label>
               <input {...regCommittee('title')} placeholder={`Executive Committee ${watchCommittee('committeeYear')}`} className={inputClass} />
-              <p className="text-xs text-gray-600 mt-1">Leave blank to auto-generate from year</p>
+              <p className="text-xs text-muted mt-1">Leave blank to auto-generate from year</p>
             </div>
 
             <div>
@@ -479,20 +479,20 @@ export default function ExecutiveCommitteePage() {
 
             <div className="flex items-center gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...regCommittee('isPublished')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                <span className="text-sm text-gray-300">Published</span>
+                <input type="checkbox" {...regCommittee('isPublished')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                <span className="text-sm text-muted">Published</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...regCommittee('isCurrent')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                <span className="text-sm text-gray-300">Current Committee</span>
+                <input type="checkbox" {...regCommittee('isCurrent')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                <span className="text-sm text-muted">Current Committee</span>
               </label>
             </div>
 
             <div className="flex gap-3 pt-4">
-              <button type="submit" disabled={saving} className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors font-bold disabled:opacity-50">
+              <button type="submit" disabled={saving} className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors font-bold disabled:opacity-50">
                 {saving ? 'Saving...' : editingCommitteeId ? 'Update Committee' : 'Create Committee'}
               </button>
-              <button type="button" onClick={() => setView('list')} className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
+              <button type="button" onClick={() => setView('list')} className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors">
                 Cancel
               </button>
             </div>
@@ -508,48 +508,48 @@ export default function ExecutiveCommitteePage() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <button onClick={() => setView('list')} className="text-gray-400 hover:text-white transition-colors">&larr;</button>
+            <button onClick={() => setView('list')} className="text-muted hover:text-foreground transition-colors">&larr;</button>
             <div>
-              <h1 className="text-3xl font-black text-white">Members — {currentCommittee.committeeYear}</h1>
-              <p className="text-gray-500 text-sm">{workingMembers.length} members</p>
+              <h1 className="text-3xl font-black text-foreground">Members — {currentCommittee.committeeYear}</h1>
+              <p className="text-muted text-sm">{workingMembers.length} members</p>
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={onAddMember} className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors text-sm font-bold">
+            <button onClick={onAddMember} className="px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors text-sm font-bold">
               + Add Member
             </button>
-            <button onClick={onSaveMembers} disabled={saving} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-bold disabled:opacity-50">
+            <button onClick={onSaveMembers} disabled={saving} className="px-4 py-2 bg-green-600 text-foreground rounded-lg hover:bg-green-700 transition-colors text-sm font-bold disabled:opacity-50">
               {saving ? 'Saving...' : 'Save All'}
             </button>
           </div>
         </div>
 
         {workingMembers.length === 0 ? (
-          <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-            <p className="text-gray-500">No members yet. Add your first member above.</p>
+          <div className="text-center py-12 bg-card border border-border rounded-2xl">
+            <p className="text-muted">No members yet. Add your first member above.</p>
           </div>
         ) : (
           <div className="space-y-3">
             {workingMembers.map((m, index) => (
-              <div key={m._id || index} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 flex items-center gap-4 hover:border-primary/30 transition-all group">
+              <div key={m._id || index} className="bg-card border border-border rounded-xl p-4 flex items-center gap-4 hover:border-primary/30 transition-all group">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-[#121212] overflow-hidden flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-input-bg overflow-hidden flex-shrink-0">
                   {m.profilePhoto?.url ? (
                     <img src={m.profilePhoto.url} alt={m.fullName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">{m.fullName.charAt(0)}</div>
+                    <div className="w-full h-full flex items-center justify-center text-muted font-bold">{m.fullName.charAt(0)}</div>
                   )}
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-white font-bold truncate">{m.fullName}</h3>
+                    <h3 className="text-foreground font-bold truncate">{m.fullName}</h3>
                     {m.featured && <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 text-[10px] rounded font-bold">Featured</span>}
                     {!m.isVisible && <span className="px-1.5 py-0.5 bg-red-500/20 text-red-400 text-[10px] rounded font-bold">Hidden</span>}
                   </div>
                   <p className="text-primary text-xs font-bold">{m.designation || 'No designation'}</p>
-                  <div className="flex items-center gap-3 text-gray-600 text-xs mt-0.5">
+                  <div className="flex items-center gap-3 text-muted text-xs mt-0.5">
                     {m.department && <span>{m.department}</span>}
                     {m.session && <span>· {m.session}</span>}
                   </div>
@@ -558,17 +558,17 @@ export default function ExecutiveCommitteePage() {
                 {/* Order Controls */}
                 <div className="flex flex-col gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                   {index > 0 && (
-                    <button onClick={() => moveMember(index, 'up')} className="p-1 text-gray-500 hover:text-white text-xs" title="Move up">▲</button>
+                    <button onClick={() => moveMember(index, 'up')} className="p-1 text-muted hover:text-foreground text-xs" title="Move up">▲</button>
                   )}
                   {index < workingMembers.length - 1 && (
-                    <button onClick={() => moveMember(index, 'down')} className="p-1 text-gray-500 hover:text-white text-xs" title="Move down">▼</button>
+                    <button onClick={() => moveMember(index, 'down')} className="p-1 text-muted hover:text-foreground text-xs" title="Move down">▼</button>
                   )}
                 </div>
 
                 {/* Actions */}
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => onEditMember(index)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
-                  <button onClick={() => onRemoveMember(index)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+                  <button onClick={() => onEditMember(index)} className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700">Edit</button>
+                  <button onClick={() => onRemoveMember(index)} className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700">Del</button>
                 </div>
               </div>
             ))}
@@ -583,14 +583,14 @@ export default function ExecutiveCommitteePage() {
     return (
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex items-center gap-4">
-          <button onClick={() => setView('member-list')} className="text-gray-400 hover:text-white transition-colors">&larr;</button>
-          <h1 className="text-3xl font-black text-white">{editingMemberIndex !== null ? 'Edit Member' : 'Add Member'}</h1>
+          <button onClick={() => setView('member-list')} className="text-muted hover:text-foreground transition-colors">&larr;</button>
+          <h1 className="text-3xl font-black text-foreground">{editingMemberIndex !== null ? 'Edit Member' : 'Add Member'}</h1>
         </div>
 
         <form onSubmit={handleSubmitMember(onSubmitMember)} className="space-y-8">
           {/* Basic Info */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Basic Information</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Basic Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Full Name <span className="text-red-500">*</span></label>
@@ -626,19 +626,19 @@ export default function ExecutiveCommitteePage() {
             </div>
             <div className="flex items-center gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...regMember('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                <span className="text-sm text-gray-300">Featured</span>
+                <input type="checkbox" {...regMember('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                <span className="text-sm text-muted">Featured</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...regMember('isVisible')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                <span className="text-sm text-gray-300">Visible on Public Site</span>
+                <input type="checkbox" {...regMember('isVisible')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                <span className="text-sm text-muted">Visible on Public Site</span>
               </label>
             </div>
           </div>
 
           {/* Photos */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Photos</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Photos</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelClass}>Profile Photo</label>
@@ -654,8 +654,8 @@ export default function ExecutiveCommitteePage() {
           </div>
 
           {/* Contact */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Contact</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Contact</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Email</label>
@@ -669,8 +669,8 @@ export default function ExecutiveCommitteePage() {
           </div>
 
           {/* Social Links */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Social Links</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Social Links</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {(['facebook', 'linkedin', 'github', 'portfolio', 'website'] as const).map(platform => (
                 <div key={platform}>
@@ -682,8 +682,8 @@ export default function ExecutiveCommitteePage() {
           </div>
 
           {/* Bio */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Biography</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Biography</h2>
             <div>
               <label className={labelClass}>Short Bio</label>
               <textarea {...regMember('shortBio')} rows={2} className={inputClass} placeholder="Brief bio (max 500 chars)" maxLength={500} />
@@ -699,8 +699,8 @@ export default function ExecutiveCommitteePage() {
           </div>
 
           {/* Responsibilities & Achievements */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Responsibilities & Achievements</h2>
+          <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+            <h2 className="text-lg font-bold text-foreground">Responsibilities & Achievements</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Responsibilities (one per line)</label>
@@ -715,10 +715,10 @@ export default function ExecutiveCommitteePage() {
 
           {/* Submit */}
           <div className="flex gap-3">
-            <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors font-bold">
+            <button type="submit" className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors font-bold">
               {editingMemberIndex !== null ? 'Update Member' : 'Add Member'}
             </button>
-            <button type="button" onClick={() => setView('member-list')} className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
+            <button type="button" onClick={() => setView('member-list')} className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors">
               Cancel
             </button>
           </div>

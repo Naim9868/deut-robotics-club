@@ -83,18 +83,18 @@ const categoryColors: Record<string, string> = {
   AI: 'text-blue-500 border-blue-500',
   AERO: 'text-purple-500 border-purple-500',
   AUTO: 'text-green-500 border-green-500',
-  OTHER: 'text-gray-500 border-gray-500',
+  OTHER: 'text-muted border-gray-500',
 };
 
 const statusColors: Record<string, string> = {
-  draft: 'bg-gray-500/10 text-gray-500 border-gray-500/20',
+  draft: 'bg-gray-500/10 text-muted border-gray-500/20',
   submitted: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
   under_review: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
   approved: 'bg-green-500/10 text-green-500 border-green-500/20',
   rejected: 'bg-red-500/10 text-red-500 border-red-500/20',
   ongoing: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
   completed: 'bg-green-500/10 text-green-500 border-green-500/20',
-  archived: 'bg-gray-500/10 text-gray-500 border-gray-500/20',
+  archived: 'bg-gray-500/10 text-muted border-gray-500/20',
   ACTIVE: 'bg-green-500/10 text-green-500 border-green-500/20',
   TESTING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
 };
@@ -370,25 +370,25 @@ export default function ProjectsPage() {
     { key: 'seo', label: 'SEO' },
   ] as const;
 
-  const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
-  const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
+  const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
+  const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Projects</h1>
-        <p className="text-gray-500 text-sm">{projects.length} projects</p>
+        <h1 className="text-4xl font-black text-foreground">Projects</h1>
+        <p className="text-muted text-sm">{projects.length} projects</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit Project' : 'Add New Project'}</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit Project' : 'Add New Project'}</h2>
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 overflow-x-auto pb-2">
           {tabs.map((tab) => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-500 hover:text-gray-300'}`}>
+              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-background/10 text-foreground' : 'bg-background/5 text-muted hover:text-muted'}`}>
               {tab.label}
             </button>
           ))}
@@ -468,24 +468,24 @@ export default function ProjectsPage() {
                 </div>
               </div>
               {/* Faculty */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-border pt-4">
                 <div><label className={labelClass}>Faculty Advisor</label><input {...register('facultyAdvisor')} placeholder="Prof. Name" className={inputClass} /></div>
                 <div><label className={labelClass}>Co-Advisor</label><input {...register('facultyCoAdvisor')} placeholder="Prof. Name" className={inputClass} /></div>
                 <div><label className={labelClass}>Mentor</label><input {...register('facultyMentor')} placeholder="Prof. Name" className={inputClass} /></div>
               </div>
               {/* Toggles */}
-              <div className="flex items-center gap-6 border-t border-white/5 pt-4">
+              <div className="flex items-center gap-6 border-t border-border pt-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Featured</span>
+                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Featured</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Show on Homepage</span>
+                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Show on Homepage</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Active</span>
+                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Active</span>
                 </label>
                 <div><label className={labelClass}>Display Order</label><input type="number" {...register('displayOrder')} min="0" className={`${inputClass} w-24`} /></div>
               </div>
@@ -495,9 +495,9 @@ export default function ProjectsPage() {
           {/* Media Tab */}
           {activeTab === 'media' && (
             <div className="space-y-4">
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Cover Image</label>
+                  <label className="text-xs font-black text-muted uppercase">Cover Image</label>
                   <button type="button" onClick={() => setUseImageLink(!useImageLink)} className="text-xs text-primary hover:underline">
                     {useImageLink ? 'Use Upload' : 'Use Link'}
                   </button>
@@ -533,14 +533,14 @@ export default function ProjectsPage() {
           {/* Team Tab */}
           {activeTab === 'team' && (
             <div className="space-y-4">
-              <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                <h3 className="text-sm font-bold text-white mb-3">Add Team Member</h3>
+              <div className="bg-background/5 border border-border rounded-lg p-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Add Team Member</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <input value={teamName} onChange={(e) => setTeamName(e.target.value)} placeholder="Full Name *" className={inputClass} />
                   <input value={teamRole} onChange={(e) => setTeamRole(e.target.value)} placeholder="Role in Project" className={inputClass} />
                   <label className="flex items-center gap-2 cursor-pointer px-4">
                     <input type="checkbox" checked={teamLeader} onChange={(e) => setTeamLeader(e.target.checked)} className="w-4 h-4 rounded" />
-                    <span className="text-sm text-gray-300">Leader</span>
+                    <span className="text-sm text-muted">Leader</span>
                   </label>
                   <button type="button" onClick={addTeamMember} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
@@ -548,11 +548,11 @@ export default function ProjectsPage() {
               {teamMembers.length > 0 && (
                 <div className="space-y-2">
                   {teamMembers.map((m, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2">
-                      <span className="text-white text-sm font-medium flex-1">{m.fullName}</span>
-                      {m.roleInProject && <span className="text-gray-500 text-xs">{m.roleInProject}</span>}
+                    <div key={i} className="flex items-center gap-3 bg-background/5 rounded-lg px-4 py-2">
+                      <span className="text-foreground text-sm font-medium flex-1">{m.fullName}</span>
+                      {m.roleInProject && <span className="text-muted text-xs">{m.roleInProject}</span>}
                       {m.isLeader && <span className="text-red-500 text-xs font-bold">Leader</span>}
-                      <button type="button" onClick={() => removeTeamMember(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      <button type="button" onClick={() => removeTeamMember(i)} className="text-muted hover:text-red-500">×</button>
                     </div>
                   ))}
                 </div>
@@ -565,7 +565,7 @@ export default function ProjectsPage() {
             <div className="space-y-6">
               {/* Technologies */}
               <div>
-                <h3 className="text-sm font-bold text-white mb-3">Technologies</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">Technologies</h3>
                 <div className="flex gap-2 mb-3">
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
                   <input value={techCategory} onChange={(e) => setTechCategory(e.target.value)} placeholder="Category (e.g., Language)" className={`${inputClass} flex-1`} />
@@ -573,17 +573,17 @@ export default function ProjectsPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((t, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
-                      {t.name} {t.category && <span className="text-gray-500 ml-1">({t.category})</span>}
-                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-gray-500 hover:text-red-500">×</button>
+                    <span key={i} className="inline-flex items-center px-3 py-1 bg-background/5 rounded-full text-xs text-muted">
+                      {t.name} {t.category && <span className="text-muted ml-1">({t.category})</span>}
+                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Components */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Components Used</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Components Used</h3>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <input value={compName} onChange={(e) => setCompName(e.target.value)} placeholder="Component Name *" className={inputClass} />
                   <input type="number" value={compQty} onChange={(e) => setCompQty(parseInt(e.target.value) || 1)} min="1" className={inputClass} />
@@ -593,11 +593,11 @@ export default function ProjectsPage() {
                 {components.length > 0 && (
                   <div className="space-y-1">
                     {components.map((c, i) => (
-                      <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1">{c.componentName}</span>
-                        <span className="text-gray-400">x{c.quantity}</span>
-                        {c.specification && <span className="text-gray-500 text-xs">{c.specification}</span>}
-                        <button type="button" onClick={() => removeComponent(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      <div key={i} className="flex items-center gap-3 bg-background/5 rounded-lg px-4 py-2 text-sm">
+                        <span className="text-foreground flex-1">{c.componentName}</span>
+                        <span className="text-muted">x{c.quantity}</span>
+                        {c.specification && <span className="text-muted text-xs">{c.specification}</span>}
+                        <button type="button" onClick={() => removeComponent(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -609,7 +609,7 @@ export default function ProjectsPage() {
           {/* Docs Tab */}
           {activeTab === 'docs' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold text-white">Documentation Links</h3>
+              <h3 className="text-sm font-bold text-foreground">Documentation Links</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className={labelClass}>GitHub Repository</label><input {...register('docGithub')} placeholder="https://github.com/..." className={inputClass} /></div>
                 <div><label className={labelClass}>Live Demo</label><input {...register('docLiveDemo')} placeholder="https://..." className={inputClass} /></div>
@@ -620,8 +620,8 @@ export default function ProjectsPage() {
               </div>
               <div><label className={labelClass}>YouTube Video</label><input {...register('docYoutubeVideo')} placeholder="https://youtube.com/watch?v=..." className={inputClass} /></div>
 
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Competition Information</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Competition Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div><label className={labelClass}>Competition Name</label><input {...register('compName')} placeholder="Competition name" className={inputClass} /></div>
                   <div><label className={labelClass}>Organizer</label><input {...register('compOrganizer')} placeholder="Organizer" className={inputClass} /></div>
@@ -642,13 +642,13 @@ export default function ProjectsPage() {
           )}
 
           {/* Form Actions */}
-          <div className="flex gap-2 pt-4 border-t border-white/5">
-            <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
+          <div className="flex gap-2 pt-4 border-t border-border">
+            <button type="submit" className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors">
               {editingId ? 'Update Project' : 'Create Project'}
             </button>
             {editingId && (
               <button type="button" onClick={() => { setEditingId(null); reset(); setTeamMembers([]); setTechnologies([]); setComponents([]); setGalleryImages([]); setCurrentImageUrl(''); setUseImageLink(false); setActiveTab('basic'); }}
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors">
                 Cancel
               </button>
             )}
@@ -659,24 +659,24 @@ export default function ProjectsPage() {
       {/* Projects Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project, index) => (
-          <div key={project._id as string} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
+          <div key={project._id as string} className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
             <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              {index > 0 && <button onClick={() => moveProject(project._id as string, 'up')} className="p-1 bg-black/70 hover:bg-black rounded text-white"><ArrowUpIcon className="w-4 h-4" /></button>}
-              {index < projects.length - 1 && <button onClick={() => moveProject(project._id as string, 'down')} className="p-1 bg-black/70 hover:bg-black rounded text-white"><ArrowDownIcon className="w-4 h-4" /></button>}
+              {index > 0 && <button onClick={() => moveProject(project._id as string, 'up')} className="p-1 bg-black/70 hover:bg-black rounded text-foreground"><ArrowUpIcon className="w-4 h-4" /></button>}
+              {index < projects.length - 1 && <button onClick={() => moveProject(project._id as string, 'down')} className="p-1 bg-black/70 hover:bg-black rounded text-foreground"><ArrowDownIcon className="w-4 h-4" /></button>}
             </div>
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <button onClick={() => handleEdit(project)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
-              <button onClick={() => handleDelete(project._id as string)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+              <button onClick={() => handleEdit(project)} className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700">Edit</button>
+              <button onClick={() => handleDelete(project._id as string)} className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700">Del</button>
             </div>
-            {(project.featured as boolean) && <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs rounded-full">Featured</div>}
+            {(project.featured as boolean) && <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-foreground text-xs rounded-full">Featured</div>}
             <div className="flex p-4 gap-4">
-              <div className="w-24 h-24 flex-shrink-0 bg-[#121212] rounded-lg overflow-hidden">
+              <div className="w-24 h-24 flex-shrink-0 bg-input-bg rounded-lg overflow-hidden">
                 <img src={(project.coverImage as { url?: string })?.url || (project.image as { url?: string })?.url || getProjectImage(project.title as string)} alt={project.title as string} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white truncate">{project.title as string}</h3>
-                <p className="text-xs text-gray-500">{project.id as string}</p>
-                <p className="text-sm text-gray-400 mb-2">{project.tag as string}</p>
+                <h3 className="text-lg font-bold text-foreground truncate">{project.title as string}</h3>
+                <p className="text-xs text-muted">{project.id as string}</p>
+                <p className="text-sm text-muted mb-2">{project.tag as string}</p>
                 <span className={`inline-block px-2 py-1 rounded text-xs font-medium border ${statusColors[(project.status as string) || 'draft'] || statusColors.draft}`}>{project.status as string}</span>
                 <span className={`inline-block ml-2 px-2 py-1 rounded text-xs font-medium border ${categoryColors[(project.category as string) || 'COMBAT'] || categoryColors.COMBAT}`}>{project.category as string}</span>
               </div>
@@ -686,8 +686,8 @@ export default function ProjectsPage() {
       </div>
 
       {projects.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No projects yet. Add your first project above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No projects yet. Add your first project above.</p>
         </div>
       )}
     </div>

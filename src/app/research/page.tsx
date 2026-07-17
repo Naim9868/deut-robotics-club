@@ -84,7 +84,7 @@ export default function ResearchPage() {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32 flex justify-center">
+        <div className="min-h-screen bg-background pt-32 flex justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
         </div>
         <Footer />
@@ -95,19 +95,19 @@ export default function ResearchPage() {
   return (
     <>
       <Navbar activeSection={activeSection} />
-      <div className="min-h-screen bg-[#050505] pt-24 pb-20">
+      <div className="min-h-screen bg-card pt-24 pb-20">
         {/* Header */}
         <section className="px-4 sm:px-6 lg:px-8 mb-12">
           <div className="max-w-7xl mx-auto">
             <ScrollReveal animation="up">
-              <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-6 transition-colors">
+              <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground text-sm mb-6 transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 Back to Home
               </Link>
-              <h1 className="text-4xl sm:text-5xl font-black text-white mb-3">Research</h1>
-              <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">
+              <h1 className="text-4xl sm:text-5xl font-black text-foreground mb-3">Research</h1>
+              <p className="text-muted uppercase text-xs font-bold tracking-[0.3em]">
                 Pushing the boundaries of knowledge
               </p>
             </ScrollReveal>
@@ -125,8 +125,8 @@ export default function ResearchPage() {
                     onClick={() => setFilter(area)}
                     className={`px-4 py-2 text-xs font-bold rounded-full whitespace-nowrap transition-colors ${
                       filter === area
-                        ? 'bg-primary text-white'
-                        : 'bg-white/5 text-gray-400 hover:text-white'
+                        ? 'bg-primary text-foreground'
+                        : 'bg-background/5 text-muted hover:text-foreground'
                     }`}
                   >
                     {area === 'all' ? 'All Areas' : area}
@@ -144,7 +144,7 @@ export default function ResearchPage() {
               {filtered.map((item, i) => (
                 <ScrollReveal key={item._id} animation="up" delay={i * 80}>
                   <Link href={`/research/${item.slug}`}>
-                    <div className="group bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                    <div className="group bg-card border border-border rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
                       {/* Cover Image */}
                       <div className="relative h-48 overflow-hidden">
                         <img
@@ -159,7 +159,7 @@ export default function ResearchPage() {
                           </span>
                         </div>
                         {item.homepage?.featured && (
-                          <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary/90 text-white text-[10px] font-black rounded-full">
+                          <div className="absolute top-3 right-3 px-2 py-0.5 bg-primary/90 text-foreground text-[10px] font-black rounded-full">
                             Featured
                           </div>
                         )}
@@ -173,15 +173,15 @@ export default function ResearchPage() {
                             {item.researchArea || 'Research'}
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors mb-2 line-clamp-2">
+                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
+                        <p className="text-muted text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
                           {item.shortDescription || item.abstract || ''}
                         </p>
 
                         {/* Meta */}
-                        <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div className="flex items-center justify-between text-xs text-muted">
                           {item.researchers && item.researchers.length > 0 && (
                             <span>{item.researchers.length} researcher{item.researchers.length > 1 ? 's' : ''}</span>
                           )}
@@ -199,7 +199,7 @@ export default function ResearchPage() {
             {filtered.length === 0 && (
               <div className="text-center py-20">
                 <span className="text-5xl">🔬</span>
-                <p className="text-gray-500 mt-4">No research entries found.</p>
+                <p className="text-muted mt-4">No research entries found.</p>
               </div>
             )}
           </div>

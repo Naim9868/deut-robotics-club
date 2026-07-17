@@ -187,7 +187,7 @@ const Committee: React.FC = () => {
         href={url} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-all"
+        className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-lg bg-background/5 flex items-center justify-center hover:bg-primary transition-all"
         title={platform}
       >
         {getIcon()}
@@ -202,7 +202,7 @@ const Committee: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto tracking-tighter">
             Command Center
           </h2>
-          <p className="text-gray-500 uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.6em] mt-2 sm:mt-3 md:mt-4">
+          <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.6em] mt-2 sm:mt-3 md:mt-4">
             The architect minds driving DUET's robotics legacy
           </p>
         </div>
@@ -211,27 +211,23 @@ const Committee: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-10">
         {displayMembers.map((member, idx) => (
           <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 100} className="group">
-            <div className="relative overflow-hidden aspect-[4/5] bg-[#0a0a0a] border border-white/5 rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2">
-              {/* Profile Image with subtle zoom */}
+            <div className="relative overflow-hidden aspect-[4/5] bg-card border border-border rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2">
               <img 
                 src={member.image?.url} 
                 alt={member.image?.alt || member.name} 
                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" 
               />
               
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-60 transition-opacity" />
               
-              {/* Info Area */}
               <div className="absolute bottom-0 left-0 p-3 sm:p-4 md:p-5 lg:p-6 xl:p-8 w-full translate-y-2 sm:translate-y-3 md:translate-y-4 lg:translate-y-6 group-hover:translate-y-0 transition-all duration-500">
                 <p className="text-primary text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] mb-1 sm:mb-1.5 md:mb-2 truncate">
                   {member.role}
                 </p>
-                <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl font-black text-white uppercase leading-none mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 line-clamp-2">
+                <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-2xl font-black text-foreground uppercase leading-none mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 line-clamp-2">
                   {member.name}
                 </h3>
                 
-                {/* Social Links */}
                 <div className="flex space-x-1.5 sm:space-x-2 md:space-x-3 lg:space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   {member.socialLinks?.linkedin && renderSocialIcon('linkedin', member.socialLinks.linkedin)}
                   {member.socialLinks?.github && renderSocialIcon('github', member.socialLinks.github)}
@@ -240,7 +236,7 @@ const Committee: React.FC = () => {
                   {member.email && (
                     <a 
                       href={`mailto:${member.email}`} 
-                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-all"
+                      className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-lg bg-background/5 flex items-center justify-center hover:bg-primary transition-all"
                       title="Email"
                     >
                       <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -250,16 +246,14 @@ const Committee: React.FC = () => {
                   )}
                 </div>
                 
-                {/* Department/Session info (optional) */}
                 {(member.department || member.session) && (
-                  <p className="text-[5px] sm:text-[6px] md:text-[7px] lg:text-[8px] text-gray-500 uppercase tracking-wider mt-1.5 sm:mt-2 md:mt-3 lg:mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-1">
+                  <p className="text-[5px] sm:text-[6px] md:text-[7px] lg:text-[8px] text-muted uppercase tracking-wider mt-1.5 sm:mt-2 md:mt-3 lg:mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-1">
                     {member.department && `${member.department}`}
                     {member.session && ` · ${member.session}`}
                   </p>
                 )}
               </div>
 
-              {/* Decorative Scan Lines */}
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
               <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
             </div>
@@ -268,7 +262,7 @@ const Committee: React.FC = () => {
       </div>
       
       {displayMembers.length === 0 && (
-        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+        <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
           No committee members found.
         </div>
       )}

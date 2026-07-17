@@ -225,50 +225,50 @@ export default function HeroPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Hero Section</h1>
+      <h1 className="text-4xl font-black text-foreground">Hero Section</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
           {/* Title */}
           <div>
-            <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+            <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
               Title <span className="text-red-500">*</span>
             </label>
             <input 
               {...register('title', { required: 'Title is required' })} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
               placeholder="Enter hero title"
             />
           </div>
 
           {/* Subtitle */}
           <div>
-            <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+            <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
               Subtitle
             </label>
             <input 
               {...register('subtitle')} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
               placeholder="Enter subtitle"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+            <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
               Description
             </label>
             <textarea 
               {...register('description')} 
               rows={3} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
               placeholder="Enter description"
             />
           </div>
 
           {/* Multiple Image Upload */}
           <div>
-            <label className="block text-xs font-black text-gray-400 mb-4 uppercase tracking-wider">
+            <label className="block text-xs font-black text-muted mb-4 uppercase tracking-wider">
               Slider Images (Upload Multiple)
             </label>
             
@@ -279,7 +279,7 @@ export default function HeroPage() {
                   <img 
                     src={field.url} 
                     alt={field.alt} 
-                    className="w-full h-full object-cover rounded-lg border border-white/10"
+                    className="w-full h-full object-cover rounded-lg border border-border"
                   />
                   
                   {/* Image Overlay Controls */}
@@ -289,7 +289,7 @@ export default function HeroPage() {
                         <button
                           type="button"
                           onClick={() => moveImage(index, 'up')}
-                          className="p-1 bg-white/10 hover:bg-white/20 rounded text-white"
+                          className="p-1 bg-white/10 hover:bg-background/20 rounded text-foreground"
                           title="Move Up"
                         >
                           ↑
@@ -299,7 +299,7 @@ export default function HeroPage() {
                         <button
                           type="button"
                           onClick={() => moveImage(index, 'down')}
-                          className="p-1 bg-white/10 hover:bg-white/20 rounded text-white"
+                          className="p-1 bg-white/10 hover:bg-background/20 rounded text-foreground"
                           title="Move Down"
                         >
                           ↓
@@ -308,19 +308,19 @@ export default function HeroPage() {
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
-                        className="p-1 bg-red-500/80 hover:bg-red-500 rounded text-white"
+                        className="p-1 bg-red-500/80 hover:bg-red-500 rounded text-foreground"
                         title="Remove"
                       >
                         ×
                       </button>
                     </div>
-                    <span className="text-xs text-white">Order: {index + 1}</span>
+                    <span className="text-xs text-foreground">Order: {index + 1}</span>
                   </div>
                 </div>
               ))}
 
               {/* Upload Button */}
-              <div className="aspect-video border-2 border-dashed border-white/10 rounded-lg hover:border-primary/50 transition-colors">
+              <div className="aspect-video border-2 border-dashed border-border rounded-lg hover:border-primary/50 transition-colors">
                 <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                   <input
                     type="file"
@@ -330,48 +330,48 @@ export default function HeroPage() {
                     className="hidden"
                     disabled={uploading}
                   />
-                  <svg className="w-8 h-8 text-gray-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
                   </svg>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted">
                     {uploading ? 'Uploading...' : 'Add Images'}
                   </span>
-                  <span className="text-[10px] text-gray-600 mt-1">PNG, JPG, GIF up to 5MB</span>
+                  <span className="text-[10px] text-muted mt-1">PNG, JPG, GIF up to 5MB</span>
                 </label>
               </div>
             </div>
 
             {uploading && (
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-muted">
                 <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-primary"></div>
                 Uploading images...
               </div>
             )}
 
             {fields.length === 0 && !uploading && (
-              <p className="text-sm text-gray-500 italic">No images uploaded yet. Click "Add Images" to upload.</p>
+              <p className="text-sm text-muted italic">No images uploaded yet. Click "Add Images" to upload.</p>
             )}
           </div>
 
           {/* Buttons Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border">
             <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
                 Primary Button Text
               </label>
               <input 
                 {...register('primaryButton.text')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
                 placeholder="e.g., Join Now"
               />
             </div>
             <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
                 Primary Button Link
               </label>
               <input 
                 {...register('primaryButton.link')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
                 placeholder="e.g., /join"
               />
             </div>
@@ -379,41 +379,41 @@ export default function HeroPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
                 Secondary Button Text
               </label>
               <input 
                 {...register('secondaryButton.text')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
                 placeholder="e.g., Learn More"
               />
             </div>
             <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
                 Secondary Button Link
               </label>
               <input 
                 {...register('secondaryButton.link')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
                 placeholder="e.g., /about"
               />
             </div>
           </div>
 
           {/* Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border">
             <div>
-              <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-wider">
+              <label className="block text-xs font-black text-muted mb-2 uppercase tracking-wider">
                 Auto Slide Interval (ms)
               </label>
               <input 
                 type="number" 
                 {...register('autoSlideInterval')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:outline-none"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:border-primary focus:outline-none"
                 min="1000"
                 step="1000"
               />
-              <p className="text-xs text-gray-600 mt-1">1000ms = 1 second</p>
+              <p className="text-xs text-muted mt-1">1000ms = 1 second</p>
             </div>
 
             <div className="flex items-center space-x-8">
@@ -421,9 +421,9 @@ export default function HeroPage() {
                 <input 
                   type="checkbox" 
                   {...register('isActive')} 
-                  className="w-4 h-4 rounded border-white/10 bg-[#121212] text-primary focus:ring-primary"
+                  className="w-4 h-4 rounded border-border bg-input-bg text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-gray-300">Active (visible on site)</span>
+                <span className="text-sm text-muted">Active (visible on site)</span>
               </label>
             </div>
           </div>
@@ -431,11 +431,11 @@ export default function HeroPage() {
 
         {/* Preview */}
         {!loading && watch('title') && (
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-            <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+          <div className="bg-card border border-border rounded-2xl p-8">
+            <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
               <span>🔍</span> Live Preview
             </h2>
-            <div className="relative h-[400px] bg-dark rounded-xl overflow-hidden">
+            <div className="relative h-[400px] bg-background rounded-xl overflow-hidden">
               {watch('images')?.[0] && (
                 <img 
                   src={watch('images')[0].url} 
@@ -449,22 +449,22 @@ export default function HeroPage() {
                     {watch('subtitle')}
                   </p>
                 )}
-                <h3 className="text-3xl md:text-4xl font-black text-white max-w-2xl mb-4">
+                <h3 className="text-3xl md:text-4xl font-black text-foreground max-w-2xl mb-4">
                   {watch('title')}
                 </h3>
-                <p className="text-gray-300 max-w-xl mb-8">
+                <p className="text-muted max-w-xl mb-8">
                   {watch('description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="px-6 py-3 bg-primary text-white text-sm font-black rounded hover:bg-primary/90 transition-colors">
+                  <button className="px-6 py-3 bg-primary text-foreground text-sm font-black rounded hover:bg-primary/90 transition-colors">
                     {watch('primaryButton.text')}
                   </button>
-                  <button className="px-6 py-3 border border-white/20 text-white text-sm font-black rounded hover:bg-white/5 transition-colors">
+                  <button className="px-6 py-3 border border-white/20 text-foreground text-sm font-black rounded hover:bg-background/5 transition-colors">
                     {watch('secondaryButton.text')}
                   </button>
                 </div>
                 {fields.length > 0 && (
-                  <p className="text-xs text-gray-500 mt-4">
+                  <p className="text-xs text-muted mt-4">
                     {fields.length} image{fields.length !== 1 ? 's' : ''} in slider
                   </p>
                 )}
@@ -478,14 +478,14 @@ export default function HeroPage() {
           <button 
             type="button" 
             onClick={() => router.push('/admin')} 
-            className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+            className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors"
           >
             Cancel
           </button>
           <button 
             type="submit" 
             disabled={saving || uploading} 
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[100px]"
+            className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[100px]"
           >
             {saving ? 'Saving...' : existingId ? 'Update' : 'Create'}
           </button>

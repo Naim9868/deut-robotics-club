@@ -155,7 +155,7 @@ const statusColors: Record<string, string> = {
   accepted: 'bg-emerald-500/10 text-emerald-500',
   published: 'bg-primary/10 text-primary',
   completed: 'bg-green-500/10 text-green-500',
-  archived: 'bg-gray-500/10 text-gray-500',
+  archived: 'bg-gray-500/10 text-muted',
 };
 
 const researcherRoles = ['Principal Investigator', 'Co-Investigator', 'Research Assistant', 'Supervisor', 'Student Researcher'];
@@ -543,25 +543,25 @@ export default function ResearchPage() {
     { key: 'seo', label: 'SEO' },
   ] as const;
 
-  const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
-  const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
+  const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
+  const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Research</h1>
-        <p className="text-gray-500 text-sm">{researchList.length} entries</p>
+        <h1 className="text-4xl font-black text-foreground">Research</h1>
+        <p className="text-muted text-sm">{researchList.length} entries</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit Research' : 'Add New Research'}</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit Research' : 'Add New Research'}</h2>
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 overflow-x-auto pb-2">
           {tabs.map((tab) => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-500 hover:text-gray-300'}`}>
+              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-white/10 text-foreground' : 'bg-white/5 text-muted hover:text-muted'}`}>
               {tab.label}
             </button>
           ))}
@@ -677,18 +677,18 @@ export default function ResearchPage() {
                 <div />
               </div>
               {/* Toggles */}
-              <div className="flex items-center gap-6 border-t border-white/5 pt-4">
+              <div className="flex items-center gap-6 border-t border-border pt-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Featured</span>
+                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Featured</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Show on Homepage</span>
+                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Show on Homepage</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Active</span>
+                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Active</span>
                 </label>
                 <div><label className={labelClass}>Display Order</label><input type="number" {...register('displayOrder')} min="0" className={`${inputClass} w-24`} /></div>
               </div>
@@ -698,9 +698,9 @@ export default function ResearchPage() {
           {/* ─── Media Tab ───────────────────────────── */}
           {activeTab === 'media' && (
             <div className="space-y-4">
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Cover Image</label>
+                  <label className="text-xs font-black text-muted uppercase">Cover Image</label>
                   <button type="button" onClick={() => { setImageTarget('cover'); setUseImageLink(!useImageLink); }}
                     className="text-xs text-primary hover:underline">
                     {useImageLink && imageTarget === 'cover' ? 'Use Upload' : 'Use Link'}
@@ -751,7 +751,7 @@ export default function ResearchPage() {
                 )}
                 {galleryImages.map((img, i) => (
                   <div key={i} className="flex gap-2 mb-2">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden border border-white/10 flex-shrink-0 bg-[#121212]">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden border border-border flex-shrink-0 bg-input-bg">
                       <img src={img.url} alt={img.alt || ''} className="w-full h-full object-cover" />
                     </div>
                     <input value={img.url} onChange={(e) => {
@@ -775,8 +775,8 @@ export default function ResearchPage() {
           {activeTab === 'team' && (
             <div className="space-y-6">
               {/* Researchers */}
-              <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                <h3 className="text-sm font-bold text-white mb-3">Add Researcher</h3>
+              <div className="bg-white/5 border border-border rounded-lg p-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Add Researcher</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                   <input value={researcherName} onChange={(e) => setResearcherName(e.target.value)} placeholder="Full Name *" className={inputClass} />
                   <select value={researcherRole} onChange={(e) => setResearcherRole(e.target.value)} className={inputClass}>
@@ -825,13 +825,13 @@ export default function ResearchPage() {
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">{r.fullName.charAt(0)}</div>
                         )}
-                        <span className="text-white text-sm font-medium flex-1">{r.fullName}</span>
-                        <span className="text-gray-500 text-xs">{r.role}</span>
-                        {r.designation && <span className="text-gray-600 text-xs hidden md:inline">{r.designation}</span>}
-                        <button type="button" onClick={() => removeResearcher(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <span className="text-foreground text-sm font-medium flex-1">{r.fullName}</span>
+                        <span className="text-muted text-xs">{r.role}</span>
+                        {r.designation && <span className="text-muted text-xs hidden md:inline">{r.designation}</span>}
+                        <button type="button" onClick={() => removeResearcher(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                       {(r.email || r.phone || r.department || r.session || r.studentId || r.linkedin || r.github || r.orcid || r.googleScholar || r.researchGate) && (
-                        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500">
+                        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-muted">
                           {r.department && <span>{r.department}</span>}
                           {r.session && <span>Session: {r.session}</span>}
                           {r.studentId && <span>ID: {r.studentId}</span>}
@@ -851,9 +851,9 @@ export default function ResearchPage() {
               )}
 
               {/* Faculty */}
-              <div className="border-t border-white/5 pt-4">
-                <div className="bg-white/5 border border-white/5 rounded-lg p-4">
-                  <h3 className="text-sm font-bold text-white mb-3">Add Faculty</h3>
+              <div className="border-t border-border pt-4">
+                <div className="bg-white/5 border border-border rounded-lg p-4">
+                  <h3 className="text-sm font-bold text-foreground mb-3">Add Faculty</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                     <input value={facultyName} onChange={(e) => setFacultyName(e.target.value)} placeholder="Faculty Name *" className={inputClass} />
                     <select value={facultyRole} onChange={(e) => setFacultyRole(e.target.value)} className={inputClass}>
@@ -884,13 +884,13 @@ export default function ResearchPage() {
                           ) : (
                             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">{f.name.charAt(0)}</div>
                           )}
-                          <span className="text-white text-sm font-medium flex-1">{f.name}</span>
-                          <span className="text-gray-500 text-xs">{f.role}</span>
-                          {f.department && <span className="text-gray-600 text-xs hidden md:inline">{f.department}</span>}
-                          <button type="button" onClick={() => removeFaculty(i)} className="text-gray-500 hover:text-red-500">×</button>
+                          <span className="text-foreground text-sm font-medium flex-1">{f.name}</span>
+                          <span className="text-muted text-xs">{f.role}</span>
+                          {f.department && <span className="text-muted text-xs hidden md:inline">{f.department}</span>}
+                          <button type="button" onClick={() => removeFaculty(i)} className="text-muted hover:text-red-500">×</button>
                         </div>
                         {(f.email || f.phone) && (
-                          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500">
+                          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-muted">
                             {f.email && <span>{f.email}</span>}
                             {f.phone && <span>{f.phone}</span>}
                           </div>
@@ -908,10 +908,10 @@ export default function ResearchPage() {
             <div className="space-y-6">
               {/* Technologies */}
               <div>
-                <h3 className="text-sm font-bold text-white mb-3">Technologies</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">Technologies</h3>
                 <div className="flex gap-2 mb-3">
                   <button type="button" onClick={() => { setTechIconTarget(-1); setShowIconPicker(true); setIconPickerSearch(''); }}
-                    className="px-3 py-2 bg-[#121212] border border-white/10 rounded-lg text-white hover:bg-primary/20 transition-colors flex-shrink-0" title="Pick icon for new tech">
+                    className="px-3 py-2 bg-input-bg border border-border rounded-lg text-foreground hover:bg-primary/20 transition-colors flex-shrink-0" title="Pick icon for new tech">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                   </button>
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
@@ -925,19 +925,19 @@ export default function ResearchPage() {
                   <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-lg">
                     <FocusAreaIcon icon={pendingTechIcon} iconType="lucide" className="text-sm" />
                     <span className="text-xs text-primary">Icon selected: {pendingTechIcon}</span>
-                    <button type="button" onClick={() => setPendingTechIcon('')} className="text-gray-500 hover:text-red-500 text-xs ml-auto">Clear</button>
+                    <button type="button" onClick={() => setPendingTechIcon('')} className="text-muted hover:text-red-500 text-xs ml-auto">Clear</button>
                   </div>
                 )}
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((t, i) => (
-                    <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
+                    <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 rounded-full text-xs text-muted">
                       {t.icon ? <FocusAreaIcon icon={t.icon} iconType="lucide" className="text-sm" /> : <span className="w-4 h-4 inline-block" />}
-                      {t.name} {t.category && <span className="text-gray-500 ml-1">({t.category})</span>}
+                      {t.name} {t.category && <span className="text-muted ml-1">({t.category})</span>}
                       <button type="button" onClick={() => { setTechIconTarget(i); setShowIconPicker(true); setIconPickerSearch(''); }}
-                        className="w-5 h-5 inline-flex items-center justify-center rounded bg-white/10 hover:bg-primary/30 text-gray-400 hover:text-primary transition-colors" title="Pick icon">
+                        className="w-5 h-5 inline-flex items-center justify-center rounded bg-white/10 hover:bg-primary/30 text-muted hover:text-primary transition-colors" title="Pick icon">
                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                       </button>
-                      <button type="button" onClick={() => removeTechnology(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      <button type="button" onClick={() => removeTechnology(i)} className="text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
@@ -945,14 +945,14 @@ export default function ResearchPage() {
                 {/* Icon Picker Modal */}
                 {showIconPicker && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={() => setShowIconPicker(false)}>
-                    <div className="bg-[#1a1a1a] border border-white/10 rounded-xl w-full max-w-lg max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-between p-4 border-b border-white/10">
-                        <h3 className="text-sm font-bold text-white">Pick Icon</h3>
-                        <button onClick={() => setShowIconPicker(false)} className="text-gray-500 hover:text-white">✕</button>
+                    <div className="bg-[#1a1a1a] border border-border rounded-xl w-full max-w-lg max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between p-4 border-b border-border">
+                        <h3 className="text-sm font-bold text-foreground">Pick Icon</h3>
+                        <button onClick={() => setShowIconPicker(false)} className="text-muted hover:text-foreground">✕</button>
                       </div>
-                      <div className="p-3 border-b border-white/10">
+                      <div className="p-3 border-b border-border">
                         <input type="text" value={iconPickerSearch} onChange={(e) => setIconPickerSearch(e.target.value)}
-                          placeholder="Search icons..." className="w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                          placeholder="Search icons..." className="w-full bg-input-bg border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary" />
                       </div>
                       <div className="p-4 max-h-[60vh] overflow-y-auto">
                         {Object.entries(LUCIDE_CATEGORIES).map(([category, icons]) => {
@@ -960,7 +960,7 @@ export default function ResearchPage() {
                           if (filtered.length === 0) return null;
                           return (
                             <div key={category} className="mb-3">
-                              <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1.5">{category}</h4>
+                              <h4 className="text-[10px] font-black uppercase tracking-wider text-muted mb-1.5">{category}</h4>
                               <div className="flex flex-wrap gap-1">
                                 {filtered.map((iconName) => (
                                   <button key={iconName} type="button"
@@ -989,8 +989,8 @@ export default function ResearchPage() {
               </div>
 
               {/* Components */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Components Used</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Components Used</h3>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <input value={compName} onChange={(e) => setCompName(e.target.value)} placeholder="Component Name *" className={inputClass} />
                   <input type="number" value={compQty} onChange={(e) => setCompQty(parseInt(e.target.value) || 1)} min="1" className={inputClass} />
@@ -1001,10 +1001,10 @@ export default function ResearchPage() {
                   <div className="space-y-1">
                     {components.map((c, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1">{c.componentName}</span>
-                        <span className="text-gray-400">x{c.quantity}</span>
-                        {c.specification && <span className="text-gray-500 text-xs">{c.specification}</span>}
-                        <button type="button" onClick={() => removeComponent(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <span className="text-foreground flex-1">{c.componentName}</span>
+                        <span className="text-muted">x{c.quantity}</span>
+                        {c.specification && <span className="text-muted text-xs">{c.specification}</span>}
+                        <button type="button" onClick={() => removeComponent(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -1018,7 +1018,7 @@ export default function ResearchPage() {
             <div className="space-y-6">
               {/* Publications */}
               <div>
-                <h3 className="text-sm font-bold text-white mb-3">Publications</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">Publications</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={pubTitle} onChange={(e) => setPubTitle(e.target.value)} placeholder="Paper Title *" className={`${inputClass} col-span-2`} />
                   <input value={pubAuthors} onChange={(e) => setPubAuthors(e.target.value)} placeholder="Authors" className={inputClass} />
@@ -1039,12 +1039,12 @@ export default function ResearchPage() {
                   <div className="space-y-1">
                     {publications.map((p, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1 truncate">{p.title}</span>
-                        {p.publisher && <span className="text-gray-500 text-xs">{p.publisher}</span>}
-                        {p.volume && <span className="text-gray-500 text-xs">Vol.{p.volume}</span>}
-                        {p.year && <span className="text-gray-500 text-xs">{p.year}</span>}
+                        <span className="text-foreground flex-1 truncate">{p.title}</span>
+                        {p.publisher && <span className="text-muted text-xs">{p.publisher}</span>}
+                        {p.volume && <span className="text-muted text-xs">Vol.{p.volume}</span>}
+                        {p.year && <span className="text-muted text-xs">{p.year}</span>}
                         {p.doi && <span className="text-primary text-xs">DOI</span>}
-                        <button type="button" onClick={() => removePublication(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <button type="button" onClick={() => removePublication(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -1052,8 +1052,8 @@ export default function ResearchPage() {
               </div>
 
               {/* Datasets */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Datasets</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Datasets</h3>
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <input value={datasetName} onChange={(e) => setDatasetName(e.target.value)} placeholder="Dataset Name *" className={inputClass} />
                   <input value={datasetSource} onChange={(e) => setDatasetSource(e.target.value)} placeholder="Source" className={inputClass} />
@@ -1064,9 +1064,9 @@ export default function ResearchPage() {
                   <div className="space-y-1">
                     {datasets.map((d, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1">{d.datasetName}</span>
-                        {d.datasetSource && <span className="text-gray-500 text-xs">{d.datasetSource}</span>}
-                        <button type="button" onClick={() => removeDataset(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <span className="text-foreground flex-1">{d.datasetName}</span>
+                        {d.datasetSource && <span className="text-muted text-xs">{d.datasetSource}</span>}
+                        <button type="button" onClick={() => removeDataset(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -1074,12 +1074,12 @@ export default function ResearchPage() {
               </div>
 
               {/* Funding */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Funding</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Funding</h3>
                 <div className="flex items-center gap-4 mb-3">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" {...register('funded')} className="w-4 h-4 rounded" />
-                    <span className="text-sm text-gray-300">Funded</span>
+                    <span className="text-sm text-muted">Funded</span>
                   </label>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -1090,8 +1090,8 @@ export default function ResearchPage() {
               </div>
 
               {/* Awards */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Awards</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Awards</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={awardName} onChange={(e) => setAwardName(e.target.value)} placeholder="Award Name *" className={inputClass} />
                   <input value={awardOrganizer} onChange={(e) => setAwardOrganizer(e.target.value)} placeholder="Organizer" className={inputClass} />
@@ -1103,11 +1103,11 @@ export default function ResearchPage() {
                   <div className="space-y-1">
                     {awards.map((a, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1">{a.awardName}</span>
-                        {a.organizer && <span className="text-gray-500 text-xs">{a.organizer}</span>}
-                        {a.year && <span className="text-gray-500 text-xs">{a.year}</span>}
+                        <span className="text-foreground flex-1">{a.awardName}</span>
+                        {a.organizer && <span className="text-muted text-xs">{a.organizer}</span>}
+                        {a.year && <span className="text-muted text-xs">{a.year}</span>}
                         {a.certificate && <span className="text-primary text-xs">Cert</span>}
-                        <button type="button" onClick={() => removeAward(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <button type="button" onClick={() => removeAward(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -1119,7 +1119,7 @@ export default function ResearchPage() {
           {/* ─── Docs Tab ────────────────────────────── */}
           {activeTab === 'docs' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold text-white">Documentation Links</h3>
+              <h3 className="text-sm font-bold text-foreground">Documentation Links</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className={labelClass}>GitHub Repository</label><input {...register('docGithubRepo')} placeholder="https://github.com/..." className={inputClass} /></div>
                 <div><label className={labelClass}>GitLab Repository</label><input {...register('docGitlabRepo')} placeholder="https://gitlab.com/..." className={inputClass} /></div>
@@ -1145,8 +1145,8 @@ export default function ResearchPage() {
           )}
 
           {/* ─── Form Actions ────────────────────────── */}
-          <div className="flex gap-2 pt-4 border-t border-white/5">
-            <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
+          <div className="flex gap-2 pt-4 border-t border-border">
+            <button type="submit" className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors">
               {editingId ? 'Update Research' : 'Create Research'}
             </button>
             {editingId && (
@@ -1160,7 +1160,7 @@ export default function ResearchPage() {
                 setAwardName(''); setAwardOrganizer(''); setAwardYear(undefined); setAwardCert('');
                 setCurrentImageUrl(''); setActiveTab('basic');
               }}
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors">
                 Cancel
               </button>
             )}
@@ -1171,14 +1171,14 @@ export default function ResearchPage() {
       {/* ─── Research List ──────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {researchList.map((item) => (
-          <div key={item._id as string} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
+          <div key={item._id as string} className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
             <div className="absolute top-2 right-2 flex gap-1 z-10">
-              <button onClick={() => handleEdit(item)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
-              <button onClick={() => handleDelete(item._id as string)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+              <button onClick={() => handleEdit(item)} className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700">Edit</button>
+              <button onClick={() => handleDelete(item._id as string)} className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700">Del</button>
             </div>
-            {Boolean((item.homepage as Record<string, unknown>)?.featured) && <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs rounded-full">Featured</div>}
+            {Boolean((item.homepage as Record<string, unknown>)?.featured) && <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-foreground text-xs rounded-full">Featured</div>}
             <div className="flex p-4 gap-4">
-              <div className="w-24 h-24 flex-shrink-0 bg-[#121212] rounded-lg overflow-hidden">
+              <div className="w-24 h-24 flex-shrink-0 bg-input-bg rounded-lg overflow-hidden">
                 <img
                   src={(item.coverImage as { url?: string })?.url || `https://ui-avatars.com/api/?name=${encodeURIComponent((item.title as string) || 'R')}&background=1e1e1e&color=e63946&size=200&bold=true&length=2`}
                   alt={item.title as string}
@@ -1186,14 +1186,14 @@ export default function ResearchPage() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white truncate">{item.title as string}</h3>
-                <p className="text-xs text-gray-500">{(item.researchArea as string) || 'Robotics'}</p>
+                <h3 className="text-lg font-bold text-foreground truncate">{item.title as string}</h3>
+                <p className="text-xs text-muted">{(item.researchArea as string) || 'Robotics'}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${statusColors[(item.status as string) || 'ongoing'] || statusColors.ongoing}`}>
                     {(item.status as string || 'ongoing').replace(/_/g, ' ')}
                   </span>
                   {Array.isArray(item.researchers) && item.researchers.length > 0 && (
-                    <span className="text-xs text-gray-500">{item.researchers.length} researcher{item.researchers.length > 1 ? 's' : ''}</span>
+                    <span className="text-xs text-muted">{item.researchers.length} researcher{item.researchers.length > 1 ? 's' : ''}</span>
                   )}
                 </div>
               </div>
@@ -1203,8 +1203,8 @@ export default function ResearchPage() {
       </div>
 
       {researchList.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No research entries yet. Add your first research above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No research entries yet. Add your first research above.</p>
         </div>
       )}
     </div>

@@ -25,7 +25,6 @@ const Testimonials: React.FC = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fallback testimonials
   const fallbackTestimonials: TestimonialData[] = [
     {
       _id: '1',
@@ -134,7 +133,6 @@ const Testimonials: React.FC = () => {
     setActiveIndex(index);
   };
 
-  // Auto-play functionality
   useEffect(() => {
     if (testimonials.length > 0 && isAutoPlaying) {
       autoPlayRef.current = setInterval(() => {
@@ -149,7 +147,6 @@ const Testimonials: React.FC = () => {
     };
   }, [isAutoPlaying, testimonials.length]);
 
-  // Calculate positions for 3D effect
   const getCardPosition = (index: number) => {
     const total = testimonials.length;
     if (total === 0) return { translateX: 0, translateZ: 0, scale: 0, opacity: 0 };
@@ -181,14 +178,13 @@ const Testimonials: React.FC = () => {
     return { translateX: 0, translateZ: -150, scale: 0.4, opacity: 0 };
   };
 
-  // Render star rating
   const renderStars = (rating: number = 5) => {
     return (
       <div className="flex space-x-0.5 sm:space-x-1 mb-2 sm:mb-3 md:mb-4">
         {[...Array(5)].map((_, i) => (
           <svg
             key={i}
-            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 ${i < rating ? 'text-yellow-500' : 'text-gray-600'}`}
+            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 ${i < rating ? 'text-yellow-500' : 'text-muted'}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -201,7 +197,7 @@ const Testimonials: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-[#0d0d0d]">
+      <div className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center items-center min-h-[200px]">
             <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-primary"></div>
@@ -212,9 +208,8 @@ const Testimonials: React.FC = () => {
   }
 
   return (
-    <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 bg-[#0d0d0d] overflow-hidden">
+    <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 bg-muted/10 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -224,12 +219,11 @@ const Testimonials: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto tracking-tighter">
             Testimonials
           </h2>
-          <p className="text-gray-500 uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.5em] mt-2 sm:mt-3 md:mt-4">
+          <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.5em] mt-2 sm:mt-3 md:mt-4">
             What our members say
           </p>
         </motion.div>
 
-        {/* Slider Container */}
         {testimonials.length > 0 && (
           <div
             className="relative w-full h-[380px] sm:h-[400px] md:h-[440px] lg:h-[480px] xl:h-[500px] mb-0 group"
@@ -237,10 +231,9 @@ const Testimonials: React.FC = () => {
             onMouseLeave={() => setIsAutoPlaying(true)}
             style={{ perspective: "1000px" }}
           >
-            {/* Navigation Arrows - Hidden on very small screens */}
             <button
               onClick={prevCard}
-              className="hidden xs:flex absolute left-0 sm:left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/5 sm:bg-white/10 backdrop-blur-sm border border-white/10 sm:border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300 hover:scale-110 focus:outline-none"
+              className="hidden xs:flex absolute left-0 sm:left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-background/5 sm:bg-background/10 backdrop-blur-sm border border-border sm:border-border flex items-center justify-center text-foreground hover:bg-background/20 hover:border-border transition-all duration-300 hover:scale-110 focus:outline-none"
               aria-label="Previous testimonial"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -250,7 +243,7 @@ const Testimonials: React.FC = () => {
 
             <button
               onClick={nextCard}
-              className="hidden xs:flex absolute right-0 sm:right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white/5 sm:bg-white/10 backdrop-blur-sm border border-white/10 sm:border-white/20 flex items-center justify-center text-white hover:bg-white/20 hover:border-white/30 transition-all duration-300 hover:scale-110 focus:outline-none"
+              className="hidden xs:flex absolute right-0 sm:right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-background/5 sm:bg-background/10 backdrop-blur-sm border border-border sm:border-border flex items-center justify-center text-foreground hover:bg-background/20 hover:border-border transition-all duration-300 hover:scale-110 focus:outline-none"
               aria-label="Next testimonial"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +251,6 @@ const Testimonials: React.FC = () => {
               </svg>
             </button>
 
-            {/* Cards Track */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -290,18 +282,15 @@ const Testimonials: React.FC = () => {
                       <div className={`relative p-4 sm:p-5 md:p-6 lg:p-8 bg-card border rounded-2xl transition-all duration-300 shadow-2xl ${
                         isActive 
                           ? 'border-primary/50 shadow-[0_0_30px_rgba(230,57,70,0.15)]' 
-                          : 'border-white/5 hover:border-primary/30'
+                          : 'border-border hover:border-primary/30'
                       }`}>
-                        {/* Quote mark - positioned absolutely */}
                         <div className={`absolute top-2 sm:top-3 md:top-4 right-4 sm:right-5 md:right-6 lg:right-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-primary/70 font-serif italic ${
                           isActive ? 'text-primary/90' : 'group-hover:text-primary/90'
                         } transition-colors`}>
-                          “
+                          "
                         </div>
                         
-                        {/* Content container with proper spacing */}
                         <div className="relative z-10">
-                          {/* Featured badge - positioned to not overlap with stars */}
                           {testimonial.featured && (
                             <div className="mb-2 sm:mb-2.5 md:mb-3">
                               <span className="inline-block px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary/20 text-primary text-[5px] sm:text-[6px] font-black uppercase tracking-wider rounded-full border border-primary/30">
@@ -310,20 +299,16 @@ const Testimonials: React.FC = () => {
                             </div>
                           )}
                           
-                          {/* Rating stars */}
                           {renderStars(testimonial.rating)}
                         </div>
                         
-                        {/* Testimonial text */}
-                        <p className={`text-gray-300 text-[9px] sm:text-[10px] md:text-xs lg:text-[13px] italic mb-3 sm:mb-4 md:mb-5 lg:mb-6 relative z-10 leading-relaxed line-clamp-6 sm:line-clamp-8 md:line-clamp-10 lg:line-clamp-12 ${
-                          isActive ? 'text-gray-200' : ''
+                        <p className={`text-muted text-[9px] sm:text-[10px] md:text-xs lg:text-[13px] italic mb-3 sm:mb-4 md:mb-5 lg:mb-6 relative z-10 leading-relaxed line-clamp-6 sm:line-clamp-8 md:line-clamp-10 lg:line-clamp-12 ${
+                          isActive ? 'text-foreground' : ''
                         }`}>
                           {testimonial.text}
                         </p>
                         
-                        {/* Author info */}
                         <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 relative z-10">
-                          {/* Avatar */}
                           {testimonial.avatar?.url && !testimonial.avatar.url.includes('ui-avatars') ? (
                             <img 
                               src={testimonial.avatar.url} 
@@ -337,10 +322,10 @@ const Testimonials: React.FC = () => {
                           )}
                           
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-bold uppercase text-[9px] sm:text-[10px] md:text-xs truncate">
+                            <h4 className="text-foreground font-bold uppercase text-[9px] sm:text-[10px] md:text-xs truncate">
                               {testimonial.name}
                             </h4>
-                            <p className="text-gray-500 text-[6px] sm:text-[7px] md:text-[8px] uppercase font-bold tracking-widest truncate">
+                            <p className="text-muted text-[6px] sm:text-[7px] md:text-[8px] uppercase font-bold tracking-widest truncate">
                               {testimonial.role}
                             </p>
                           </div>
@@ -352,7 +337,6 @@ const Testimonials: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Dots Navigation */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 sm:space-x-2">
               {testimonials.map((_, index) => (
                 <button
@@ -361,7 +345,7 @@ const Testimonials: React.FC = () => {
                   className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
                     index === activeIndex
                       ? 'w-6 sm:w-8 md:w-10 bg-primary'
-                      : 'w-1.5 sm:w-2 bg-white/30 hover:bg-white/50'
+                      : 'w-1.5 sm:w-2 bg-foreground/30 hover:bg-foreground/50'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -370,9 +354,8 @@ const Testimonials: React.FC = () => {
           </div>
         )}
 
-        {/* Empty state */}
         {testimonials.length === 0 && (
-          <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+          <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
             No testimonials available.
           </div>
         )}

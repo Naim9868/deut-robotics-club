@@ -100,7 +100,7 @@ export default function SectionsPage() {
     }
   };
 
-  if (loading) return <div className="text-center py-12 text-gray-400">Loading...</div>;
+  if (loading) return <div className="text-center py-12 text-muted">Loading...</div>;
 
   const visibleCount = Object.values(sections).filter(Boolean).length;
 
@@ -108,8 +108,8 @@ export default function SectionsPage() {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-white">Sections</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-4xl font-black text-foreground">Sections</h1>
+          <p className="text-muted text-sm mt-1">
             {visibleCount} of {SECTION_CONFIG.length} sections visible on frontend
           </p>
         </div>
@@ -131,18 +131,18 @@ export default function SectionsPage() {
         </div>
       </div>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="divide-y divide-white/5">
           {SECTION_CONFIG.map((section) => (
             <div
               key={section.key}
-              className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.02] transition-colors"
+              className="flex items-center justify-between px-6 py-4 hover:bg-background/[0.02] transition-colors"
             >
               <div className="flex items-center gap-4">
                 <span className="text-2xl">{section.icon}</span>
                 <div>
-                  <h3 className="text-white font-medium">{section.label}</h3>
-                  <p className="text-gray-500 text-xs">{section.description}</p>
+                  <h3 className="text-foreground font-medium">{section.label}</h3>
+                  <p className="text-muted text-xs">{section.description}</p>
                 </div>
               </div>
               <button

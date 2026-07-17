@@ -156,7 +156,7 @@ const Gallery: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto">
             Inside DRC
           </h2>
-          <p className="text-gray-500 uppercase text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em]">
+          <p className="text-muted uppercase text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em]">
             Capturing the essence of innovation
           </p>
         </div>
@@ -171,15 +171,15 @@ const Gallery: React.FC = () => {
                 alt={item.image?.alt || item.title} 
                 className="w-full h-auto object-cover hover:scale-105 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 md:p-5 lg:p-6 pointer-events-none">
-                <h4 className="text-white font-bold uppercase text-[10px] sm:text-xs md:text-sm tracking-wider line-clamp-2">
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 md:p-5 lg:p-6 pointer-events-none">
+                <h4 className="text-foreground font-bold uppercase text-[10px] sm:text-xs md:text-sm tracking-wider line-clamp-2">
                   {item.title}
                 </h4>
                 <p className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-0.5 sm:mt-1">
                   {item.category || 'DUET Robotics Club'}
                 </p>
                 {item.date && (
-                  <p className="text-gray-400 text-[6px] sm:text-[7px] md:text-[8px] uppercase tracking-wider mt-0.5 sm:mt-1">
+                  <p className="text-muted text-[6px] sm:text-[7px] md:text-[8px] uppercase tracking-wider mt-0.5 sm:mt-1">
                     {formatDate(item.date)}
                   </p>
                 )}
@@ -189,11 +189,10 @@ const Gallery: React.FC = () => {
         ))}
       </div>
 
-      {/* See More Button */}
       <ScrollReveal animation="up">
         <div className="mt-10 sm:mt-12 md:mt-14 lg:mt-16 flex justify-center">
           <Link href="/gallery">
-            <button className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-transparent border border-white/20 text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs md:text-sm overflow-hidden transition-all duration-300 hover:border-primary hover:text-primary">
+            <button className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 bg-transparent border border-border text-foreground font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs md:text-sm overflow-hidden transition-all duration-300 hover:border-primary hover:text-primary">
               <span className="relative z-10">See More</span>
               <div className="absolute inset-0 bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -203,7 +202,7 @@ const Gallery: React.FC = () => {
       </ScrollReveal>
 
       {displayItems.length === 0 && (
-        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+        <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
           No gallery images found.
         </div>
       )}

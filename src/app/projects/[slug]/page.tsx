@@ -79,13 +79,13 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-gray-500/15 text-gray-400',
+  draft: 'bg-gray-500/15 text-muted',
   submitted: 'bg-yellow-500/15 text-yellow-400',
   under_review: 'bg-blue-500/15 text-blue-400',
   approved: 'bg-green-500/15 text-green-400',
   ongoing: 'bg-blue-500/15 text-blue-400',
   completed: 'bg-green-500/15 text-green-400',
-  archived: 'bg-gray-500/15 text-gray-400',
+  archived: 'bg-gray-500/15 text-muted',
 };
 
 export default function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -117,17 +117,17 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Loading...</div>
+      <div className="min-h-screen bg-card flex items-center justify-center">
+        <div className="animate-pulse text-muted">Loading...</div>
       </div>
     );
   }
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-card flex flex-col items-center justify-center gap-4">
         <span className="text-5xl">🔍</span>
-        <h1 className="text-2xl font-black text-white">Project Not Found</h1>
+        <h1 className="text-2xl font-black text-foreground">Project Not Found</h1>
         <Link href="/projects" className="text-red-500 hover:underline text-sm">
           Back to Projects
         </Link>
@@ -151,7 +151,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
   ].filter((l) => l.url);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-card">
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px]">
         <Image
@@ -161,11 +161,11 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-7xl mx-auto">
-            <Link href="/projects" className="text-gray-400 hover:text-white text-sm mb-4 inline-block">
+            <Link href="/projects" className="text-muted hover:text-foreground text-sm mb-4 inline-block">
               &larr; Back to Projects
             </Link>
 
@@ -177,21 +177,21 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                 {project.status}
               </span>
               {project.projectType && (
-                <span className="px-3 py-1 rounded text-xs font-bold bg-white/10 text-gray-300">
+                <span className="px-3 py-1 rounded text-xs font-bold bg-background/10 text-muted">
                   {project.projectType}
                 </span>
               )}
               {project.difficulty && (
-                <span className="px-3 py-1 rounded text-xs font-bold bg-white/5 text-gray-400">
+                <span className="px-3 py-1 rounded text-xs font-bold bg-background/5 text-muted">
                   {project.difficulty}
                 </span>
               )}
             </div>
 
             <p className="text-red-500 text-xs font-bold tracking-widest mb-2">{project.tag}</p>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-2">{project.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-black text-foreground mb-2">{project.title}</h1>
             {project.shortDescription && (
-              <p className="text-gray-300 text-lg max-w-3xl">{project.shortDescription}</p>
+              <p className="text-muted text-lg max-w-3xl">{project.shortDescription}</p>
             )}
           </div>
         </div>
@@ -208,14 +208,14 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {allImages.length > 1 && (
               <ScrollReveal>
                 <div>
-                  <h2 className="text-xl font-black text-white mb-4">Gallery</h2>
+                  <h2 className="text-xl font-black text-foreground mb-4">Gallery</h2>
                   <div className="flex gap-2 overflow-x-auto pb-2">
                     {allImages.map((img, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveImage(i)}
                         className={`relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-colors ${
-                          activeImage === i ? 'border-red-500' : 'border-white/10'
+                          activeImage === i ? 'border-red-500' : 'border-border'
                         }`}
                       >
                         <Image src={img.url} alt={img.alt || ''} fill className="object-cover" />
@@ -230,8 +230,8 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {project.fullDescription && (
               <ScrollReveal>
                 <div>
-                  <h2 className="text-xl font-black text-white mb-4">About This Project</h2>
-                  <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">{project.fullDescription}</div>
+                  <h2 className="text-xl font-black text-foreground mb-4">About This Project</h2>
+                  <div className="text-muted leading-relaxed whitespace-pre-wrap">{project.fullDescription}</div>
                 </div>
               </ScrollReveal>
             )}
@@ -239,9 +239,9 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {/* Summary */}
             {project.summary && (
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-6">
-                  <h2 className="text-xl font-black text-white mb-3">Summary</h2>
-                  <p className="text-gray-300 leading-relaxed">{project.summary}</p>
+                <div className="bg-background/5 border border-border rounded-xl p-6">
+                  <h2 className="text-xl font-black text-foreground mb-3">Summary</h2>
+                  <p className="text-muted leading-relaxed">{project.summary}</p>
                 </div>
               </ScrollReveal>
             )}
@@ -250,7 +250,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {project.youtubeVideo && (
               <ScrollReveal>
                 <div>
-                  <h2 className="text-xl font-black text-white mb-4">Video</h2>
+                  <h2 className="text-xl font-black text-foreground mb-4">Video</h2>
                   <div className="aspect-video rounded-xl overflow-hidden">
                     <iframe
                       src={project.youtubeVideo.replace('watch?v=', 'embed/')}
@@ -266,13 +266,13 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {project.technologies && project.technologies.length > 0 && (
               <ScrollReveal>
                 <div>
-                  <h2 className="text-xl font-black text-white mb-4">Technologies</h2>
+                  <h2 className="text-xl font-black text-foreground mb-4">Technologies</h2>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, i) => (
-                      <div key={i} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
-                        <span className="text-white text-sm font-medium">{tech.name}</span>
+                      <div key={i} className="flex items-center gap-2 px-4 py-2 bg-background/5 border border-border rounded-lg">
+                        <span className="text-foreground text-sm font-medium">{tech.name}</span>
                         {tech.category && (
-                          <span className="text-gray-500 text-xs">({tech.category})</span>
+                          <span className="text-muted text-xs">({tech.category})</span>
                         )}
                       </div>
                     ))}
@@ -285,22 +285,22 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {project.components && project.components.length > 0 && (
               <ScrollReveal>
                 <div>
-                  <h2 className="text-xl font-black text-white mb-4">Components Used</h2>
-                  <div className="bg-white/5 border border-white/5 rounded-xl overflow-hidden">
+                  <h2 className="text-xl font-black text-foreground mb-4">Components Used</h2>
+                  <div className="bg-background/5 border border-border rounded-xl overflow-hidden">
                     <table className="w-full">
-                      <thead className="bg-white/5">
+                      <thead className="bg-background/5">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Component</th>
-                          <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Qty</th>
-                          <th className="px-4 py-3 text-left text-xs font-bold text-gray-400">Specification</th>
+                          <th className="px-4 py-3 text-left text-xs font-bold text-muted">Component</th>
+                          <th className="px-4 py-3 text-left text-xs font-bold text-muted">Qty</th>
+                          <th className="px-4 py-3 text-left text-xs font-bold text-muted">Specification</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5">
+                      <tbody className="divide-y divide-border">
                         {project.components.map((comp, i) => (
                           <tr key={i}>
-                            <td className="px-4 py-3 text-sm text-white">{comp.componentName}</td>
-                            <td className="px-4 py-3 text-sm text-gray-300">{comp.quantity || 1}</td>
-                            <td className="px-4 py-3 text-sm text-gray-400">{comp.specification || '-'}</td>
+                            <td className="px-4 py-3 text-sm text-foreground">{comp.componentName}</td>
+                            <td className="px-4 py-3 text-sm text-muted">{comp.quantity || 1}</td>
+                            <td className="px-4 py-3 text-sm text-muted">{comp.specification || '-'}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -314,17 +314,17 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {project.competition?.competitionName && (
               <ScrollReveal>
                 <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl p-6">
-                  <h2 className="text-xl font-black text-white mb-3">🏆 Competition</h2>
+                  <h2 className="text-xl font-black text-foreground mb-3">🏆 Competition</h2>
                   <div className="space-y-2">
-                    <p className="text-white font-bold">{project.competition.competitionName}</p>
+                    <p className="text-foreground font-bold">{project.competition.competitionName}</p>
                     {project.competition.organizer && (
-                      <p className="text-gray-400 text-sm">Organized by: {project.competition.organizer}</p>
+                      <p className="text-muted text-sm">Organized by: {project.competition.organizer}</p>
                     )}
                     {project.competition.award && (
                       <p className="text-yellow-400 text-sm font-bold">Award: {project.competition.award}</p>
                     )}
                     {project.competition.position && (
-                      <p className="text-gray-300 text-sm">Position: {project.competition.position}</p>
+                      <p className="text-muted text-sm">Position: {project.competition.position}</p>
                     )}
                   </div>
                 </div>
@@ -338,8 +338,8 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {/* Quick Links */}
             {docLinks.length > 0 && (
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                  <h3 className="text-lg font-black text-white mb-3">Links</h3>
+                <div className="bg-background/5 border border-border rounded-xl p-5">
+                  <h3 className="text-lg font-black text-foreground mb-3">Links</h3>
                   <div className="space-y-2">
                     {docLinks.map((link, i) => (
                       <a
@@ -347,7 +347,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-gray-300 hover:text-white text-sm transition-colors"
+                        className="flex items-center gap-2 text-muted hover:text-foreground text-sm transition-colors"
                       >
                         <span>{link.icon}</span>
                         {link.label}
@@ -361,17 +361,17 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {/* Faculty */}
             {project.faculty && (project.faculty.advisor || project.faculty.coAdvisor || project.faculty.mentor) && (
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                  <h3 className="text-lg font-black text-white mb-3">Faculty</h3>
+                <div className="bg-background/5 border border-border rounded-xl p-5">
+                  <h3 className="text-lg font-black text-foreground mb-3">Faculty</h3>
                   <div className="space-y-2 text-sm">
                     {project.faculty.advisor && (
-                      <p className="text-gray-300"><span className="text-gray-500">Advisor:</span> {project.faculty.advisor}</p>
+                      <p className="text-muted"><span className="text-muted">Advisor:</span> {project.faculty.advisor}</p>
                     )}
                     {project.faculty.coAdvisor && (
-                      <p className="text-gray-300"><span className="text-gray-500">Co-Advisor:</span> {project.faculty.coAdvisor}</p>
+                      <p className="text-muted"><span className="text-muted">Co-Advisor:</span> {project.faculty.coAdvisor}</p>
                     )}
                     {project.faculty.mentor && (
-                      <p className="text-gray-300"><span className="text-gray-500">Mentor:</span> {project.faculty.mentor}</p>
+                      <p className="text-muted"><span className="text-muted">Mentor:</span> {project.faculty.mentor}</p>
                     )}
                   </div>
                 </div>
@@ -381,12 +381,12 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
             {/* Team */}
             {project.team && project.team.length > 0 && (
               <ScrollReveal>
-                <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                  <h3 className="text-lg font-black text-white mb-3">Team ({project.team.length})</h3>
+                <div className="bg-background/5 border border-border rounded-xl p-5">
+                  <h3 className="text-lg font-black text-foreground mb-3">Team ({project.team.length})</h3>
                   <div className="space-y-3">
                     {project.team.map((member, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-background/10 flex items-center justify-center text-foreground text-xs font-bold flex-shrink-0">
                           {member.profilePhoto?.url ? (
                             <Image src={member.profilePhoto.url} alt={member.fullName} width={32} height={32} className="rounded-full object-cover" />
                           ) : (
@@ -394,12 +394,12 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                           )}
                         </div>
                         <div>
-                          <p className="text-white text-sm font-medium">
+                          <p className="text-foreground text-sm font-medium">
                             {member.fullName}
                             {member.isLeader && <span className="text-red-500 text-xs ml-1">(Leader)</span>}
                           </p>
                           {member.roleInProject && (
-                            <p className="text-gray-500 text-xs">{member.roleInProject}</p>
+                            <p className="text-muted text-xs">{member.roleInProject}</p>
                           )}
                         </div>
                       </div>
@@ -411,20 +411,20 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
 
             {/* Stats */}
             <ScrollReveal>
-              <div className="bg-white/5 border border-white/5 rounded-xl p-5">
-                <h3 className="text-lg font-black text-white mb-3">Stats</h3>
+              <div className="bg-background/5 border border-border rounded-xl p-5">
+                <h3 className="text-lg font-black text-foreground mb-3">Stats</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Views</span>
-                    <span className="text-white">{project.analytics?.views || 0}</span>
+                    <span className="text-muted">Views</span>
+                    <span className="text-foreground">{project.analytics?.views || 0}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Likes</span>
-                    <span className="text-white">{project.analytics?.likes || 0}</span>
+                    <span className="text-muted">Likes</span>
+                    <span className="text-foreground">{project.analytics?.likes || 0}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Created</span>
-                    <span className="text-white">
+                    <span className="text-muted">Created</span>
+                    <span className="text-foreground">
                       {new Date(project.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
@@ -439,11 +439,11 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
       {related.length > 0 && (
         <section className="px-4 pb-20">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-black text-white mb-6">Related Projects</h2>
+            <h2 className="text-2xl font-black text-foreground mb-6">Related Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {related.map((rp) => (
                 <Link key={rp._id} href={`/projects/${rp.slug}`}>
-                  <div className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-red-500/30 transition-all">
+                  <div className="group bg-card border border-border rounded-xl overflow-hidden hover:border-red-500/30 transition-all">
                     <div className="relative h-32 overflow-hidden">
                       <Image
                         src={rp.coverImage?.url || rp.image?.url || '/images/project-placeholder.jpg'}
@@ -454,7 +454,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                     </div>
                     <div className="p-4">
                       <p className="text-red-500 text-[10px] font-bold tracking-widest">{rp.tag}</p>
-                      <h3 className="text-white font-bold text-sm group-hover:text-red-400 transition-colors">{rp.title}</h3>
+                      <h3 className="text-foreground font-bold text-sm group-hover:text-red-400 transition-colors">{rp.title}</h3>
                     </div>
                   </div>
                 </Link>

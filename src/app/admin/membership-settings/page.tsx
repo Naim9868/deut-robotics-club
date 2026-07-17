@@ -118,8 +118,8 @@ export default function MembershipSettingsPage() {
     return (
       <div className="space-y-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-white/5 rounded w-1/3" />
-          <div className="h-64 bg-white/5 rounded-xl" />
+          <div className="h-8 bg-background/5 rounded w-1/3" />
+          <div className="h-64 bg-background/5 rounded-xl" />
         </div>
       </div>
     );
@@ -130,26 +130,26 @@ export default function MembershipSettingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">Membership Settings</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 className="text-3xl font-black text-foreground">Membership Settings</h1>
+          <p className="text-muted text-sm mt-1">
             Configure registration and membership parameters
           </p>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-6 py-2.5 text-sm font-bold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="px-6 py-2.5 text-sm font-bold text-foreground bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save Settings'}
         </button>
       </div>
 
       {/* Registration Toggle */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+      <div className="bg-card border border-border rounded-xl p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-black text-white">Registration Status</h2>
-            <p className="text-gray-500 text-sm mt-1">
+            <h2 className="text-lg font-black text-foreground">Registration Status</h2>
+            <p className="text-muted text-sm mt-1">
               Open or close member registration
             </p>
           </div>
@@ -176,11 +176,11 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Registration Fee & Limits */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Fee & Limits</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Fee & Limits</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5">
               Registration Fee (BDT)
             </label>
             <input
@@ -188,11 +188,11 @@ export default function MembershipSettingsPage() {
               value={registrationFee}
               onChange={(e) => setRegistrationFee(Number(e.target.value))}
               min={0}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5">
               Maximum Members
             </label>
             <input
@@ -200,11 +200,11 @@ export default function MembershipSettingsPage() {
               value={maxMembers}
               onChange={(e) => setMaxMembers(Number(e.target.value))}
               min={1}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5">
               Membership Duration (Months)
             </label>
             <input
@@ -212,22 +212,22 @@ export default function MembershipSettingsPage() {
               value={membershipDurationMonths}
               onChange={(e) => setMembershipDurationMonths(Number(e.target.value))}
               min={1}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
             />
           </div>
         </div>
       </div>
 
       {/* Payment Methods */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Payment Methods</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Payment Methods</h2>
 
         {/* Existing methods */}
         <div className="space-y-3 mb-4">
           {paymentMethods.map((method, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 p-3 bg-[#121212] border border-white/5 rounded-lg"
+              className="flex items-center gap-3 p-3 bg-input-bg border border-border rounded-lg"
             >
               <button
                 onClick={() => togglePaymentMethod(index)}
@@ -242,7 +242,7 @@ export default function MembershipSettingsPage() {
                 />
               </button>
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium ${method.enabled ? 'text-white' : 'text-gray-500'}`}>
+                <p className={`text-sm font-medium ${method.enabled ? 'text-foreground' : 'text-muted'}`}>
                   {method.name}
                 </p>
                 <input
@@ -250,7 +250,7 @@ export default function MembershipSettingsPage() {
                   value={method.details}
                   onChange={(e) => updatePaymentMethodDetails(index, e.target.value)}
                   placeholder="Payment details (e.g., account number)"
-                  className="w-full bg-transparent border-none text-xs text-gray-400 focus:outline-none mt-1 placeholder:text-gray-600"
+                  className="w-full bg-transparent border-none text-xs text-muted focus:outline-none mt-1 placeholder:text-muted"
                 />
               </div>
               <button
@@ -270,18 +270,18 @@ export default function MembershipSettingsPage() {
             value={newMethodName}
             onChange={(e) => setNewMethodName(e.target.value)}
             placeholder="Method name (e.g., bKash)"
-            className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+            className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted"
           />
           <input
             type="text"
             value={newMethodDetails}
             onChange={(e) => setNewMethodDetails(e.target.value)}
             placeholder="Details (optional)"
-            className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+            className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted"
           />
           <button
             onClick={addPaymentMethod}
-            className="px-4 py-2.5 text-sm font-bold text-white bg-primary/20 border border-primary/30 rounded-lg hover:bg-primary/30 transition-colors"
+            className="px-4 py-2.5 text-sm font-bold text-foreground bg-primary/20 border border-primary/30 rounded-lg hover:bg-primary/30 transition-colors"
           >
             Add
           </button>
@@ -289,9 +289,9 @@ export default function MembershipSettingsPage() {
       </div>
 
       {/* Registration Instructions */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Registration Instructions</h2>
-        <p className="text-xs text-gray-500 mb-3">
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Registration Instructions</h2>
+        <p className="text-xs text-muted mb-3">
           These instructions will be displayed to users on the registration page.
         </p>
         <textarea
@@ -299,7 +299,7 @@ export default function MembershipSettingsPage() {
           onChange={(e) => setRegistrationInstructions(e.target.value)}
           rows={6}
           placeholder="Enter registration instructions..."
-          className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600 resize-none"
+          className="w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted resize-none"
         />
       </div>
     </div>

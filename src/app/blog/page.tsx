@@ -37,7 +37,7 @@ const Blog: React.FC = () => {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32 flex justify-center">
+        <div className="min-h-screen bg-background pt-32 flex justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
         <Footer />
@@ -49,8 +49,8 @@ const Blog: React.FC = () => {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32 text-center">
-          <h1 className="text-4xl text-white mb-4">Post not found</h1>
+        <div className="min-h-screen bg-background pt-32 text-center">
+          <h1 className="text-4xl text-foreground mb-4">Post not found</h1>
           <Link href="/#blog" className="text-primary hover:underline">
             ← Back to Blog
           </Link>
@@ -92,20 +92,20 @@ const Blog: React.FC = () => {
   // ];
 
   return (
-    <div id="blog" className="py-32 min-h-screen bg-[#050505] overflow-hidden">
+    <div id="blog" className="py-32 min-h-screen bg-card overflow-hidden">
          <Navbar activeSection={activeSection} />
       <div className="container mx-auto px-4">
         <ScrollReveal animation="up">
           <div className="mb-20">
             <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 section-title">Latest Blog</h2>
-            <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.4em]">Insights, research, and technical breakthroughs</p>
+            <p className="text-muted uppercase text-xs font-bold tracking-[0.4em]">Insights, research, and technical breakthroughs</p>
           </div>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {posts.map((post, i) => (
             <ScrollReveal key={i} animation="up" delay={i * 100}>
-              <div className="group flex flex-col h-full bg-card border border-white/5 rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-2xl">
+              <div className="group flex flex-col h-full bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-2xl">
                 <div className="relative h-48 overflow-hidden">
                  {post.image?.url && (
                     <img 
@@ -126,7 +126,7 @@ const Blog: React.FC = () => {
                   {/* <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-3">{post.date}</span> */}
                   
                   <span
-                    className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-3"
+                    className="text-[10px] text-muted font-bold uppercase tracking-widest mb-3"
                   >
                     <span>• </span>
                     {new Date(post.publishedAt || post.date).toLocaleDateString('en-US', { 
@@ -135,10 +135,10 @@ const Blog: React.FC = () => {
                       day: 'numeric' 
                     })}
                   </span>
-                  <h3 className="text-xl font-bold uppercase text-white mb-4 group-hover:text-primary transition-colors leading-tight">
+                  <h3 className="text-xl font-bold uppercase text-foreground mb-4 group-hover:text-primary transition-colors leading-tight">
                     {post.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+                  <p className="text-muted text-sm leading-relaxed mb-6 flex-1">
                     {post.excerpt}
                   </p>
                  <Link 
@@ -160,7 +160,7 @@ const Blog: React.FC = () => {
         
         {/* <div className="mt-16 text-center">
           <ScrollReveal animation="up">
-            <button className="px-10 py-4 border border-white/100 text-white font-black uppercase tracking-widest text-[11px] rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95">
+            <button className="px-10 py-4 border border-border text-foreground font-black uppercase tracking-widest text-[11px] rounded hover:bg-background hover:text-background transition-all transform hover:scale-105 active:scale-95">
              <Link
               href='/blog'
              > 

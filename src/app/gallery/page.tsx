@@ -124,7 +124,7 @@ export default function GalleryPage() {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32">
+        <div className="min-h-screen bg-background pt-32">
           <div className="flex justify-center items-center min-h-[50vh]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           </div>
@@ -138,7 +138,7 @@ export default function GalleryPage() {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32">
+        <div className="min-h-screen bg-background pt-32">
           <div className="text-center text-red-500 py-20">
             {error}
           </div>
@@ -234,9 +234,9 @@ export default function GalleryPage() {
   return (
     <>
       <Navbar activeSection={activeSection} />
-      <div className="min-h-screen bg-dark pt-32 pb-24">
+      <div className="min-h-screen bg-background pt-32 pb-24">
         {/* ─── Back to Home Button ────────────────────── */}
-        <Link href="/" className="absolute top-18 left-4 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 bg-[#111]/80 backdrop-blur-md border border-white/10 rounded-lg text-gray-400 hover:text-white hover:border-white/20 transition-all text-sm">
+        <Link href="/" className="absolute top-18 left-4 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 bg-card/80 backdrop-blur-md border border-border/10 rounded-lg text-muted hover:text-foreground hover:border-border/20 transition-all text-sm">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
           Home
         </Link>
@@ -248,7 +248,7 @@ export default function GalleryPage() {
               <h1 className="text-3xl md:text-5xl font-black uppercase mb-4 section-title after:mx-auto">
                 Gallery
               </h1>
-              <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">
+              <p className="text-muted uppercase text-xs font-bold tracking-[0.3em]">
                 Moments captured in time
               </p>
             </div>
@@ -263,8 +263,8 @@ export default function GalleryPage() {
                   onClick={() => setActiveCategory(category)}
                   className={`px-5 py-2 text-xs font-black uppercase tracking-[0.2em] transition-all duration-200 ${
                     activeCategory === category
-                      ? 'bg-primary text-white'
-                      : 'bg-transparent text-gray-500 hover:text-white border border-white/10 hover:border-primary/50'
+                      ? 'bg-primary text-foreground'
+                      : 'bg-transparent text-muted hover:text-foreground border border-border/10 hover:border-primary/50'
                   }`}
                 >
                   {category}
@@ -283,7 +283,7 @@ export default function GalleryPage() {
               >
                 <div 
                   onClick={() => openLightbox(item)}
-                  className="group cursor-pointer relative aspect-square overflow-hidden bg-[#1a1a1a] rounded-xl sm:rounded-2xl border border-white/5 hover:border-primary/30 transition-colors duration-200"
+                  className="group cursor-pointer relative aspect-square overflow-hidden bg-card rounded-xl sm:rounded-2xl border border-border/5 hover:border-primary/30 transition-colors duration-200"
                 >
                   <img
                     src={item.image?.url}
@@ -297,7 +297,7 @@ export default function GalleryPage() {
                     <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
                       <h3 className="text-white font-bold text-[10px] sm:text-sm truncate">{item.title}</h3>
                       {item.date && (
-                        <p className="text-gray-400 text-[8px] sm:text-xs mt-0.5 sm:mt-1">
+                        <p className="text-muted text-[8px] sm:text-xs mt-0.5 sm:mt-1">
                           {new Date(item.date).toLocaleDateString('en-US', { 
                             month: 'short', 
                             day: 'numeric',
@@ -332,8 +332,8 @@ export default function GalleryPage() {
 
           {/* Empty State */}
           {filteredItems.length === 0 && (
-            <div className="text-center text-gray-400 py-20">
-              <svg className="w-20 h-20 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center text-muted py-20">
+              <svg className="w-20 h-20 mx-auto mb-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <p>No images found in this category.</p>
@@ -352,7 +352,7 @@ export default function GalleryPage() {
           {/* Close button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute top-4 right-4 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-border/10"
             aria-label="Close"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -366,7 +366,7 @@ export default function GalleryPage() {
               e.stopPropagation();
               goToPrevious();
             }}
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-border/10"
             aria-label="Previous"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -380,7 +380,7 @@ export default function GalleryPage() {
               e.stopPropagation();
               goToNext();
             }}
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-border/10"
             aria-label="Next"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -389,7 +389,7 @@ export default function GalleryPage() {
           </button>
 
           {/* Image counter */}
-          <div className="absolute top-4 left-4 z-50 bg-black/50 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-white/10">
+          <div className="absolute top-4 left-4 z-50 bg-black/50 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-border/10">
             <span className="text-white text-xs sm:text-sm">
               {filteredItems.findIndex(item => item._id === selectedImage._id) + 1} / {filteredItems.length}
             </span>
@@ -411,10 +411,10 @@ export default function GalleryPage() {
 
             {/* Description below image on mobile, overlay on desktop */}
             <div className="sm:hidden px-4 pb-4 flex-shrink-0">
-              <div className="bg-[#1a1a1a] rounded-xl p-4 border border-white/10">
-                <h2 className="text-lg font-bold text-white mb-1">{selectedImage.title}</h2>
+              <div className="bg-card rounded-xl p-4 border border-border/10">
+                <h2 className="text-lg font-bold text-foreground mb-1">{selectedImage.title}</h2>
                 {selectedImage.description && (
-                  <p className="text-gray-300 text-sm mb-2">{selectedImage.description}</p>
+                  <p className="text-muted text-sm mb-2">{selectedImage.description}</p>
                 )}
                 <div className="flex items-center gap-3 text-xs">
                   {selectedImage.category && (
@@ -423,7 +423,7 @@ export default function GalleryPage() {
                     </span>
                   )}
                   {selectedImage.date && (
-                    <span className="text-gray-400 text-[10px]">
+                    <span className="text-muted text-[10px]">
                       {new Date(selectedImage.date).toLocaleDateString('en-US', { 
                         month: 'long', 
                         day: 'numeric',
@@ -439,7 +439,7 @@ export default function GalleryPage() {
             <div className="hidden sm:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 pointer-events-none">
               <h2 className="text-2xl font-bold text-white mb-2">{selectedImage.title}</h2>
               {selectedImage.description && (
-                <p className="text-gray-300 mb-3">{selectedImage.description}</p>
+                <p className="text-muted mb-3">{selectedImage.description}</p>
               )}
               <div className="flex items-center gap-4 text-sm">
                 {selectedImage.category && (
@@ -448,7 +448,7 @@ export default function GalleryPage() {
                   </span>
                 )}
                 {selectedImage.date && (
-                  <span className="text-gray-400">
+                  <span className="text-muted">
                     {new Date(selectedImage.date).toLocaleDateString('en-US', { 
                       month: 'long', 
                       day: 'numeric',

@@ -159,8 +159,8 @@ export default function FocusAreasPage() {
     }
   });
 
-  const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
-  const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
+  const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
+  const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
 
   useEffect(() => { fetchAreas(); }, []);
 
@@ -437,19 +437,19 @@ export default function FocusAreasPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Focus Areas</h1>
-        <p className="text-gray-500 text-sm">{areas.length} focus areas</p>
+        <h1 className="text-4xl font-black text-foreground">Focus Areas</h1>
+        <p className="text-muted text-sm">{areas.length} focus areas</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit Focus Area' : 'Add New Focus Area'}</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit Focus Area' : 'Add New Focus Area'}</h2>
 
         {/* Tabs */}
         <div className="flex gap-1 mb-6 overflow-x-auto pb-2">
           {tabs.map((tab) => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-500 hover:text-gray-300'}`}>
+              className={`px-4 py-2 text-xs font-bold rounded transition-colors whitespace-nowrap ${activeTab === tab.key ? 'bg-white/10 text-foreground' : 'bg-white/5 text-muted hover:text-muted'}`}>
               {tab.label}
             </button>
           ))}
@@ -535,18 +535,18 @@ export default function FocusAreasPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 border-t border-white/5 pt-4">
+              <div className="flex items-center gap-6 border-t border-border pt-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Featured</span>
+                  <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Featured</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Show on Homepage</span>
+                  <input type="checkbox" {...register('showOnHomepage')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Show on Homepage</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                  <span className="text-sm text-gray-300">Active</span>
+                  <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                  <span className="text-sm text-muted">Active</span>
                 </label>
                 <div><label className={labelClass}>Display Order</label><input type="number" {...register('displayOrder')} min="0" className={`${inputClass} w-24`} /></div>
               </div>
@@ -562,22 +562,22 @@ export default function FocusAreasPage() {
                 <div className="flex gap-2">
                   <input {...register('icon')} placeholder="Icon value" className={`${inputClass} flex-1`} />
                   <button type="button" onClick={() => setShowIconPicker(!showIconPicker)}
-                    className="px-4 py-3 bg-[#121212] border border-white/10 rounded-lg text-white hover:bg-primary/20 transition-colors">
+                    className="px-4 py-3 bg-input-bg border border-border rounded-lg text-foreground hover:bg-primary/20 transition-colors">
                     {showIconPicker ? '✕' : '📋'}
                   </button>
                 </div>
 
                 {/* Icon Picker Dropdown */}
                 {showIconPicker && (
-                  <div className="mt-2 w-full bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl overflow-hidden">
+                  <div className="mt-2 w-full bg-[#1a1a1a] border border-border rounded-lg shadow-2xl overflow-hidden">
                     {/* Tabs */}
-                    <div className="flex border-b border-white/10">
+                    <div className="flex border-b border-border">
                       <button type="button" onClick={() => setIconPickerTab('lucide')}
-                        className={`flex-1 px-4 py-2.5 text-xs font-bold transition-colors ${iconPickerTab === 'lucide' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
+                        className={`flex-1 px-4 py-2.5 text-xs font-bold transition-colors ${iconPickerTab === 'lucide' ? 'bg-white/10 text-foreground' : 'text-muted hover:text-muted'}`}>
                         Lucide Icons
                       </button>
                       <button type="button" onClick={() => setIconPickerTab('image')}
-                        className={`flex-1 px-4 py-2.5 text-xs font-bold transition-colors ${iconPickerTab === 'image' ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'}`}>
+                        className={`flex-1 px-4 py-2.5 text-xs font-bold transition-colors ${iconPickerTab === 'image' ? 'bg-white/10 text-foreground' : 'text-muted hover:text-muted'}`}>
                         Image Upload
                       </button>
                     </div>
@@ -591,7 +591,7 @@ export default function FocusAreasPage() {
                             value={lucideSearch}
                             onChange={(e) => setLucideSearch(e.target.value)}
                             placeholder="Search icons..."
-                            className="w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                            className="w-full bg-input-bg border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary"
                           />
                           {Object.entries(LUCIDE_CATEGORIES).map(([category, icons]) => {
                             const filtered = lucideSearch
@@ -600,7 +600,7 @@ export default function FocusAreasPage() {
                             if (filtered.length === 0) return null;
                             return (
                               <div key={category}>
-                                <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1.5">{category}</h4>
+                                <h4 className="text-[10px] font-black uppercase tracking-wider text-muted mb-1.5">{category}</h4>
                                 <div className="flex flex-wrap gap-1">
                                   {filtered.map((iconName) => (
                                     <button key={iconName} type="button"
@@ -620,7 +620,7 @@ export default function FocusAreasPage() {
                       {/* Image Upload Tab */}
                       {iconPickerTab === 'image' && (
                         <div className="space-y-3">
-                          <p className="text-xs text-gray-500">Upload an SVG or PNG with transparent background for best results.</p>
+                          <p className="text-xs text-muted">Upload an SVG or PNG with transparent background for best results.</p>
                           <ImageUpload onUpload={handleIconImageUpload} folder="focus-areas/icons" />
                         </div>
                       )}
@@ -629,27 +629,27 @@ export default function FocusAreasPage() {
                 )}
 
                 {/* Preview */}
-                <div className="flex items-center gap-3 mt-3 px-3 py-2 bg-[#121212] rounded-lg">
-                  <span className="text-xs text-gray-500">Preview:</span>
+                <div className="flex items-center gap-3 mt-3 px-3 py-2 bg-input-bg rounded-lg">
+                  <span className="text-xs text-muted">Preview:</span>
                   <FocusAreaIcon
                     icon={watch('icon')}
                     iconType={watch('iconType')}
                     color={watch('color')}
                     className="text-3xl"
                   />
-                  <span className="text-[10px] text-gray-600 ml-auto">{watch('iconType')} — {watch('icon')}</span>
+                  <span className="text-[10px] text-muted ml-auto">{watch('iconType')} — {watch('icon')}</span>
                 </div>
               </div>
 
               <div>
                 <label className={labelClass}>Color</label>
-                <input {...register('color')} type="color" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white h-12 w-32" />
+                <input {...register('color')} type="color" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground h-12 w-32" />
               </div>
 
               {/* Cover Image */}
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Cover Image</label>
+                  <label className="text-xs font-black text-muted uppercase">Cover Image</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => { setImageTarget('cover'); setUseImageLink(!useImageLink); }}
                       className="text-xs text-primary hover:underline">
@@ -667,9 +667,9 @@ export default function FocusAreasPage() {
               </div>
 
               {/* Banner Image */}
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Banner Image</label>
+                  <label className="text-xs font-black text-muted uppercase">Banner Image</label>
                   <button type="button" onClick={() => { setImageTarget('banner'); setUseImageLink(!useImageLink); }}
                     className="text-xs text-primary hover:underline">
                     {useImageLink && imageTarget === 'banner' ? 'Use Upload' : 'Use Link'}
@@ -685,9 +685,9 @@ export default function FocusAreasPage() {
               </div>
 
               {/* Thumbnail */}
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Thumbnail</label>
+                  <label className="text-xs font-black text-muted uppercase">Thumbnail</label>
                   <button type="button" onClick={() => { setImageTarget('thumbnail'); setUseImageLink(!useImageLink); }}
                     className="text-xs text-primary hover:underline">
                     {useImageLink && imageTarget === 'thumbnail' ? 'Use Upload' : 'Use Link'}
@@ -703,9 +703,9 @@ export default function FocusAreasPage() {
               </div>
 
               {/* Gallery */}
-              <div className="border border-white/5 rounded-lg p-4">
+              <div className="border border-border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-black text-gray-400 uppercase">Gallery Images</label>
+                  <label className="text-xs font-black text-muted uppercase">Gallery Images</label>
                   <button type="button" onClick={() => { setImageTarget('gallery'); setUseImageLink(!useImageLink); }}
                     className="text-xs text-primary hover:underline">
                     {useImageLink && imageTarget === 'gallery' ? 'Use Upload' : 'Use Link'}
@@ -734,14 +734,14 @@ export default function FocusAreasPage() {
                 {galleryImages.length > 0 && (
                   <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {galleryImages.map((img, idx) => (
-                      <div key={idx} className="relative group rounded-lg overflow-hidden border border-white/10 aspect-video">
+                      <div key={idx} className="relative group rounded-lg overflow-hidden border border-border aspect-video">
                         <img src={img.url} alt={img.alt || `Gallery ${idx + 1}`} className="w-full h-full object-cover" />
                         <button type="button" onClick={() => {
                           const newImages = galleryImages.filter((_, i) => i !== idx);
                           setGalleryImages(newImages);
                           (setValue as any)('galleryImages', newImages);
                         }}
-                          className="absolute top-1 right-1 w-5 h-5 bg-red-600 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          className="absolute top-1 right-1 w-5 h-5 bg-red-600 text-foreground rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                           ×
                         </button>
                       </div>
@@ -778,8 +778,8 @@ export default function FocusAreasPage() {
                 <div className="space-y-1">
                   {objectives.map((obj, i) => (
                     <div key={i} className="flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2">
-                      <span className="text-white text-sm flex-1">{obj}</span>
-                      <button type="button" onClick={() => removeObjective(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      <span className="text-foreground text-sm flex-1">{obj}</span>
+                      <button type="button" onClick={() => removeObjective(i)} className="text-muted hover:text-red-500">×</button>
                     </div>
                   ))}
                 </div>
@@ -797,9 +797,9 @@ export default function FocusAreasPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {applicationsList.map((app, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
+                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-muted">
                       {app}
-                      <button type="button" onClick={() => removeApplication(i)} className="ml-2 text-gray-500 hover:text-red-500">×</button>
+                      <button type="button" onClick={() => removeApplication(i)} className="ml-2 text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
@@ -817,9 +817,9 @@ export default function FocusAreasPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {skillsList.map((skill, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
+                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-muted">
                       {skill}
-                      <button type="button" onClick={() => removeSkill(i)} className="ml-2 text-gray-500 hover:text-red-500">×</button>
+                      <button type="button" onClick={() => removeSkill(i)} className="ml-2 text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
@@ -832,7 +832,7 @@ export default function FocusAreasPage() {
             <div className="space-y-6">
               {/* Technologies */}
               <div>
-                <h3 className="text-sm font-bold text-white mb-3">Technologies Used</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">Technologies Used</h3>
                 <div className="flex gap-2 mb-3">
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
                   <select value={techCategory} onChange={(e) => setTechCategory(e.target.value)} className={`${inputClass} flex-1`}>
@@ -843,17 +843,17 @@ export default function FocusAreasPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((t, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
-                      {t.name} {t.category && <span className="text-gray-500 ml-1">({t.category})</span>}
-                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-gray-500 hover:text-red-500">×</button>
+                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-muted">
+                      {t.name} {t.category && <span className="text-muted ml-1">({t.category})</span>}
+                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Components */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="text-sm font-bold text-white mb-3">Hardware & Components</h3>
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-bold text-foreground mb-3">Hardware & Components</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={compName} onChange={(e) => setCompName(e.target.value)} placeholder="Component Name *" className={inputClass} />
                   <input value={compSpec} onChange={(e) => setCompSpec(e.target.value)} placeholder="Specification" className={inputClass} />
@@ -865,11 +865,11 @@ export default function FocusAreasPage() {
                   <div className="space-y-1">
                     {components.map((c, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="text-white flex-1">{c.componentName}</span>
-                        {c.specification && <span className="text-gray-400 text-xs">{c.specification}</span>}
-                        <span className="text-gray-500">x{c.quantity}</span>
-                        {c.inventoryReference && <span className="text-gray-600 text-xs">[{c.inventoryReference}]</span>}
-                        <button type="button" onClick={() => removeComponent(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <span className="text-foreground flex-1">{c.componentName}</span>
+                        {c.specification && <span className="text-muted text-xs">{c.specification}</span>}
+                        <span className="text-muted">x{c.quantity}</span>
+                        {c.inventoryReference && <span className="text-muted text-xs">[{c.inventoryReference}]</span>}
+                        <button type="button" onClick={() => removeComponent(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -882,7 +882,7 @@ export default function FocusAreasPage() {
           {activeTab === 'resources' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-bold text-white mb-3">Learning Resources</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">Learning Resources</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={resTitle} onChange={(e) => setResTitle(e.target.value)} placeholder="Title *" className={`${inputClass} col-span-2`} />
                   <select value={resType} onChange={(e) => setResType(e.target.value)} className={inputClass}>
@@ -898,10 +898,10 @@ export default function FocusAreasPage() {
                   <div className="space-y-1">
                     {learningResources.map((r, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
-                        <span className="px-2 py-0.5 bg-white/10 rounded text-[10px] font-bold uppercase text-gray-400">{r.type}</span>
-                        <span className="text-white flex-1">{r.title}</span>
+                        <span className="px-2 py-0.5 bg-white/10 rounded text-[10px] font-bold uppercase text-muted">{r.type}</span>
+                        <span className="text-foreground flex-1">{r.title}</span>
                         <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-primary text-xs hover:underline">Link</a>
-                        <button type="button" onClick={() => removeLearningResource(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        <button type="button" onClick={() => removeLearningResource(i)} className="text-muted hover:text-red-500">×</button>
                       </div>
                     ))}
                   </div>
@@ -920,13 +920,13 @@ export default function FocusAreasPage() {
           )}
 
           {/* ─── Form Actions ────────────────────────────── */}
-          <div className="flex gap-2 pt-4 border-t border-white/5">
-            <button type="submit" className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
+          <div className="flex gap-2 pt-4 border-t border-border">
+            <button type="submit" className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors">
               {editingId ? 'Update Focus Area' : 'Create Focus Area'}
             </button>
             {editingId && (
               <button type="button" onClick={resetForm}
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors">
                 Cancel
               </button>
             )}
@@ -937,16 +937,16 @@ export default function FocusAreasPage() {
       {/* Focus Areas Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {areas.map((area) => (
-          <div key={area._id as string} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
+          <div key={area._id as string} className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <button onClick={() => handleEdit(area)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
-              <button onClick={() => handleDelete(area._id as string)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+              <button onClick={() => handleEdit(area)} className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700">Edit</button>
+              <button onClick={() => handleDelete(area._id as string)} className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700">Del</button>
             </div>
             {!!(area.homepage as Record<string, unknown>)?.featured && (
-              <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs rounded-full">Featured</div>
+              <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-foreground text-xs rounded-full">Featured</div>
             )}
               <div className="flex p-4 gap-4">
-              <div className="w-16 h-16 flex items-center justify-center bg-[#121212] rounded-lg flex-shrink-0">
+              <div className="w-16 h-16 flex items-center justify-center bg-input-bg rounded-lg flex-shrink-0">
                 <FocusAreaIcon
                   icon={(area.icon as string) || 'Bot'}
                   iconType={(area.iconType as 'lucide' | 'image') || 'lucide'}
@@ -955,11 +955,11 @@ export default function FocusAreasPage() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-bold text-white truncate">{area.title as string}</h3>
-                <p className="text-xs text-gray-500">{area.category as string}</p>
-                <p className="text-sm text-gray-400 mb-2 line-clamp-1">{(area.shortDescription as string) || (area.description as string)}</p>
+                <h3 className="text-lg font-bold text-foreground truncate">{area.title as string}</h3>
+                <p className="text-xs text-muted">{area.category as string}</p>
+                <p className="text-sm text-muted mb-2 line-clamp-1">{(area.shortDescription as string) || (area.description as string)}</p>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-gray-600">Order: {(area.order as number) || 0}</span>
+                  <span className="text-[10px] text-muted">Order: {(area.order as number) || 0}</span>
                   {area.isActive ? (
                     <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[8px] font-black uppercase tracking-wider rounded-full">Active</span>
                   ) : (
@@ -973,8 +973,8 @@ export default function FocusAreasPage() {
       </div>
 
       {areas.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No focus areas yet. Add your first focus area above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No focus areas yet. Add your first focus area above.</p>
         </div>
       )}
     </div>

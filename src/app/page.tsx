@@ -79,7 +79,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen font-sans selection:bg-primary selection:text-white bg-dark text-white overflow-x-hidden">
+    <div className="min-h-screen font-sans selection:bg-primary selection:text-white bg-background text-foreground overflow-x-hidden">
       <Navbar activeSection={activeSection} />
       
       <main>
@@ -90,13 +90,13 @@ export default function Home() {
         )}
         
         {visibility.about && (
-          <section id="about" className="bg-[#0a0a0a]">
+          <section id="about" className="bg-card">
             <About />
           </section>
         )}
 
         {visibility.events && (
-          <section id="events" className="bg-[#080808]">
+          <section id="events" className="bg-muted/10">
             <Events />
           </section>
         )}
@@ -114,13 +114,13 @@ export default function Home() {
         {visibility.blog && <Blog />}
         
         {visibility.projects && (
-          <section id="projects" className="bg-[#0a0a0a]">
+          <section id="projects" className="bg-card">
             <Projects />
           </section>
         )}
 
         {visibility.gallery && (
-          <section id="gallery" className="bg-[#0d0d0d]">
+          <section id="gallery" className="bg-muted/10">
             <Gallery />
           </section>
         )}
@@ -128,7 +128,7 @@ export default function Home() {
         {visibility.timeline && <Timeline />}
 
         {visibility.committee && (
-          <section id="committee" className="bg-[#0a0a0a]">
+          <section id="committee" className="bg-card">
             <Committee />
           </section>
         )}
@@ -136,7 +136,7 @@ export default function Home() {
         {visibility.testimonials && <Testimonials />}
 
         {visibility.faq && (
-          <section id="faq" className="bg-[#0a0a0a]">
+          <section id="faq" className="bg-card">
             <FAQ />
           </section>
         )}

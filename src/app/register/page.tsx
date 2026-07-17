@@ -266,10 +266,10 @@ export default function RegisterPage() {
     return (
       <>
         <Navbar activeSection="" />
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center pt-20">
+        <div className="min-h-screen bg-card flex items-center justify-center pt-20 px-4">
           <div className="text-center">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-muted">Loading...</p>
           </div>
         </div>
         <Footer />
@@ -282,18 +282,18 @@ export default function RegisterPage() {
     return (
       <>
         <Navbar activeSection="" />
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center pt-20">
-          <div className="text-center max-w-md mx-auto px-4">
-            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">🔒</span>
+        <div className="min-h-screen bg-card flex items-center justify-center pt-20 px-4">
+          <div className="text-center max-w-md mx-auto">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <span className="text-3xl sm:text-4xl">🔒</span>
             </div>
-            <h1 className="text-3xl font-black text-white mb-4">Registration Closed</h1>
-            <p className="text-gray-400 mb-6">
+            <h1 className="text-2xl sm:text-3xl font-black text-foreground mb-3 sm:mb-4">Registration Closed</h1>
+            <p className="text-sm sm:text-base text-muted mb-4 sm:mb-6">
               Member registration is currently closed. Please check back later or follow our social media for updates.
             </p>
             <a
               href="/"
-              className="inline-flex items-center px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-primary text-foreground font-bold rounded-lg hover:bg-primary/90 transition-colors"
             >
               Back to Home
             </a>
@@ -309,18 +309,18 @@ export default function RegisterPage() {
     return (
       <>
         <Navbar activeSection="" />
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center pt-20">
-          <div className="text-center max-w-md mx-auto px-4">
-            <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">✅</span>
+        <div className="min-h-screen bg-card flex items-center justify-center pt-20 px-4">
+          <div className="text-center max-w-md mx-auto">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <span className="text-3xl sm:text-4xl">✅</span>
             </div>
-            <h1 className="text-3xl font-black text-white mb-4">Application Submitted!</h1>
-            <p className="text-gray-400 mb-6">
+            <h1 className="text-2xl sm:text-3xl font-black text-foreground mb-3 sm:mb-4">Application Submitted!</h1>
+            <p className="text-sm sm:text-base text-muted mb-4 sm:mb-6">
               Your registration application has been submitted successfully. Our team will review your application and verify your payment. You will be notified once your application is approved.
             </p>
             <a
               href="/"
-              className="inline-flex items-center px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-primary text-foreground font-bold rounded-lg hover:bg-primary/90 transition-colors"
             >
               Back to Home
             </a>
@@ -332,59 +332,59 @@ export default function RegisterPage() {
   }
 
   // ─── Registration Form ──────────────────────────────────
-  const inputClass = "w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600";
-  const labelClass = "block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5";
+  const inputClass = "w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted";
+  const labelClass = "block text-xs font-bold text-muted uppercase tracking-wider mb-1.5";
 
   return (
     <>
       <Navbar activeSection="" />
-      <div className="min-h-screen bg-[#050505] pt-24 pb-16">
+      <div className="min-h-screen bg-card pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-black text-white mb-2">Join DRC</h1>
-            <p className="text-gray-400">DUET Robotics Club Member Registration</p>
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground mb-2">Join DRC</h1>
+            <p className="text-sm sm:text-base text-muted">DUET Robotics Club Member Registration</p>
             {settings.registrationFee > 0 && (
-              <p className="text-primary text-sm mt-2 font-bold">Registration Fee: ৳{settings.registrationFee}</p>
+              <p className="text-primary text-xs sm:text-sm mt-2 font-bold">Registration Fee: ৳{settings.registrationFee}</p>
             )}
           </div>
 
           {/* Instructions */}
           {settings.instructions && (
-            <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 mb-6">
-              <p className="text-sm text-gray-400 whitespace-pre-wrap">{settings.instructions}</p>
+            <div className="bg-card border border-border rounded-xl p-4 mb-6">
+              <p className="text-sm text-muted whitespace-pre-wrap">{settings.instructions}</p>
             </div>
           )}
 
           {/* Step Indicator */}
-          <div className="flex items-center justify-center mb-8 overflow-x-auto pb-2">
+          <div className="flex items-center justify-center mb-6 sm:mb-8 overflow-x-auto pb-2 gap-1">
             {STEPS.map((step, index) => (
-              <div key={step} className="flex items-center">
+              <div key={step} className="flex items-center shrink-0">
                 <div
-                  className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-colors ${
+                  className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[10px] sm:text-xs font-bold transition-colors ${
                     index < currentStep
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-green-500 text-foreground'
                       : index === currentStep
-                      ? 'bg-primary text-white'
-                      : 'bg-white/10 text-gray-500'
+                      ? 'bg-primary text-foreground'
+                      : 'bg-background/10 text-muted'
                   }`}
                 >
                   {index < currentStep ? '✓' : index + 1}
                 </div>
-                <span className={`ml-2 text-xs font-medium hidden md:inline ${index === currentStep ? 'text-white' : 'text-gray-500'}`}>
+                <span className={`ml-1.5 text-[10px] sm:text-xs font-medium hidden lg:inline ${index === currentStep ? 'text-foreground' : 'text-muted'}`}>
                   {step}
                 </span>
-                {index < STEPS.length - 1 && <div className="w-8 h-px bg-white/10 mx-2" />}
+                {index < STEPS.length - 1 && <div className="w-4 sm:w-6 lg:w-8 h-px bg-border mx-1 sm:mx-1.5" />}
               </div>
             ))}
           </div>
 
           {/* Form Content */}
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 md:p-8">
+          <div className="bg-card border border-border rounded-xl p-4 sm:p-6 md:p-8">
             {/* Step 0: Personal */}
             {currentStep === 0 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-black text-white mb-4">Personal Information</h2>
+                <h2 className="text-lg font-black text-foreground mb-4">Personal Information</h2>
                 <div>
                   <label className={labelClass}>Full Name *</label>
                   <input type="text" value={form.personal.fullName} onChange={(e) => updateForm('personal', 'fullName', e.target.value)} className={inputClass} placeholder="Enter your full name" />
@@ -392,8 +392,8 @@ export default function RegisterPage() {
                 <div>
                   <label className={labelClass}>Profile Photo</label>
                   <div className="flex gap-2 mb-2">
-                    <button type="button" onClick={() => setPhotoInputMode('upload')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${photoInputMode === 'upload' ? 'bg-primary text-white' : 'bg-white/5 text-gray-400'}`}>Upload</button>
-                    <button type="button" onClick={() => setPhotoInputMode('link')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${photoInputMode === 'link' ? 'bg-primary text-white' : 'bg-white/5 text-gray-400'}`}>Google Drive Link</button>
+                    <button type="button" onClick={() => setPhotoInputMode('upload')} className={`px-2.5 sm:px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg ${photoInputMode === 'upload' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Upload</button>
+                    <button type="button" onClick={() => setPhotoInputMode('link')} className={`px-2.5 sm:px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg ${photoInputMode === 'link' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Google Drive Link</button>
                   </div>
                   {photoInputMode === 'upload' ? (
                     <input key="photo-upload" type="file" accept="image/*" onChange={handlePhotoUpload} className={inputClass} />
@@ -402,7 +402,7 @@ export default function RegisterPage() {
                   )}
                   {form.personal.profilePhotoUrl && <img src={form.personal.profilePhotoUrl} alt="Preview" className="w-16 h-16 rounded-full object-cover mt-2" />}
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <label className={labelClass}>Gender *</label>
                     <select value={form.personal.gender} onChange={(e) => updateForm('personal', 'gender', e.target.value)} className={inputClass}>
@@ -433,7 +433,7 @@ export default function RegisterPage() {
             {/* Step 1: University */}
             {currentStep === 1 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-black text-white mb-4">University Information</h2>
+                <h2 className="text-lg font-black text-foreground mb-4">University Information</h2>
                 <div>
                   <label className={labelClass}>Student ID *</label>
                   <input type="text" value={form.university.studentId} onChange={(e) => updateForm('university', 'studentId', e.target.value)} className={inputClass} placeholder="Your student ID" />
@@ -446,7 +446,7 @@ export default function RegisterPage() {
                   <label className={labelClass}>Department *</label>
                   <input type="text" value={form.university.department} onChange={(e) => updateForm('university', 'department', e.target.value)} className={inputClass} placeholder="e.g., CSE, EEE, ME" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <label className={labelClass}>Session *</label>
                     <input type="text" value={form.university.session} onChange={(e) => updateForm('university', 'session', e.target.value)} className={inputClass} placeholder="e.g., 2022-23" />
@@ -462,12 +462,12 @@ export default function RegisterPage() {
             {/* Step 2: Contact */}
             {currentStep === 2 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-black text-white mb-4">Contact Information</h2>
+                <h2 className="text-lg font-black text-foreground mb-4">Contact Information</h2>
                 <div>
                   <label className={labelClass}>Email *</label>
                   <input type="email" value={form.contact.email} onChange={(e) => updateForm('contact', 'email', e.target.value)} className={inputClass} placeholder="your@email.com" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <label className={labelClass}>Phone *</label>
                     <input type="tel" value={form.contact.phone} onChange={(e) => updateForm('contact', 'phone', e.target.value)} className={inputClass} placeholder="01XXXXXXXXX" />
@@ -491,8 +491,8 @@ export default function RegisterPage() {
             {/* Step 3: Payment */}
             {currentStep === 3 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-black text-white mb-4">Payment Information</h2>
-                <p className="text-sm text-gray-400 mb-2">Registration Fee: <span className="text-primary font-bold">৳{settings.registrationFee}</span></p>
+                <h2 className="text-lg font-black text-foreground mb-4">Payment Information</h2>
+                <p className="text-sm text-muted mb-2">Registration Fee: <span className="text-primary font-bold">৳{settings.registrationFee}</span></p>
                 <div>
                   <label className={labelClass}>Payment Method *</label>
                   <select value={form.payment.method} onChange={(e) => {
@@ -506,7 +506,7 @@ export default function RegisterPage() {
                     ))}
                   </select>
                   {form.payment.method && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted mt-1">
                       {settings.paymentMethods.find((m) => m.name === form.payment.method)?.details}
                     </p>
                   )}
@@ -515,7 +515,7 @@ export default function RegisterPage() {
                   <label className={labelClass}>Transaction ID *</label>
                   <input type="text" value={form.payment.transactionId} onChange={(e) => updateForm('payment', 'transactionId', e.target.value)} className={inputClass} placeholder="Transaction ID from payment" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <label className={labelClass}>Sender Number *</label>
                     <input type="tel" value={form.payment.senderNumber} onChange={(e) => updateForm('payment', 'senderNumber', e.target.value)} className={inputClass} placeholder="Number used for payment" />
@@ -528,8 +528,8 @@ export default function RegisterPage() {
                 <div>
                   <label className={labelClass}>Payment Screenshot</label>
                   <div className="flex gap-2 mb-2">
-                    <button type="button" onClick={() => setScreenshotInputMode('upload')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${screenshotInputMode === 'upload' ? 'bg-primary text-white' : 'bg-white/5 text-gray-400'}`}>Upload</button>
-                    <button type="button" onClick={() => setScreenshotInputMode('link')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${screenshotInputMode === 'link' ? 'bg-primary text-white' : 'bg-white/5 text-gray-400'}`}>Link</button>
+                    <button type="button" onClick={() => setScreenshotInputMode('upload')} className={`px-2.5 sm:px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg ${screenshotInputMode === 'upload' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Upload</button>
+                    <button type="button" onClick={() => setScreenshotInputMode('link')} className={`px-2.5 sm:px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg ${screenshotInputMode === 'link' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Link</button>
                   </div>
                   {screenshotInputMode === 'upload' ? (
                     <input key="screenshot-upload" type="file" accept="image/*" onChange={handleScreenshotUpload} className={inputClass} />
@@ -543,19 +543,19 @@ export default function RegisterPage() {
             {/* Step 4: Additional */}
             {currentStep === 4 && (
               <div className="space-y-4">
-                <h2 className="text-lg font-black text-white mb-4">Additional Information</h2>
+                <h2 className="text-lg font-black text-foreground mb-4">Additional Information</h2>
                 <div>
                   <label className={labelClass}>Skills</label>
-                  <div className="flex flex-wrap gap-2 mb-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2">
                     {SKILL_OPTIONS.map((skill) => (
                       <button
                         key={skill}
                         type="button"
                         onClick={() => form.additional.skills.includes(skill) ? removeSkill(skill) : addSkill(skill)}
-                        className={`px-3 py-1 text-xs font-bold rounded-full transition-colors ${
+                        className={`px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-bold rounded-full transition-colors ${
                           form.additional.skills.includes(skill)
-                            ? 'bg-primary text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                            ? 'bg-primary text-foreground'
+                            : 'bg-background/5 text-muted hover:bg-background/10'
                         }`}
                       >
                         {skill}
@@ -564,21 +564,21 @@ export default function RegisterPage() {
                   </div>
                   <div className="flex gap-2">
                     <input type="text" value={newSkill} onChange={(e) => setNewSkill(e.target.value)} className={inputClass} placeholder="Add custom skill" onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill(newSkill))} />
-                    <button type="button" onClick={() => addSkill(newSkill)} className="px-4 py-2 text-sm font-bold bg-white/5 text-gray-400 rounded-lg hover:bg-white/10">Add</button>
+                    <button type="button" onClick={() => addSkill(newSkill)} className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold bg-background/5 text-muted rounded-lg hover:bg-background/10 shrink-0">Add</button>
                   </div>
                 </div>
                 <div>
                   <label className={labelClass}>Interests</label>
-                  <div className="flex flex-wrap gap-2 mb-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2">
                     {INTEREST_OPTIONS.map((interest) => (
                       <button
                         key={interest}
                         type="button"
                         onClick={() => form.additional.interests.includes(interest) ? removeInterest(interest) : addInterest(interest)}
-                        className={`px-3 py-1 text-xs font-bold rounded-full transition-colors ${
+                        className={`px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs font-bold rounded-full transition-colors ${
                           form.additional.interests.includes(interest)
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                            ? 'bg-blue-500 text-foreground'
+                            : 'bg-background/5 text-muted hover:bg-background/10'
                         }`}
                       >
                         {interest}
@@ -587,7 +587,7 @@ export default function RegisterPage() {
                   </div>
                   <div className="flex gap-2">
                     <input type="text" value={newInterest} onChange={(e) => setNewInterest(e.target.value)} className={inputClass} placeholder="Add custom interest" onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest(newInterest))} />
-                    <button type="button" onClick={() => addInterest(newInterest)} className="px-4 py-2 text-sm font-bold bg-white/5 text-gray-400 rounded-lg hover:bg-white/10">Add</button>
+                    <button type="button" onClick={() => addInterest(newInterest)} className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold bg-background/5 text-muted rounded-lg hover:bg-background/10 shrink-0">Add</button>
                   </div>
                 </div>
                 <div>
@@ -604,7 +604,7 @@ export default function RegisterPage() {
             {/* Step 5: Review */}
             {currentStep === 5 && (
               <div className="space-y-6">
-                <h2 className="text-lg font-black text-white mb-4">Review Your Application</h2>
+                <h2 className="text-lg font-black text-foreground mb-4">Review Your Application</h2>
 
                 <ReviewSection title="Personal Information">
                   <ReviewItem label="Name" value={form.personal.fullName} />
@@ -645,12 +645,12 @@ export default function RegisterPage() {
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-8 pt-6 border-t border-white/5">
+            <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-border">
               <button
                 type="button"
                 onClick={prevStep}
                 disabled={currentStep === 0}
-                className="px-6 py-2.5 text-sm font-bold text-gray-400 bg-white/5 rounded-lg hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-muted bg-background/5 rounded-lg hover:bg-background/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
@@ -658,7 +658,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={nextStep}
-                  className="px-6 py-2.5 text-sm font-bold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors"
+                  className="w-full sm:w-auto px-6 py-2.5 text-sm font-bold text-foreground bg-primary rounded-lg hover:bg-primary/90 transition-colors"
                 >
                   Next
                 </button>
@@ -667,7 +667,7 @@ export default function RegisterPage() {
                   type="button"
                   onClick={handleSubmit}
                   disabled={submitting || uploading}
-                  className="px-8 py-2.5 text-sm font-bold text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto px-8 py-2.5 text-sm font-bold text-foreground bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
                 >
                   {submitting ? 'Submitting...' : 'Submit Application'}
                 </button>
@@ -683,7 +683,7 @@ export default function RegisterPage() {
 
 function ReviewSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#121212] border border-white/5 rounded-lg p-4">
+    <div className="bg-input-bg border border-border rounded-lg p-4">
       <h3 className="text-sm font-black text-primary uppercase tracking-wider mb-3">{title}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">{children}</div>
     </div>
@@ -693,8 +693,8 @@ function ReviewSection({ title, children }: { title: string; children: React.Rea
 function ReviewItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <span className="text-xs text-gray-500 uppercase">{label}</span>
-      <p className="text-sm text-white mt-0.5">{value || '—'}</p>
+      <span className="text-xs text-muted uppercase">{label}</span>
+      <p className="text-sm text-foreground mt-0.5">{value || '—'}</p>
     </div>
   );
 }

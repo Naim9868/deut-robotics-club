@@ -169,29 +169,29 @@ export default function TechStackPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Tech Stack</h1>
+      <h1 className="text-4xl font-black text-foreground">Tech Stack</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Category</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit' : 'Add'} Category</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input {...register('category')} placeholder="Category (e.g., Programming)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
-            <input type="number" {...register('order')} placeholder="Order" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" />
+            <input {...register('category')} placeholder="Category (e.g., Programming)" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
+            <input type="number" {...register('order')} placeholder="Order" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Tech Items</label>
+            <label className="block text-sm text-muted mb-2">Tech Items</label>
             {fields.map((field, index) => (
               <div key={field.id} className="grid grid-cols-1 md:grid-cols-6 gap-2 mb-4">
-                <input {...register(`items.${index}.name`)} placeholder="Name" className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" required />
-                <input {...register(`items.${index}.use`)} placeholder="Use" className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" required />
+                <input {...register(`items.${index}.name`)} placeholder="Name" className="bg-input-bg border border-border rounded-lg px-3 py-2 text-foreground" required />
+                <input {...register(`items.${index}.use`)} placeholder="Use" className="bg-input-bg border border-border rounded-lg px-3 py-2 text-foreground" required />
                 
                 {/* Icon input with picker */}
                 <div className="relative flex gap-1">
                   <input 
                     {...register(`items.${index}.icon`)} 
                     placeholder="Icon" 
-                    className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" 
+                    className="flex-1 bg-input-bg border border-border rounded-lg px-3 py-2 text-foreground" 
                     required 
                   />
                   <button
@@ -200,7 +200,7 @@ export default function TechStackPage() {
                       setCurrentItemIndex(index);
                       setShowIconPicker(true);
                     }}
-                    className="px-3 py-2 bg-[#121212] border border-white/10 rounded-lg text-white hover:bg-primary/20 transition-colors"
+                    className="px-3 py-2 bg-input-bg border border-border rounded-lg text-foreground hover:bg-primary/20 transition-colors"
                     title="Browse Icons"
                   >
                     📋
@@ -213,14 +213,14 @@ export default function TechStackPage() {
                   placeholder="Proficiency (1-100)" 
                   min="1" 
                   max="100"
-                  className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" 
+                  className="bg-input-bg border border-border rounded-lg px-3 py-2 text-foreground" 
                 />
                 
                 <input 
                   type="number" 
                   {...register(`items.${index}.order`)} 
                   placeholder="Order" 
-                  className="bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-white" 
+                  className="bg-input-bg border border-border rounded-lg px-3 py-2 text-foreground" 
                 />
                 
                 {fields.length > 1 && (
@@ -246,16 +246,16 @@ export default function TechStackPage() {
           {/* Icon Picker Modal */}
           {showIconPicker && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-              <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
-                <div className="p-6 border-b border-white/10 flex justify-between items-center">
-                  <h3 className="text-xl font-bold text-white">Select Icon</h3>
+              <div className="bg-card border border-border rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
+                <div className="p-6 border-b border-border flex justify-between items-center">
+                  <h3 className="text-xl font-bold text-foreground">Select Icon</h3>
                   <button
                     type="button"
                     onClick={() => {
                       setShowIconPicker(false);
                       setCurrentItemIndex(null);
                     }}
-                    className="text-gray-400 hover:text-white"
+                    className="text-muted hover:text-foreground"
                   >
                     ✕
                   </button>
@@ -271,8 +271,8 @@ export default function TechStackPage() {
                         onClick={() => setSelectedCategory(category)}
                         className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-colors ${
                           selectedCategory === category
-                            ? 'bg-primary text-white'
-                            : 'bg-white/5 text-gray-400 hover:text-white'
+                            ? 'bg-primary text-foreground'
+                            : 'bg-background/5 text-muted hover:text-foreground'
                         }`}
                       >
                         {category}
@@ -287,11 +287,11 @@ export default function TechStackPage() {
                         key={idx}
                         type="button"
                         onClick={() => handleIconSelect(icon)}
-                        className="aspect-square flex items-center justify-center text-3xl p-3 bg-white/5 rounded-lg hover:bg-primary/20 transition-all duration-200 hover:scale-110 cursor-pointer group relative"
+                        className="aspect-square flex items-center justify-center text-3xl p-3 bg-background/5 rounded-lg hover:bg-primary/20 transition-all duration-200 hover:scale-110 cursor-pointer group relative"
                         title={`Icon: ${icon}`}
                       >
                         {icon}
-                        <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[8px] opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-white px-1 rounded whitespace-nowrap">
+                        <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[8px] opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-foreground px-1 rounded whitespace-nowrap">
                           Select
                         </span>
                       </button>
@@ -300,13 +300,13 @@ export default function TechStackPage() {
                   
                   {/* Preview section */}
                   {currentItemIndex !== null && (
-                    <div className="mt-4 p-4 bg-white/5 rounded-lg">
-                      <p className="text-sm text-gray-400 mb-2">Selected Item Preview:</p>
+                    <div className="mt-4 p-4 bg-background/5 rounded-lg">
+                      <p className="text-sm text-muted mb-2">Selected Item Preview:</p>
                       <div className="flex items-center gap-4">
                         <div className="text-4xl">{watch(`items.${currentItemIndex}.icon`) || '🔍'}</div>
                         <div>
-                          <p className="text-white font-bold">{watch(`items.${currentItemIndex}.name`) || 'Item Name'}</p>
-                          <p className="text-gray-400 text-sm">{watch(`items.${currentItemIndex}.use`) || 'Item Use'}</p>
+                          <p className="text-foreground font-bold">{watch(`items.${currentItemIndex}.name`) || 'Item Name'}</p>
+                          <p className="text-muted text-sm">{watch(`items.${currentItemIndex}.use`) || 'Item Use'}</p>
                         </div>
                       </div>
                     </div>
@@ -319,12 +319,12 @@ export default function TechStackPage() {
           <div className="flex items-center gap-4">
             <label className="flex items-center space-x-2">
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Active</span>
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
 
           <div className="flex gap-2">
-            <button type="submit" className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors">
+            <button type="submit" className="px-6 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors">
               {editingId ? 'Update' : 'Create'}
             </button>
             {editingId && (
@@ -334,7 +334,7 @@ export default function TechStackPage() {
                   setEditingId(null); 
                   reset(); 
                 }} 
-                className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+                className="px-6 py-2 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors"
               >
                 Cancel
               </button>
@@ -345,12 +345,12 @@ export default function TechStackPage() {
 
       <div className="space-y-4">
         {stacks.map((stack) => (
-          <div key={stack._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-colors">
+          <div key={stack._id} className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 transition-colors">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-xl font-bold text-primary">{stack.category}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-gray-600">Order: {stack.order}</span>
+                  <span className="text-xs text-muted">Order: {stack.order}</span>
                   {stack.isActive ? (
                     <span className="px-2 py-0.5 bg-green-500/10 text-green-500 text-[8px] font-black uppercase tracking-wider rounded-full">Active</span>
                   ) : (
@@ -365,21 +365,21 @@ export default function TechStackPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {stack.items.sort((a: any, b: any) => a.order - b.order).map((item: any, i: number) => (
-                <div key={i} className="bg-[#121212] p-4 rounded-lg border border-white/5 hover:border-primary/30 transition-all group">
+                <div key={i} className="bg-input-bg p-4 rounded-lg border border-border hover:border-primary/30 transition-all group">
                   <div className="flex items-start gap-3">
                     <div className="text-3xl group-hover:scale-110 group-hover:rotate-6 transition-transform">
                       {item.icon}
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-white font-bold">{item.name}</h4>
-                      <p className="text-xs text-gray-400 mt-1">{item.use}</p>
+                      <h4 className="text-foreground font-bold">{item.name}</h4>
+                      <p className="text-xs text-muted mt-1">{item.use}</p>
                       {item.proficiency && (
                         <div className="mt-2">
-                          <div className="flex justify-between text-[8px] text-gray-500 mb-1">
+                          <div className="flex justify-between text-[8px] text-muted mb-1">
                             <span>Proficiency</span>
                             <span>{item.proficiency}%</span>
                           </div>
-                          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                          <div className="w-full h-1 bg-background/5 rounded-full overflow-hidden">
                             <div 
                               className="h-full bg-primary rounded-full transition-all duration-300 group-hover:bg-primary/80"
                               style={{ width: `${item.proficiency}%` }}

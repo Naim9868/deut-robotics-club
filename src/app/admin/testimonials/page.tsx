@@ -204,13 +204,13 @@ export default function TestimonialsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Testimonials</h1>
-        <p className="text-gray-500 text-sm">{testimonials.length} testimonials</p>
+        <h1 className="text-4xl font-black text-foreground">Testimonials</h1>
+        <p className="text-muted text-sm">{testimonials.length} testimonials</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">
           {editingId ? 'Edit Testimonial' : 'Add New Testimonial'}
         </h2>
         
@@ -218,13 +218,13 @@ export default function TestimonialsPage() {
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Name <span className="text-red-500">*</span>
               </label>
               <input 
                 {...register('name', { required: 'Name is required' })} 
                 placeholder="John Doe" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
               {errors.name && (
                 <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
@@ -232,13 +232,13 @@ export default function TestimonialsPage() {
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Role <span className="text-red-500">*</span>
               </label>
               <input 
                 {...register('role', { required: 'Role is required' })} 
                 placeholder="Alumni, Member, etc." 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
               {errors.role && (
                 <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
@@ -248,14 +248,14 @@ export default function TestimonialsPage() {
 
           {/* Testimonial Text */}
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+            <label className="block text-xs font-black text-muted uppercase mb-2">
               Testimonial <span className="text-red-500">*</span>
             </label>
             <textarea 
               {...register('text', { required: 'Testimonial text is required' })} 
               placeholder="Share your experience (Maximum 100 words)..." 
               rows={4} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary resize-none" 
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary resize-none" 
             />
             {errors.text && (
               <p className="mt-1 text-xs text-red-500">{errors.text.message}</p>
@@ -263,9 +263,9 @@ export default function TestimonialsPage() {
           </div>
 
           {/* Avatar Upload with Toggle */}
-          <div className="border-t border-white/5 pt-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase">
+              <label className="text-xs font-black text-muted uppercase">
                 Avatar (Optional)
               </label>
               <button
@@ -284,9 +284,9 @@ export default function TestimonialsPage() {
                   placeholder="https://example.com/avatar.jpg"
                   onChange={handleAvatarLinkChange}
                   value={currentAvatarUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the avatar image
                 </p>
               </div>
@@ -297,7 +297,7 @@ export default function TestimonialsPage() {
                   defaultValue={currentAvatarUrl}
                   folder="testimonials"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload an image or toggle to use an external link
                 </p>
               </div>
@@ -307,12 +307,12 @@ export default function TestimonialsPage() {
           {/* Rating and Order */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Rating
               </label>
               <select 
                 {...register('rating')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
               >
                 <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
                 <option value="4">⭐⭐⭐⭐ 4 Stars</option>
@@ -323,7 +323,7 @@ export default function TestimonialsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Order
               </label>
               <input 
@@ -331,21 +331,21 @@ export default function TestimonialsPage() {
                 {...register('order')} 
                 placeholder="0" 
                 min="0"
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
-              <p className="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
+              <p className="text-xs text-muted mt-1">Lower numbers appear first</p>
             </div>
           </div>
 
           {/* Status Toggles */}
-          <div className="border-t border-white/5 pt-4 flex items-center gap-6">
+          <div className="border-t border-border pt-4 flex items-center gap-6">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-              <span className="text-sm text-gray-300">Featured Testimonial</span>
+              <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+              <span className="text-sm text-muted">Featured Testimonial</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-              <span className="text-sm text-gray-300">Active</span>
+              <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
 
@@ -353,7 +353,7 @@ export default function TestimonialsPage() {
           <div className="flex gap-2 pt-4">
             <button 
               type="submit" 
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
+              className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors"
             >
               {editingId ? 'Update Testimonial' : 'Create Testimonial'}
             </button>
@@ -366,7 +366,7 @@ export default function TestimonialsPage() {
                   setCurrentAvatarUrl('');
                   setUseAvatarLink(false);
                 }} 
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors"
               >
                 Cancel
               </button>
@@ -380,14 +380,14 @@ export default function TestimonialsPage() {
         {testimonials.map((testimonial, index) => (
           <div 
             key={testimonial._id} 
-            className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative"
+            className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative"
           >
             {/* Order Controls */}
             <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               {index > 0 && (
                 <button
                   onClick={() => moveTestimonial(testimonial._id, 'up')}
-                  className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                  className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                   title="Move Up"
                 >
                   <ArrowUpIcon className="w-4 h-4" />
@@ -396,7 +396,7 @@ export default function TestimonialsPage() {
               {index < testimonials.length - 1 && (
                 <button
                   onClick={() => moveTestimonial(testimonial._id, 'down')}
-                  className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                  className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                   title="Move Down"
                 >
                   <ArrowDownIcon className="w-4 h-4" />
@@ -408,13 +408,13 @@ export default function TestimonialsPage() {
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <button 
                 onClick={() => handleEdit(testimonial)} 
-                className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700"
               >
                 Edit
               </button>
               <button 
                 onClick={() => handleDelete(testimonial._id)} 
-                className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+                className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700"
               >
                 Del
               </button>
@@ -422,7 +422,7 @@ export default function TestimonialsPage() {
 
             {/* Featured Badge */}
             {testimonial.featured && (
-              <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs rounded-full">
+              <div className="absolute top-2 left-2 px-2 py-1 bg-primary/90 text-foreground text-xs rounded-full">
                 Featured
               </div>
             )}
@@ -430,7 +430,7 @@ export default function TestimonialsPage() {
             {/* Inactive Overlay */}
             {!testimonial.isActive && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
-                <span className="px-2 py-1 bg-red-600/90 text-white text-xs rounded-full">
+                <span className="px-2 py-1 bg-red-600/90 text-foreground text-xs rounded-full">
                   Inactive
                 </span>
               </div>
@@ -441,7 +441,7 @@ export default function TestimonialsPage() {
               <div className="text-primary text-4xl mb-2">"</div>
               
               {/* Testimonial Text */}
-              <p className="text-gray-300 italic mb-4 line-clamp-4">
+              <p className="text-muted italic mb-4 line-clamp-4">
                 {testimonial.text}
               </p>
               
@@ -458,15 +458,15 @@ export default function TestimonialsPage() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-white font-bold truncate">{testimonial.name}</h4>
-                  <p className="text-gray-500 text-xs truncate">{testimonial.role}</p>
+                  <h4 className="text-foreground font-bold truncate">{testimonial.name}</h4>
+                  <p className="text-muted text-xs truncate">{testimonial.role}</p>
                   
                   {/* Rating Stars */}
                   <div className="flex text-yellow-500 text-sm mt-1">
                     {[...Array(5)].map((_, i) => (
                       <StarIcon 
                         key={i} 
-                        className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-500' : 'text-gray-600'}`} 
+                        className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-500' : 'text-muted'}`} 
                       />
                     ))}
                   </div>
@@ -474,7 +474,7 @@ export default function TestimonialsPage() {
               </div>
 
               {/* Order Display */}
-              <div className="mt-3 text-xs text-gray-600">
+              <div className="mt-3 text-xs text-muted">
                 Order: {testimonial.order}
               </div>
             </div>
@@ -483,8 +483,8 @@ export default function TestimonialsPage() {
       </div>
 
       {testimonials.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No testimonials yet. Add your first testimonial above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No testimonials yet. Add your first testimonial above.</p>
         </div>
       )}
     </div>

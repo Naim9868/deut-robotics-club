@@ -55,7 +55,7 @@ function SocialIcon({ platform, url }: { platform: string; url: string }) {
 
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-all text-gray-400 hover:text-white"
+      className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-all text-muted hover:text-foreground"
       title={platform}>
       {icons[platform]}
     </a>
@@ -94,14 +94,14 @@ export default function ExecutiveCommitteePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="pt-32 pb-12 sm:pt-40 sm:pb-16 container mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal animation="up">
@@ -109,7 +109,7 @@ export default function ExecutiveCommitteePage() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4">
               Executive <span className="text-primary">Committee</span>
             </h1>
-            <p className="text-gray-500 uppercase text-[10px] sm:text-xs font-bold tracking-[0.3em] max-w-xl mx-auto">
+            <p className="text-muted uppercase text-[10px] sm:text-xs font-bold tracking-[0.3em] max-w-xl mx-auto">
               The leadership team driving DUET Robotics Club forward
             </p>
           </div>
@@ -125,8 +125,8 @@ export default function ExecutiveCommitteePage() {
                   onClick={() => setActiveYear(c.committeeYear)}
                   className={`px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${
                     activeYear === c.committeeYear
-                      ? 'bg-primary text-white'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      ? 'bg-primary text-foreground'
+                      : 'bg-white/5 text-muted hover:bg-background/10 hover:text-foreground'
                   }`}
                 >
                   {c.committeeYear}
@@ -143,11 +143,11 @@ export default function ExecutiveCommitteePage() {
         {activeCommittee && (
           <ScrollReveal animation="up" delay={150}>
             <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-black text-white uppercase mb-2">
+              <h2 className="text-2xl sm:text-3xl font-black text-foreground uppercase mb-2">
                 {activeCommittee.title}
               </h2>
               {activeCommittee.description && (
-                <p className="text-gray-500 text-sm max-w-2xl mx-auto">{activeCommittee.description}</p>
+                <p className="text-muted text-sm max-w-2xl mx-auto">{activeCommittee.description}</p>
               )}
               {activeCommittee.isCurrent && (
                 <span className="inline-block mt-3 px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full font-bold uppercase tracking-wider">
@@ -162,7 +162,7 @@ export default function ExecutiveCommitteePage() {
       {/* Members Grid */}
       <section className="pb-20 sm:pb-24 container mx-auto px-4 sm:px-6 lg:px-8">
         {visibleMembers.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted">
             No members found for this committee.
           </div>
         ) : (
@@ -172,7 +172,7 @@ export default function ExecutiveCommitteePage() {
               .map((member, idx) => (
                 <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 50}>
                   <Link href={`/executive-committee/${member.slug}`}>
-                    <div className="group relative overflow-hidden aspect-[3/4] bg-[#0a0a0a] border border-white/5 rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+                    <div className="group relative overflow-hidden aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
                       {/* Profile Image */}
                       {member.profilePhoto?.url ? (
                         <img
@@ -181,7 +181,7 @@ export default function ExecutiveCommitteePage() {
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl text-gray-600 font-black">
+                        <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">
                           {member.fullName.charAt(0)}
                         </div>
                       )}
@@ -194,11 +194,11 @@ export default function ExecutiveCommitteePage() {
                         <p className="text-primary text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] mb-1 truncate">
                           {member.designation}
                         </p>
-                        <h3 className="text-xs sm:text-sm font-black text-white uppercase leading-tight line-clamp-2">
+                        <h3 className="text-xs sm:text-sm font-black text-foreground uppercase leading-tight line-clamp-2">
                           {member.fullName}
                         </h3>
                         {(member.department || member.session) && (
-                          <p className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <p className="text-[7px] sm:text-[8px] text-muted uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             {member.department}{member.session && ` · ${member.session}`}
                           </p>
                         )}

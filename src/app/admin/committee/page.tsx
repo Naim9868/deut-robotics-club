@@ -212,13 +212,13 @@ export default function CommitteePage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Committee Members</h1>
-        <p className="text-gray-500 text-sm">{members.length} members</p>
+        <h1 className="text-4xl font-black text-foreground">Committee Members</h1>
+        <p className="text-muted text-sm">{members.length} members</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">
           {editingId ? 'Edit Member' : 'Add New Member'}
         </h2>
         
@@ -226,64 +226,64 @@ export default function CommitteePage() {
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Full Name <span className="text-red-500">*</span>
               </label>
               <input 
                 {...register('name', { required: 'Name is required' })} 
                 placeholder="John Doe" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Role <span className="text-red-500">*</span>
               </label>
               <input 
                 {...register('role', { required: 'Role is required' })} 
                 placeholder="President" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Department
               </label>
               <input 
                 {...register('department')} 
                 placeholder="Computer Science" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Session
               </label>
               <input 
                 {...register('session')} 
                 placeholder="2018-19" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Email
               </label>
               <input 
                 {...register('email')} 
                 type="email" 
                 placeholder="john@example.com" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
 
             {/* Order Field - NEW */}
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Display Order
               </label>
               <input 
@@ -291,16 +291,16 @@ export default function CommitteePage() {
                 {...register('order')} 
                 placeholder="0" 
                 min="0"
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
-              <p className="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
+              <p className="text-xs text-muted mt-1">Lower numbers appear first</p>
             </div>
           </div>
 
           {/* Image Upload with Toggle */}
-          <div className="border-t border-white/5 pt-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase">
+              <label className="text-xs font-black text-muted uppercase">
                 Profile Image
               </label>
               <button
@@ -319,9 +319,9 @@ export default function CommitteePage() {
                   placeholder="https://example.com/image.jpg"
                   onChange={handleImageLinkChange}
                   value={currentImageUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the profile image
                 </p>
               </div>
@@ -332,7 +332,7 @@ export default function CommitteePage() {
                   defaultValue={currentImageUrl}
                   folder="committee"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload an image or toggle to use an external link
                 </p>
               </div>
@@ -340,38 +340,38 @@ export default function CommitteePage() {
           </div>
 
           {/* Social Links */}
-          <div className="border-t border-white/5 pt-4">
-            <label className="block text-xs font-black text-gray-400 uppercase mb-4">
+          <div className="border-t border-border pt-4">
+            <label className="block text-xs font-black text-muted uppercase mb-4">
               Social Links
             </label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <input 
                 {...register('socialLinks.linkedin')} 
                 placeholder="LinkedIn URL" 
-                className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
               <input 
                 {...register('socialLinks.github')} 
                 placeholder="GitHub URL" 
-                className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
               <input 
                 {...register('socialLinks.facebook')} 
                 placeholder="Facebook URL" 
-                className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
             </div>
           </div>
 
           {/* Status Toggles */}
-          <div className="border-t border-white/5 pt-4 flex items-center gap-6">
+          <div className="border-t border-border pt-4 flex items-center gap-6">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" {...register('isExecutive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-              <span className="text-sm text-gray-300">Executive Member</span>
+              <input type="checkbox" {...register('isExecutive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+              <span className="text-sm text-muted">Executive Member</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-              <span className="text-sm text-gray-300">Active</span>
+              <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
 
@@ -379,7 +379,7 @@ export default function CommitteePage() {
           <div className="flex gap-2 pt-4">
             <button 
               type="submit" 
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
+              className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors"
             >
               {editingId ? 'Update Member' : 'Create Member'}
             </button>
@@ -392,7 +392,7 @@ export default function CommitteePage() {
                   setCurrentImageUrl('');
                   setUseImageLink(false);
                 }} 
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors"
               >
                 Cancel
               </button>
@@ -406,7 +406,7 @@ export default function CommitteePage() {
         {members.map((member, index) => (
           <div 
             key={member._id} 
-            className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all"
+            className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all"
           >
             <div className="relative">
               <img 
@@ -423,7 +423,7 @@ export default function CommitteePage() {
                 {index > 0 && (
                   <button
                     onClick={() => moveMember(member._id, 'up')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                     title="Move Up"
                   >
                     <ArrowUpIcon className="w-4 h-4" />
@@ -432,7 +432,7 @@ export default function CommitteePage() {
                 {index < members.length - 1 && (
                   <button
                     onClick={() => moveMember(member._id, 'down')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                     title="Move Down"
                   >
                     <ArrowDownIcon className="w-4 h-4" />
@@ -444,13 +444,13 @@ export default function CommitteePage() {
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button 
                   onClick={() => handleEdit(member)} 
-                  className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                  className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700"
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => handleDelete(member._id)} 
-                  className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+                  className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700"
                 >
                   Del
                 </button>
@@ -458,7 +458,7 @@ export default function CommitteePage() {
 
               {/* Executive Badge */}
               {member.isExecutive && (
-                <div className="absolute bottom-2 left-2 px-2 py-1 bg-primary/90 text-white text-xs rounded-full">
+                <div className="absolute bottom-2 left-2 px-2 py-1 bg-primary/90 text-foreground text-xs rounded-full">
                   Executive
                 </div>
               )}
@@ -466,7 +466,7 @@ export default function CommitteePage() {
               {/* Active Status Indicator */}
               {!member.isActive && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <span className="px-2 py-1 bg-red-600/90 text-white text-xs rounded-full">
+                  <span className="px-2 py-1 bg-red-600/90 text-foreground text-xs rounded-full">
                     Inactive
                   </span>
                 </div>
@@ -474,17 +474,17 @@ export default function CommitteePage() {
             </div>
             
             <div className="p-4">
-              <h3 className="text-white font-bold text-lg">{member.name}</h3>
+              <h3 className="text-foreground font-bold text-lg">{member.name}</h3>
               <p className="text-primary text-sm font-black uppercase">{member.role}</p>
               {member.department && (
-                <p className="text-gray-500 text-xs mt-1">{member.department}</p>
+                <p className="text-muted text-xs mt-1">{member.department}</p>
               )}
               {member.session && (
-                <p className="text-gray-600 text-xs">{member.session}</p>
+                <p className="text-muted text-xs">{member.session}</p>
               )}
               
               {/* Order Display */}
-              <div className="mt-2 text-xs text-gray-600">
+              <div className="mt-2 text-xs text-muted">
                 Order: {member.order}
               </div>
 
@@ -492,7 +492,7 @@ export default function CommitteePage() {
               {(member.socialLinks?.linkedin || member.socialLinks?.github || member.socialLinks?.facebook) && (
                 <div className="flex gap-2 mt-3">
                   {member.socialLinks.linkedin && (
-                    <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary">
+                    <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary">
                       <span className="sr-only">LinkedIn</span>
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -500,7 +500,7 @@ export default function CommitteePage() {
                     </a>
                   )}
                   {member.socialLinks.github && (
-                    <a href={member.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary">
+                    <a href={member.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary">
                       <span className="sr-only">GitHub</span>
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
@@ -508,7 +508,7 @@ export default function CommitteePage() {
                     </a>
                   )}
                   {member.socialLinks.facebook && (
-                    <a href={member.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary">
+                    <a href={member.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary">
                       <span className="sr-only">Facebook</span>
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
@@ -523,8 +523,8 @@ export default function CommitteePage() {
       </div>
 
       {members.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No committee members yet. Add your first member above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No committee members yet. Add your first member above.</p>
         </div>
       )}
     </div>

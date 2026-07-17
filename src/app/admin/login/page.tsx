@@ -40,28 +40,28 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-dark flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-block">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-2xl font-black text-white">D</span>
+                <span className="text-2xl font-black text-foreground">D</span>
               </div>
               <div className="text-left">
-                <h1 className="text-2xl font-black text-white">DUET ROBOTICS</h1>
-                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Admin Portal</p>
+                <h1 className="text-2xl font-black text-foreground">DUET ROBOTICS</h1>
+                <p className="text-[10px] text-muted uppercase tracking-wider">Admin Portal</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Login Form */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Email Address
               </label>
               <input
@@ -69,13 +69,13 @@ export default function AdminLoginPage() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="admin@drc.duet.ac.bd"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Password
               </label>
               <input
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-card border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="••••••••"
               />
             </div>
@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-primary text-white font-black uppercase tracking-wider rounded-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+              className="w-full py-4 bg-primary text-foreground font-black uppercase tracking-wider rounded-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -104,33 +104,33 @@ export default function AdminLoginPage() {
               ) : (
                 <span className="relative z-10">Access Panel</span>
               )}
-              <div className="absolute inset-0 bg-white -translate-x-full group-hover:translate-x-0 transition-transform duration-500 opacity-20"></div>
+              <div className="absolute inset-0 bg-foreground -translate-x-full group-hover:translate-x-0 transition-transform duration-500 opacity-20"></div>
             </button>
           </form>
 
           {/* First time setup notice */}
-          {/* <div className="mt-6 p-4 bg-[#121212] border border-white/5 rounded-lg">
-            <p className="text-[10px] text-gray-600 uppercase tracking-wider text-center">
+          {/* <div className="mt-6 p-4 bg-card border border-border rounded-lg">
+            <p className="text-[10px] text-muted uppercase tracking-wider text-center">
               ⚡ First time? Check .env file for default credentials
             </p>
-            <p className="text-[8px] text-gray-700 text-center mt-2">
+            <p className="text-[8px] text-muted text-center mt-2">
               Default: admin@drc.duet.ac.bd / ChangeThisPassword123
             </p>
           </div> */}
 
           {/* System Status */}
-          <div className="mt-6 flex items-center justify-center gap-4 text-[8px] text-gray-600 uppercase tracking-wider">
+          <div className="mt-6 flex items-center justify-center gap-4 text-[8px] text-muted uppercase tracking-wider">
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
               <span>System Online</span>
             </div>
-            <div className="w-px h-3 bg-white/10"></div>
+            <div className="w-px h-3 bg-foreground/10"></div>
             <div>DRC v1.0</div>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-[8px] text-gray-700 uppercase tracking-wider mt-8">
+        <p className="text-center text-[8px] text-muted uppercase tracking-wider mt-8">
           © 2026 DUET Robotics Club. Authorized personnel only.
         </p>
       </div>

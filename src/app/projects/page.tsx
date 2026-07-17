@@ -36,13 +36,13 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-gray-500/15 text-gray-400',
+  draft: 'bg-gray-500/15 text-muted',
   submitted: 'bg-yellow-500/15 text-yellow-400',
   under_review: 'bg-blue-500/15 text-blue-400',
   approved: 'bg-green-500/15 text-green-400',
   ongoing: 'bg-blue-500/15 text-blue-400',
   completed: 'bg-green-500/15 text-green-400',
-  archived: 'bg-gray-500/15 text-gray-400',
+  archived: 'bg-gray-500/15 text-muted',
   ACTIVE: 'bg-green-500/15 text-green-400',
   TESTING: 'bg-yellow-500/15 text-yellow-400',
 };
@@ -82,23 +82,23 @@ export default function ProjectsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-card">
       <Navbar activeSection="" />
 
       {/* Hero */}
       <section className="pt-32 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <ScrollReveal>
-            <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-6 transition-colors">
+            <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground text-sm mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
             </Link>
-            <h1 className="text-4xl md:text-6xl font-black text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-black text-foreground mb-4">
               OUR <span className="text-red-500">PROJECTS</span>
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-muted text-lg max-w-2xl mx-auto">
               Explore the innovative projects built by DUET Robotics Club members
             </p>
           </ScrollReveal>
@@ -117,8 +117,8 @@ export default function ProjectsPage() {
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 py-2 text-xs font-bold rounded transition-all ${
                     activeCategory === cat
-                      ? 'bg-white/10 text-white'
-                      : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300'
+                      ? 'bg-background/10 text-foreground'
+                      : 'bg-background/5 text-muted hover:bg-background/10 hover:text-foreground'
                   }`}
                 >
                   {cat}
@@ -132,7 +132,7 @@ export default function ProjectsPage() {
               placeholder="Search projects..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-red-500/50 w-64"
+              className="bg-background/5 border border-border rounded-lg px-4 py-2 text-sm text-foreground placeholder-muted focus:outline-none focus:border-red-500/50 w-64"
             />
           </div>
         </div>
@@ -144,21 +144,21 @@ export default function ProjectsPage() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="animate-pulse bg-white/5 rounded-xl h-80" />
+                <div key={i} className="animate-pulse bg-background/5 rounded-xl h-80" />
               ))}
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-20">
               <span className="text-5xl mb-4 block">🚀</span>
-              <p className="text-gray-400 text-lg font-medium">No projects found</p>
-              <p className="text-gray-600 text-sm mt-1">Try a different category or search term</p>
+              <p className="text-muted text-lg font-medium">No projects found</p>
+              <p className="text-muted text-sm mt-1">Try a different category or search term</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project, idx) => (
                 <ScrollReveal key={project._id} delay={idx * 0.1}>
                   <Link href={`/projects/${project.slug}`}>
-                    <div className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-red-500/30 transition-all duration-300 cursor-pointer h-full">
+                    <div className="group bg-[#111] border border-border rounded-xl overflow-hidden hover:border-red-500/30 transition-all duration-300 cursor-pointer h-full">
                       {/* Image */}
                       <div className="relative h-48 overflow-hidden">
                         <Image
@@ -183,23 +183,23 @@ export default function ProjectsPage() {
                       {/* Content */}
                       <div className="p-5">
                         <p className="text-red-500 text-[10px] font-bold tracking-widest mb-1">{project.tag}</p>
-                        <h3 className="text-white font-black text-lg mb-1 group-hover:text-red-400 transition-colors">{project.title}</h3>
-                        <p className="text-gray-500 text-xs font-mono mb-3">{project.id}</p>
+                        <h3 className="text-foreground font-black text-lg mb-1 group-hover:text-red-400 transition-colors">{project.title}</h3>
+                        <p className="text-muted text-xs font-mono mb-3">{project.id}</p>
 
                         {project.shortDescription && (
-                          <p className="text-gray-400 text-sm line-clamp-2 mb-3">{project.shortDescription}</p>
+                          <p className="text-muted text-sm line-clamp-2 mb-3">{project.shortDescription}</p>
                         )}
 
                         {/* Tech stack */}
                         {project.technologies && project.technologies.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-3">
                             {project.technologies.slice(0, 4).map((tech, i) => (
-                              <span key={i} className="px-2 py-0.5 bg-white/5 text-gray-400 text-[10px] rounded">
+                              <span key={i} className="px-2 py-0.5 bg-background/5 text-muted text-[10px] rounded">
                                 {tech.name}
                               </span>
                             ))}
                             {project.technologies.length > 4 && (
-                              <span className="px-2 py-0.5 bg-white/5 text-gray-500 text-[10px] rounded">
+                              <span className="px-2 py-0.5 bg-background/5 text-muted text-[10px] rounded">
                                 +{project.technologies.length - 4}
                               </span>
                             )}
@@ -208,7 +208,7 @@ export default function ProjectsPage() {
 
                         {/* Team */}
                         {project.team && project.team.length > 0 && (
-                          <p className="text-gray-500 text-xs">
+                          <p className="text-muted text-xs">
                             {project.team.length} member{project.team.length > 1 ? 's' : ''}
                           </p>
                         )}

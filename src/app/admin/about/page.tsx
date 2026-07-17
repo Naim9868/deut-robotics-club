@@ -29,9 +29,9 @@ const SECTIONS = [
   { key: 'callToAction', label: 'Call to Action', icon: '📢' },
 ];
 
-const inputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary';
-const labelClass = 'block text-xs font-black text-gray-400 uppercase mb-2';
-const smallInputClass = 'w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary';
+const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
+const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
+const smallInputClass = 'w-full bg-input-bg border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary';
 
 // ─── Main Component ───────────────────────────────────────────
 
@@ -183,22 +183,22 @@ export default function AboutAdminPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white">About CMS</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage all sections of the About page. Toggle, reorder, and edit content.</p>
+          <h1 className="text-3xl font-black text-foreground">About CMS</h1>
+          <p className="text-muted text-sm mt-1">Manage all sections of the About page. Toggle, reorder, and edit content.</p>
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-muted">
           {SECTIONS.filter(s => getSection(s.key).isEnabled).length} / {SECTIONS.length} sections enabled
         </div>
       </div>
 
       {/* Mobile Section Selector */}
       <div className="lg:hidden">
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4">
-          <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] mb-3">Select Section</p>
+        <div className="bg-card border border-border rounded-2xl p-4">
+          <p className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-3">Select Section</p>
           <select
             value={activeSection || ''}
             onChange={(e) => setActiveSection(e.target.value || null)}
-            className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+            className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
           >
             <option value="">-- Choose a section --</option>
             {SECTIONS.map((s) => {
@@ -212,7 +212,7 @@ export default function AboutAdminPage() {
           </select>
           {activeSection && (
             <div className="mt-3 flex items-center justify-between">
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted">
                 {getSection(activeSection).isEnabled ? 'Enabled' : 'Disabled'}
               </span>
               <button
@@ -229,13 +229,13 @@ export default function AboutAdminPage() {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left: Section List (Desktop) */}
         <div className="hidden lg:block lg:w-72 flex-shrink-0">
-          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-4 space-y-1">
-            <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.2em] px-4 mb-2">Sections</p>
+          <div className="bg-card border border-border rounded-2xl p-4 space-y-1">
+            <p className="text-[10px] font-black text-muted uppercase tracking-[0.2em] px-4 mb-2">Sections</p>
             {SECTIONS.map((s) => {
               const section = getSection(s.key);
               const isActive = activeSection === s.key;
               return (
-                <div key={s.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all ${isActive ? 'bg-primary/20 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+                <div key={s.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all ${isActive ? 'bg-primary/20 text-foreground' : 'text-muted hover:bg-background/5 hover:text-foreground'}`}
                   onClick={() => setActiveSection(isActive ? null : s.key)}>
                   <span className="text-sm">{s.icon}</span>
                   <span className="flex-1 text-sm font-medium truncate">{s.label}</span>
@@ -253,9 +253,9 @@ export default function AboutAdminPage() {
         {/* Right: Section Editor */}
         <div className="flex-1 min-w-0">
           {!activeSection ? (
-            <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-12 text-center">
-              <p className="text-gray-500 text-lg">Select a section from the left to edit its content.</p>
-              <p className="text-gray-600 text-sm mt-2">Toggle sections on/off using the switches.</p>
+            <div className="bg-card border border-border rounded-2xl p-12 text-center">
+              <p className="text-muted text-lg">Select a section from the left to edit its content.</p>
+              <p className="text-muted text-sm mt-2">Toggle sections on/off using the switches.</p>
             </div>
           ) : (
             <SectionEditor
@@ -305,21 +305,21 @@ function SectionEditor({
   return (
     <div className="space-y-6">
       {/* Section Header */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6">
+      <div className="bg-card border border-border rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-black text-white flex items-center gap-2">
+          <h2 className="text-xl font-black text-foreground flex items-center gap-2">
             <span>{sectionInfo?.icon}</span>
             <span>{sectionInfo?.label}</span>
           </h2>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted">
               Order:
               <input type="number" value={localData.displayOrder as number || 0}
                 onChange={(e) => update('displayOrder', parseInt(e.target.value) || 0)}
-                className="w-16 bg-[#121212] border border-white/10 rounded px-2 py-1 text-xs text-white ml-2 text-center" />
+                className="w-16 bg-input-bg border border-border rounded px-2 py-1 text-xs text-foreground ml-2 text-center" />
             </span>
             <button onClick={() => onSave(localData)} disabled={saving}
-              className="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:bg-primary/80 disabled:opacity-50 font-bold">
+              className="px-4 py-2 bg-primary text-foreground text-sm rounded-lg hover:bg-primary/80 disabled:opacity-50 font-bold">
               {saving ? 'Saving...' : 'Save'}
             </button>
           </div>
@@ -415,7 +415,7 @@ function ContentForm({ sectionKey, data, update }: { sectionKey: string; data: R
         <ImageUpload onUpload={(url) => update('image', { ...content.image, url })} folder="about/sections" value={content.image?.url} />
         {content.image?.url && <img src={content.image.url} alt="" className="mt-2 w-full h-40 object-cover rounded-lg" />}
         {sectionKey === 'story' && (
-          <p className="text-xs text-gray-500 mt-2 italic">This image will show in Home page</p>
+          <p className="text-xs text-muted mt-2 italic">This image will show in Home page</p>
         )}
       </div>
     </div>
@@ -541,43 +541,43 @@ function ItemsList({ sectionKey, items, onAddItem, onUpdateItem, onRemoveItem }:
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs text-gray-500">{items.length} items</p>
+        <p className="text-xs text-muted">{items.length} items</p>
         <button onClick={handleAdd} className="px-3 py-1.5 bg-primary/20 text-primary text-xs rounded-lg hover:bg-primary/30 font-bold">
           + Add Item
         </button>
       </div>
 
       {items.length === 0 && (
-        <p className="text-gray-600 text-sm text-center py-4">No items yet. Click "Add Item" to create one.</p>
+        <p className="text-muted text-sm text-center py-4">No items yet. Click "Add Item" to create one.</p>
       )}
 
       <div className="space-y-2">
         {items.map((item, idx) => (
-          <div key={item._id as string || idx} className="bg-[#121212] border border-white/5 rounded-lg p-4 group hover:border-primary/30 transition-all">
+          <div key={item._id as string || idx} className="bg-input-bg border border-border rounded-lg p-4 group hover:border-primary/30 transition-all">
             {editingIdx === idx ? (
               /* Edit Mode */
               <div className="space-y-3">
                 <ItemForm sectionKey={sectionKey} data={editData} update={(k, v) => setEditData(prev => ({ ...prev, [k]: v }))} />
                 <div className="flex gap-2">
-                  <button onClick={saveEdit} className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 font-bold">Save</button>
-                  <button onClick={() => setEditingIdx(null)} className="px-3 py-1 bg-white/10 text-gray-400 text-xs rounded hover:bg-white/20">Cancel</button>
+                  <button onClick={saveEdit} className="px-3 py-1 bg-green-600 text-foreground text-xs rounded hover:bg-green-700 font-bold">Save</button>
+                  <button onClick={() => setEditingIdx(null)} className="px-3 py-1 bg-white/10 text-muted text-xs rounded hover:bg-background/20">Cancel</button>
                 </div>
               </div>
             ) : (
               /* Display Mode */
               <div className="flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-bold truncate">
+                  <p className="text-foreground text-sm font-bold truncate">
                     {(item as any).title || (item as any).name || (item as any).question || (item as any).label || 'Untitled'}
                   </p>
-                  <p className="text-gray-500 text-xs truncate">
+                  <p className="text-muted text-xs truncate">
                     {(item as any).description || (item as any).answer || (item as any).value || ''}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className={`w-2 h-2 rounded-full ${(item as any).isPublished ? 'bg-green-400' : 'bg-red-400'}`} />
-                  <button onClick={() => startEdit(idx)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
-                  <button onClick={() => (item as any)._id && onRemoveItem((item as any)._id)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
+                  <button onClick={() => startEdit(idx)} className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700">Edit</button>
+                  <button onClick={() => (item as any)._id && onRemoveItem((item as any)._id)} className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700">Del</button>
                 </div>
               </div>
             )}
@@ -597,12 +597,12 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
     <>
       <div className="flex items-center gap-4">
         <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked={item.isPublished !== false} onChange={(e) => update('isPublished', e.target.checked)} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-          <span className="text-xs text-gray-300">Published</span>
+          <input type="checkbox" checked={item.isPublished !== false} onChange={(e) => update('isPublished', e.target.checked)} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+          <span className="text-xs text-muted">Published</span>
         </label>
         <div>
-          <label className="text-xs text-gray-500 mr-1">Order:</label>
-          <input type="number" value={item.displayOrder || 0} onChange={(e) => update('displayOrder', parseInt(e.target.value) || 0)} className="w-16 bg-[#121212] border border-white/10 rounded px-2 py-1 text-xs text-white text-center" />
+          <label className="text-xs text-muted mr-1">Order:</label>
+          <input type="number" value={item.displayOrder || 0} onChange={(e) => update('displayOrder', parseInt(e.target.value) || 0)} className="w-16 bg-input-bg border border-border rounded px-2 py-1 text-xs text-foreground text-center" />
         </div>
       </div>
     </>
@@ -630,7 +630,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           </div>
           <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
           <div>
-            <label className="text-xs text-gray-500">Image</label>
+            <label className="text-xs text-muted">Image</label>
             <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/timeline" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
@@ -647,7 +647,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           </div>
           <textarea value={item.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} className={smallInputClass} placeholder="Description" />
           <div>
-            <label className="text-xs text-gray-500">Image</label>
+            <label className="text-xs text-muted">Image</label>
             <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/achievements" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
@@ -677,7 +677,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           <input value={item.department || ''} onChange={(e) => update('department', e.target.value)} className={smallInputClass} placeholder="Department" />
           <textarea value={item.message || ''} onChange={(e) => update('message', e.target.value)} rows={2} className={smallInputClass} placeholder="Message" />
           <div>
-            <label className="text-xs text-gray-500">Photo</label>
+            <label className="text-xs text-muted">Photo</label>
             <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/faculty" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-20 h-20 object-cover rounded-full" />}
           </div>
@@ -699,7 +699,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
             />
           )}
           <div>
-            <label className="text-xs text-gray-500">Photo</label>
+            <label className="text-xs text-muted">Photo</label>
             <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder={`about/${sectionKey}`} value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
@@ -723,7 +723,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           </div>
           <input value={item.website || ''} onChange={(e) => update('website', e.target.value)} className={smallInputClass} placeholder="Website URL" />
           <div>
-            <label className="text-xs text-gray-500">Logo</label>
+            <label className="text-xs text-muted">Logo</label>
             <ImageUpload onUpload={(url) => update('image', { ...item.image, url })} folder="about/sponsors" value={item.image?.url} />
             {item.image?.url && <img src={item.image.url} alt="" className="mt-2 w-24 h-12 object-contain" />}
           </div>
@@ -735,7 +735,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
       return (
         <div className="space-y-3">
           <div>
-            <label className="text-xs text-gray-500">Media</label>
+            <label className="text-xs text-muted">Media</label>
             <ImageUpload onUpload={(url) => update('url', url)} folder="about/gallery" value={item.url} />
             {item.url && <img src={item.url} alt="" className="mt-2 w-full h-32 object-cover rounded-lg" />}
           </div>
@@ -761,6 +761,6 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
       );
 
     default:
-      return <div className="text-gray-500 text-sm">No form available for this section type.</div>;
+      return <div className="text-muted text-sm">No form available for this section type.</div>;
   }
 }

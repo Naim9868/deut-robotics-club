@@ -49,7 +49,7 @@ function SocialLink({ platform, url }: { platform: string; url: string }) {
   };
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className="flex items-center gap-2 px-4 py-2.5 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 hover:text-white text-sm">
+      className="flex items-center gap-2 px-4 py-2.5 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 hover:text-foreground text-sm">
       <span className="font-medium">{labels[platform] || platform}</span>
       <svg className="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -84,7 +84,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
       </div>
     );
@@ -92,8 +92,8 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-dark flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-500 text-lg">{error || 'Member not found'}</p>
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted text-lg">{error || 'Member not found'}</p>
         <Link href="/executive-committee" className="text-primary hover:underline">
           &larr; Back to Executive Committee
         </Link>
@@ -104,16 +104,16 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
   const { committee, member } = data;
 
   return (
-    <div className="min-h-screen bg-dark">
+    <div className="min-h-screen bg-background">
       {/* Cover Photo */}
       <div className="relative h-64 sm:h-80 md:h-96">
         {member.coverPhoto?.url ? (
           <img src={member.coverPhoto.url} alt={member.coverPhoto.alt || member.fullName}
             className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-[#0a0a0a]" />
+          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-card" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
       </div>
 
       {/* Content */}
@@ -123,12 +123,12 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
           <ScrollReveal animation="up">
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6 mb-8">
               {/* Profile Photo */}
-              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-4 border-dark shadow-2xl flex-shrink-0">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-4 border-background shadow-2xl flex-shrink-0">
                 {member.profilePhoto?.url ? (
                   <img src={member.profilePhoto.url} alt={member.profilePhoto.alt || member.fullName}
                     className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full bg-[#121212] flex items-center justify-center text-4xl text-gray-600 font-black">
+                  <div className="w-full h-full bg-input-bg flex items-center justify-center text-4xl text-muted font-black">
                     {member.fullName.charAt(0)}
                   </div>
                 )}
@@ -136,17 +136,17 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <Link href="/executive-committee" className="text-gray-500 hover:text-primary text-xs transition-colors">
+                  <Link href="/executive-committee" className="text-muted hover:text-primary text-xs transition-colors">
                     {committee.committeeYear}
                   </Link>
-                  <span className="text-gray-600">·</span>
+                  <span className="text-muted">·</span>
                   <span className="text-primary text-xs font-bold uppercase tracking-wider">{member.designation}</span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground uppercase tracking-tight">
                   {member.fullName}
                 </h1>
                 {(member.department || member.session) && (
-                  <p className="text-gray-500 text-sm mt-2">
+                  <p className="text-muted text-sm mt-2">
                     {member.department}{member.session && ` · ${member.session}`}
                   </p>
                 )}
@@ -161,9 +161,9 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Bio */}
               {member.fullBiography && (
                 <ScrollReveal animation="up" delay={100}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 sm:p-8">
-                    <h2 className="text-lg font-black text-white uppercase tracking-wider mb-4">About</h2>
-                    <div className="prose prose-invert prose-sm max-w-none text-gray-400 leading-relaxed"
+                  <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">About</h2>
+                    <div className="prose prose-invert prose-sm max-w-none text-muted leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: member.fullBiography }} />
                   </div>
                 </ScrollReveal>
@@ -171,9 +171,9 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
               {!member.fullBiography && member.shortBio && (
                 <ScrollReveal animation="up" delay={100}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 sm:p-8">
-                    <h2 className="text-lg font-black text-white uppercase tracking-wider mb-4">About</h2>
-                    <p className="text-gray-400 leading-relaxed">{member.shortBio}</p>
+                  <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">About</h2>
+                    <p className="text-muted leading-relaxed">{member.shortBio}</p>
                   </div>
                 </ScrollReveal>
               )}
@@ -181,11 +181,11 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Responsibilities */}
               {member.responsibilities.length > 0 && (
                 <ScrollReveal animation="up" delay={150}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 sm:p-8">
-                    <h2 className="text-lg font-black text-white uppercase tracking-wider mb-4">Responsibilities</h2>
+                  <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">Responsibilities</h2>
                     <ul className="space-y-2">
                       {member.responsibilities.map((r, i) => (
-                        <li key={i} className="flex items-start gap-3 text-gray-400 text-sm">
+                        <li key={i} className="flex items-start gap-3 text-muted text-sm">
                           <span className="text-primary mt-1">&#9654;</span>
                           {r}
                         </li>
@@ -198,11 +198,11 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Achievements */}
               {member.achievements.length > 0 && (
                 <ScrollReveal animation="up" delay={200}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 sm:p-8">
-                    <h2 className="text-lg font-black text-white uppercase tracking-wider mb-4">Achievements</h2>
+                  <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">Achievements</h2>
                     <ul className="space-y-2">
                       {member.achievements.map((a, i) => (
-                        <li key={i} className="flex items-start gap-3 text-gray-400 text-sm">
+                        <li key={i} className="flex items-start gap-3 text-muted text-sm">
                           <span className="text-yellow-500 mt-1">&#9733;</span>
                           {a}
                         </li>
@@ -215,9 +215,9 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Message */}
               {member.messageFromMember && (
                 <ScrollReveal animation="up" delay={250}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 sm:p-8">
-                    <h2 className="text-lg font-black text-white uppercase tracking-wider mb-4">Message</h2>
-                    <blockquote className="border-l-2 border-primary pl-4 text-gray-400 italic leading-relaxed">
+                  <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">Message</h2>
+                    <blockquote className="border-l-2 border-primary pl-4 text-muted italic leading-relaxed">
                       {member.messageFromMember}
                     </blockquote>
                   </div>
@@ -229,29 +229,29 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
             <div className="space-y-6">
               {/* Quick Info */}
               <ScrollReveal animation="up" delay={100}>
-                <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-4">
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">Info</h3>
+                <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
+                  <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Info</h3>
                   <div className="space-y-3 text-sm">
                     {member.department && (
                       <div>
-                        <p className="text-gray-600 text-xs uppercase">Department</p>
+                        <p className="text-muted text-xs uppercase">Department</p>
                         <p className="text-gray-300">{member.department}</p>
                       </div>
                     )}
                     {member.session && (
                       <div>
-                        <p className="text-gray-600 text-xs uppercase">Session</p>
+                        <p className="text-muted text-xs uppercase">Session</p>
                         <p className="text-gray-300">{member.session}</p>
                       </div>
                     )}
                     {member.studentId && (
                       <div>
-                        <p className="text-gray-600 text-xs uppercase">Student ID</p>
+                        <p className="text-muted text-xs uppercase">Student ID</p>
                         <p className="text-gray-300">{member.studentId}</p>
                       </div>
                     )}
                     <div>
-                      <p className="text-gray-600 text-xs uppercase">Committee</p>
+                      <p className="text-muted text-xs uppercase">Committee</p>
                       <p className="text-gray-300">{committee.title}</p>
                     </div>
                   </div>
@@ -261,10 +261,10 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Contact */}
               {(member.email || member.phone) && (
                 <ScrollReveal animation="up" delay={150}>
-                  <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-3">
-                    <h3 className="text-sm font-black text-white uppercase tracking-wider">Contact</h3>
+                  <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+                    <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Contact</h3>
                     {member.email && (
-                      <a href={`mailto:${member.email}`} className="flex items-center gap-2 text-gray-400 hover:text-primary text-sm transition-colors">
+                      <a href={`mailto:${member.email}`} className="flex items-center gap-2 text-muted hover:text-primary text-sm transition-colors">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
@@ -272,7 +272,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
                       </a>
                     )}
                     {member.phone && (
-                      <a href={`tel:${member.phone}`} className="flex items-center gap-2 text-gray-400 hover:text-primary text-sm transition-colors">
+                      <a href={`tel:${member.phone}`} className="flex items-center gap-2 text-muted hover:text-primary text-sm transition-colors">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
@@ -285,8 +285,8 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
               {/* Social Links */}
               <ScrollReveal animation="up" delay={200}>
-                <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 space-y-3">
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">Connect</h3>
+                <div className="bg-card border border-border rounded-2xl p-6 space-y-3">
+                  <h3 className="text-sm font-black text-foreground uppercase tracking-wider">Connect</h3>
                   {(['linkedin', 'github', 'facebook', 'portfolio', 'website'] as const).map(platform => (
                     <SocialLink key={platform} platform={platform} url={member.socialLinks?.[platform] || ''} />
                   ))}
@@ -296,7 +296,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Back Link */}
               <ScrollReveal animation="up" delay={250}>
                 <Link href="/executive-committee"
-                  className="block text-center px-4 py-3 bg-white/5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all text-sm font-medium">
+                  className="block text-center px-4 py-3 bg-white/5 rounded-lg text-muted hover:text-foreground hover:bg-background/10 transition-all text-sm font-medium">
                   &larr; All Committees
                 </Link>
               </ScrollReveal>

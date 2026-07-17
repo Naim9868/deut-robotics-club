@@ -23,7 +23,7 @@ interface Pagination {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-gray-500/15 text-gray-400 border border-gray-500/20',
+  draft: 'bg-gray-500/15 text-muted border border-gray-500/20',
   submitted: 'bg-blue-500/15 text-blue-400 border border-blue-500/20',
   pending_payment: 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20',
   pending_verification: 'bg-orange-500/15 text-orange-400 border border-orange-500/20',
@@ -94,8 +94,8 @@ export default function RegistrationAppsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-black text-white">Registration Applications</h1>
-        <p className="text-gray-500 text-sm mt-1">{pagination.total} total applications</p>
+        <h1 className="text-3xl font-black text-foreground">Registration Applications</h1>
+        <p className="text-muted text-sm mt-1">{pagination.total} total applications</p>
       </div>
 
       {/* Stats Cards */}
@@ -107,15 +107,15 @@ export default function RegistrationAppsPage() {
           { label: 'Rejected', value: stats.rejected, color: 'text-red-400' },
           { label: 'Today', value: stats.today, color: 'text-primary' },
         ].map((s) => (
-          <div key={s.label} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">{s.label}</p>
+          <div key={s.label} className="bg-card border border-border rounded-xl p-4">
+            <p className="text-xs text-muted uppercase tracking-wider">{s.label}</p>
             <p className={`text-2xl font-black mt-1 ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </div>
 
       {/* Filters */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-4">
+      <div className="bg-card border border-border rounded-xl p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <input
@@ -123,13 +123,13 @@ export default function RegistrationAppsPage() {
               placeholder="Search by name, email, student ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+            className="bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
           >
             {STATUS_OPTIONS.map((s) => (
               <option key={s} value={s}>
@@ -144,7 +144,7 @@ export default function RegistrationAppsPage() {
               setSortBy(field);
               setSortOrder(order as 'asc' | 'desc');
             }}
-            className="bg-[#121212] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+            className="bg-input-bg border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
           >
             <option value="createdAt-desc">Newest first</option>
             <option value="createdAt-asc">Oldest first</option>
@@ -154,14 +154,14 @@ export default function RegistrationAppsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden">
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-6 space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="animate-pulse flex space-x-4">
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 bg-white/5 rounded w-1/4" />
-                  <div className="h-3 bg-white/5 rounded w-1/2" />
+                  <div className="h-4 bg-background/5 rounded w-1/4" />
+                  <div className="h-3 bg-background/5 rounded w-1/2" />
                 </div>
               </div>
             ))}
@@ -169,15 +169,15 @@ export default function RegistrationAppsPage() {
         ) : applications.length === 0 ? (
           <div className="p-12 text-center">
             <span className="text-4xl mb-4 block">📋</span>
-            <p className="text-gray-400 font-medium">No applications found</p>
-            <p className="text-gray-600 text-sm mt-1">
+            <p className="text-muted font-medium">No applications found</p>
+            <p className="text-muted text-sm mt-1">
               {search || statusFilter !== 'all' ? 'Try adjusting your filters' : 'Applications will appear here'}
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-white/5">
+              <thead className="bg-background/5">
                 <tr>
                   {[
                     { key: 'applicationId', label: 'ID' },
@@ -189,7 +189,7 @@ export default function RegistrationAppsPage() {
                     <th
                       key={col.key}
                       onClick={() => toggleSort(col.key)}
-                      className="px-4 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white transition-colors"
+                      className="px-4 py-3 text-left text-xs font-black text-muted uppercase tracking-wider cursor-pointer hover:text-foreground transition-colors"
                     >
                       {col.label}
                       {sortBy === col.key && (
@@ -197,14 +197,14 @@ export default function RegistrationAppsPage() {
                       )}
                     </th>
                   ))}
-                  <th className="px-4 py-3 text-right text-xs font-black text-gray-400 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-right text-xs font-black text-muted uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-border">
                 {applications.map((app) => (
-                  <tr key={app._id} className="hover:bg-white/5 transition-colors">
+                  <tr key={app._id} className="hover:bg-background/5 transition-colors">
                     <td className="px-4 py-3 text-xs font-mono text-primary">{app.applicationId}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
@@ -215,23 +215,23 @@ export default function RegistrationAppsPage() {
                             className="w-8 h-8 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs text-gray-400">
+                          <div className="w-8 h-8 rounded-full bg-background/10 flex items-center justify-center text-xs text-muted">
                             {app.personal?.fullName?.charAt(0) || '?'}
                           </div>
                         )}
                         <div>
-                          <p className="text-sm text-white">{app.personal?.fullName}</p>
-                          <p className="text-xs text-gray-500">{app.contact?.email}</p>
+                          <p className="text-sm text-foreground">{app.personal?.fullName}</p>
+                          <p className="text-xs text-muted">{app.contact?.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-300">{app.university?.department}</td>
+                    <td className="px-4 py-3 text-sm text-muted">{app.university?.department}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${STATUS_STYLES[app.status] || STATUS_STYLES.draft}`}>
                         {app.status.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">{formatDate(app.createdAt)}</td>
+                    <td className="px-4 py-3 text-xs text-muted">{formatDate(app.createdAt)}</td>
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/admin/registration/${app._id}`}
@@ -249,22 +249,22 @@ export default function RegistrationAppsPage() {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
-            <p className="text-xs text-gray-500">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-border">
+            <p className="text-xs text-muted">
               Page {pagination.page} of {pagination.totalPages} ({pagination.total} applications)
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => fetchApplications(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="px-3 py-1.5 text-xs font-bold text-gray-400 bg-white/5 rounded hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 text-xs font-bold text-muted bg-background/5 rounded hover:bg-background/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
               <button
                 onClick={() => fetchApplications(pagination.page + 1)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="px-3 py-1.5 text-xs font-bold text-gray-400 bg-white/5 rounded hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 text-xs font-bold text-muted bg-background/5 rounded hover:bg-background/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 Next
               </button>

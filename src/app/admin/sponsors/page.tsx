@@ -22,9 +22,9 @@ interface SponsorForm {
 type CategoryType = 'PLATINUM' | 'GOLD' | 'SILVER' | 'PARTNER';
 
 const categoryColors: Record<CategoryType, string> = {
-  PLATINUM: 'text-gray-300 border-gray-300',
+  PLATINUM: 'text-muted border-gray-300',
   GOLD: 'text-yellow-500 border-yellow-500',
-  SILVER: 'text-gray-400 border-gray-400',
+  SILVER: 'text-muted border-gray-400',
   PARTNER: 'text-primary border-primary'
 };
 
@@ -204,7 +204,7 @@ export default function SponsorsPage() {
       return categoryColors[category];
     }
     // Default fallback
-    return 'text-gray-300 border-gray-300';
+    return 'text-muted border-gray-300';
   };
 
   if (loading) {
@@ -218,13 +218,13 @@ export default function SponsorsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-4xl font-black text-white">Sponsors</h1>
-        <p className="text-gray-500 text-sm">{sponsors.length} sponsors</p>
+        <h1 className="text-4xl font-black text-foreground">Sponsors</h1>
+        <p className="text-muted text-sm">{sponsors.length} sponsors</p>
       </div>
 
       {/* Form */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">
           {editingId ? 'Edit Sponsor' : 'Add New Sponsor'}
         </h2>
         
@@ -232,13 +232,13 @@ export default function SponsorsPage() {
           {/* Name and Category */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Sponsor Name <span className="text-red-500">*</span>
               </label>
               <input 
                 {...register('name', { required: 'Name is required' })} 
                 placeholder="Company Name" 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
               {errors.name && (
                 <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
@@ -246,12 +246,12 @@ export default function SponsorsPage() {
             </div>
             
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Category
               </label>
               <select 
                 {...register('category')} 
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
               >
                 <option value="PLATINUM">🥇 PLATINUM</option>
                 <option value="GOLD">🥈 GOLD</option>
@@ -263,33 +263,33 @@ export default function SponsorsPage() {
 
           {/* Website */}
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+            <label className="block text-xs font-black text-muted uppercase mb-2">
               Website URL
             </label>
             <input 
               {...register('website')} 
               placeholder="https://example.com" 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+            <label className="block text-xs font-black text-muted uppercase mb-2">
               Description
             </label>
             <textarea 
               {...register('description')} 
               placeholder="Brief description of the sponsor..." 
               rows={2} 
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary resize-none" 
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary resize-none" 
             />
           </div>
 
           {/* Logo Upload with Toggle */}
-          <div className="border-t border-white/5 pt-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase">
+              <label className="text-xs font-black text-muted uppercase">
                 Sponsor Logo
               </label>
               <button
@@ -308,9 +308,9 @@ export default function SponsorsPage() {
                   placeholder="https://example.com/logo.png"
                   onChange={handleLogoLinkChange}
                   value={currentLogoUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the sponsor logo
                 </p>
               </div>
@@ -321,7 +321,7 @@ export default function SponsorsPage() {
                   defaultValue={currentLogoUrl}
                   folder="sponsors"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload a logo or toggle to use an external link
                 </p>
               </div>
@@ -331,7 +331,7 @@ export default function SponsorsPage() {
           {/* Order and Status */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase mb-2">
+              <label className="block text-xs font-black text-muted uppercase mb-2">
                 Display Order
               </label>
               <input 
@@ -339,15 +339,15 @@ export default function SponsorsPage() {
                 {...register('order')} 
                 placeholder="0" 
                 min="0"
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary" 
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary" 
               />
-              <p className="text-xs text-gray-500 mt-1">Lower numbers appear first</p>
+              <p className="text-xs text-muted mt-1">Lower numbers appear first</p>
             </div>
 
             <div className="flex items-center gap-6 pt-6">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-white/10 text-primary focus:ring-primary" />
-                <span className="text-sm text-gray-300">Active</span>
+                <input type="checkbox" {...register('isActive')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
+                <span className="text-sm text-muted">Active</span>
               </label>
             </div>
           </div>
@@ -356,7 +356,7 @@ export default function SponsorsPage() {
           <div className="flex gap-2 pt-4">
             <button 
               type="submit" 
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors"
+              className="px-6 py-3 bg-primary text-foreground rounded-lg hover:bg-primary/80 transition-colors"
             >
               {editingId ? 'Update Sponsor' : 'Create Sponsor'}
             </button>
@@ -369,7 +369,7 @@ export default function SponsorsPage() {
                   setCurrentLogoUrl('');
                   setUseLogoLink(false);
                 }} 
-                className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors"
+                className="px-6 py-3 border border-border text-muted rounded-lg hover:bg-background/5 transition-colors"
               >
                 Cancel
               </button>
@@ -387,14 +387,14 @@ export default function SponsorsPage() {
           return (
             <div 
               key={sponsor._id} 
-              className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6 text-center group relative hover:border-primary/50 transition-all"
+              className="bg-card border border-border rounded-xl p-6 text-center group relative hover:border-primary/50 transition-all"
             >
               {/* Order Controls */}
               <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 {index > 0 && (
                   <button
                     onClick={() => moveSponsor(sponsor._id, 'up')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                     title="Move Up"
                   >
                     <ArrowUpIcon className="w-4 h-4" />
@@ -403,7 +403,7 @@ export default function SponsorsPage() {
                 {index < sponsors.length - 1 && (
                   <button
                     onClick={() => moveSponsor(sponsor._id, 'down')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-black/70 hover:bg-black rounded text-foreground"
                     title="Move Down"
                   >
                     <ArrowDownIcon className="w-4 h-4" />
@@ -415,13 +415,13 @@ export default function SponsorsPage() {
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 <button 
                   onClick={() => handleEdit(sponsor)} 
-                  className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+                  className="px-2 py-1 bg-blue-600 text-foreground text-xs rounded hover:bg-blue-700"
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => handleDelete(sponsor._id)} 
-                  className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+                  className="px-2 py-1 bg-red-600 text-foreground text-xs rounded hover:bg-red-700"
                 >
                   Del
                 </button>
@@ -430,7 +430,7 @@ export default function SponsorsPage() {
               {/* Inactive Overlay */}
               {!sponsor.isActive && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
-                  <span className="px-2 py-1 bg-red-600/90 text-white text-xs rounded-full">
+                  <span className="px-2 py-1 bg-red-600/90 text-foreground text-xs rounded-full">
                     Inactive
                   </span>
                 </div>
@@ -449,7 +449,7 @@ export default function SponsorsPage() {
               </div>
 
               {/* Name */}
-              <h3 className="text-white font-bold text-lg mb-1">{sponsor.name}</h3>
+              <h3 className="text-foreground font-bold text-lg mb-1">{sponsor.name}</h3>
 
               {/* Category Badge */}
               <div className={`inline-block px-3 py-1 text-xs font-black uppercase tracking-wider border rounded-full mb-2 ${categoryColors[category]}`}>
@@ -462,7 +462,7 @@ export default function SponsorsPage() {
                   href={sponsor.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-gray-400 hover:text-primary text-xs transition-colors mt-1"
+                  className="inline-flex items-center gap-1 text-muted hover:text-primary text-xs transition-colors mt-1"
                 >
                   <GlobeAltIcon className="w-3 h-3" />
                   Website
@@ -471,13 +471,13 @@ export default function SponsorsPage() {
 
               {/* Description */}
               {sponsor.description && (
-                <p className="text-gray-500 text-xs mt-2 line-clamp-2">
+                <p className="text-muted text-xs mt-2 line-clamp-2">
                   {sponsor.description}
                 </p>
               )}
 
               {/* Order Display */}
-              <div className="text-xs text-gray-600 mt-2">
+              <div className="text-xs text-muted mt-2">
                 Order: {sponsor.order}
               </div>
             </div>
@@ -486,8 +486,8 @@ export default function SponsorsPage() {
       </div>
 
       {sponsors.length === 0 && (
-        <div className="text-center py-12 bg-[#0a0a0a] border border-white/5 rounded-2xl">
-          <p className="text-gray-500">No sponsors yet. Add your first sponsor above.</p>
+        <div className="text-center py-12 bg-card border border-border rounded-2xl">
+          <p className="text-muted">No sponsors yet. Add your first sponsor above.</p>
         </div>
       )}
     </div>

@@ -51,7 +51,7 @@ interface ApplicationData {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  draft: 'bg-gray-500/15 text-gray-400 border border-gray-500/20',
+  draft: 'bg-gray-500/15 text-muted border border-gray-500/20',
   submitted: 'bg-blue-500/15 text-blue-400 border border-blue-500/20',
   pending_payment: 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20',
   pending_verification: 'bg-orange-500/15 text-orange-400 border border-orange-500/20',
@@ -149,8 +149,8 @@ export default function RegistrationDetailPage({
     return (
       <div className="space-y-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-white/5 rounded w-1/3" />
-          <div className="h-96 bg-white/5 rounded-xl" />
+          <div className="h-8 bg-background/5 rounded w-1/3" />
+          <div className="h-96 bg-background/5 rounded-xl" />
         </div>
       </div>
     );
@@ -165,17 +165,17 @@ export default function RegistrationDetailPage({
         <div>
           <button
             onClick={() => router.push('/admin/registration')}
-            className="text-gray-500 hover:text-white text-sm mb-2 flex items-center gap-1"
+            className="text-muted hover:text-foreground text-sm mb-2 flex items-center gap-1"
           >
             ← Back to Applications
           </button>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-white">{app.applicationId}</h1>
+            <h1 className="text-3xl font-black text-foreground">{app.applicationId}</h1>
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${STATUS_STYLES[app.status]}`}>
               {app.status.replace(/_/g, ' ')}
             </span>
           </div>
-          <p className="text-gray-500 text-sm mt-1">Submitted {formatDate(app.createdAt)}</p>
+          <p className="text-muted text-sm mt-1">Submitted {formatDate(app.createdAt)}</p>
         </div>
         <div className="flex gap-2">
           {app.status === 'submitted' && (
@@ -224,28 +224,28 @@ export default function RegistrationDetailPage({
       )}
 
       {/* Personal Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Personal Information</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Personal Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 uppercase">Full Name</label>
-            <p className="text-white text-sm mt-1">{app.personal.fullName}</p>
+            <label className="text-xs text-muted uppercase">Full Name</label>
+            <p className="text-foreground text-sm mt-1">{app.personal.fullName}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Gender</label>
-            <p className="text-white text-sm mt-1 capitalize">{app.personal.gender}</p>
+            <label className="text-xs text-muted uppercase">Gender</label>
+            <p className="text-foreground text-sm mt-1 capitalize">{app.personal.gender}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Date of Birth</label>
-            <p className="text-white text-sm mt-1">{app.personal.dateOfBirth}</p>
+            <label className="text-xs text-muted uppercase">Date of Birth</label>
+            <p className="text-foreground text-sm mt-1">{app.personal.dateOfBirth}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Blood Group</label>
-            <p className="text-white text-sm mt-1">{app.personal.bloodGroup || 'N/A'}</p>
+            <label className="text-xs text-muted uppercase">Blood Group</label>
+            <p className="text-foreground text-sm mt-1">{app.personal.bloodGroup || 'N/A'}</p>
           </div>
           {app.personal.profilePhoto?.url && (
             <div>
-              <label className="text-xs text-gray-500 uppercase">Profile Photo</label>
+              <label className="text-xs text-muted uppercase">Profile Photo</label>
               <img
                 src={app.personal.profilePhoto.url}
                 alt={app.personal.fullName}
@@ -257,87 +257,87 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* University Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">University Information</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">University Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 uppercase">Student ID</label>
-            <p className="text-white text-sm mt-1 font-mono">{app.university.studentId}</p>
+            <label className="text-xs text-muted uppercase">Student ID</label>
+            <p className="text-foreground text-sm mt-1 font-mono">{app.university.studentId}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Registration Number</label>
-            <p className="text-white text-sm mt-1">{app.university.registrationNumber || 'N/A'}</p>
+            <label className="text-xs text-muted uppercase">Registration Number</label>
+            <p className="text-foreground text-sm mt-1">{app.university.registrationNumber || 'N/A'}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Department</label>
-            <p className="text-white text-sm mt-1">{app.university.department}</p>
+            <label className="text-xs text-muted uppercase">Department</label>
+            <p className="text-foreground text-sm mt-1">{app.university.department}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Session</label>
-            <p className="text-white text-sm mt-1">{app.university.session}</p>
+            <label className="text-xs text-muted uppercase">Session</label>
+            <p className="text-foreground text-sm mt-1">{app.university.session}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Semester</label>
-            <p className="text-white text-sm mt-1">{app.university.semester}</p>
+            <label className="text-xs text-muted uppercase">Semester</label>
+            <p className="text-foreground text-sm mt-1">{app.university.semester}</p>
           </div>
         </div>
       </div>
 
       {/* Contact Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Contact Information</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Contact Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 uppercase">Email</label>
-            <p className="text-white text-sm mt-1">{app.contact.email}</p>
+            <label className="text-xs text-muted uppercase">Email</label>
+            <p className="text-foreground text-sm mt-1">{app.contact.email}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Phone</label>
-            <p className="text-white text-sm mt-1">{app.contact.phone}</p>
+            <label className="text-xs text-muted uppercase">Phone</label>
+            <p className="text-foreground text-sm mt-1">{app.contact.phone}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">WhatsApp</label>
-            <p className="text-white text-sm mt-1">{app.contact.whatsappNumber || 'N/A'}</p>
+            <label className="text-xs text-muted uppercase">WhatsApp</label>
+            <p className="text-foreground text-sm mt-1">{app.contact.whatsappNumber || 'N/A'}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Emergency Contact</label>
-            <p className="text-white text-sm mt-1">{app.contact.emergencyContact}</p>
+            <label className="text-xs text-muted uppercase">Emergency Contact</label>
+            <p className="text-foreground text-sm mt-1">{app.contact.emergencyContact}</p>
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs text-gray-500 uppercase">Address</label>
-            <p className="text-white text-sm mt-1">{app.contact.address}</p>
+            <label className="text-xs text-muted uppercase">Address</label>
+            <p className="text-foreground text-sm mt-1">{app.contact.address}</p>
           </div>
         </div>
       </div>
 
       {/* Payment Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Payment Information</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Payment Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 uppercase">Method</label>
-            <p className="text-white text-sm mt-1">{app.payment.method}</p>
+            <label className="text-xs text-muted uppercase">Method</label>
+            <p className="text-foreground text-sm mt-1">{app.payment.method}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Transaction ID</label>
-            <p className="text-white text-sm mt-1 font-mono">{app.payment.transactionId}</p>
+            <label className="text-xs text-muted uppercase">Transaction ID</label>
+            <p className="text-foreground text-sm mt-1 font-mono">{app.payment.transactionId}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Sender Number</label>
-            <p className="text-white text-sm mt-1">{app.payment.senderNumber}</p>
+            <label className="text-xs text-muted uppercase">Sender Number</label>
+            <p className="text-foreground text-sm mt-1">{app.payment.senderNumber}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 uppercase">Amount</label>
-            <p className="text-white text-sm mt-1">৳{app.payment.amount}</p>
+            <label className="text-xs text-muted uppercase">Amount</label>
+            <p className="text-foreground text-sm mt-1">৳{app.payment.amount}</p>
           </div>
           {app.payment.screenshot?.url && (
             <div className="md:col-span-2">
-              <label className="text-xs text-gray-500 uppercase">Payment Screenshot</label>
+              <label className="text-xs text-muted uppercase">Payment Screenshot</label>
               <a href={app.payment.screenshot.url} target="_blank" rel="noopener noreferrer">
                 <img
                   src={app.payment.screenshot.url}
                   alt="Payment screenshot"
-                  className="mt-2 max-w-xs rounded-lg border border-white/10 hover:border-primary transition-colors"
+                  className="mt-2 max-w-xs rounded-lg border border-border hover:border-primary transition-colors"
                 />
               </a>
             </div>
@@ -346,12 +346,12 @@ export default function RegistrationDetailPage({
       </div>
 
       {/* Additional Information */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Additional Information</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Additional Information</h2>
         <div className="space-y-4">
           {app.additional.skills.length > 0 && (
             <div>
-              <label className="text-xs text-gray-500 uppercase">Skills</label>
+              <label className="text-xs text-muted uppercase">Skills</label>
               <div className="flex flex-wrap gap-2 mt-2">
                 {app.additional.skills.map((skill, i) => (
                   <span key={i} className="px-2.5 py-0.5 bg-primary/10 text-primary text-xs rounded-full border border-primary/20">
@@ -363,7 +363,7 @@ export default function RegistrationDetailPage({
           )}
           {app.additional.interests.length > 0 && (
             <div>
-              <label className="text-xs text-gray-500 uppercase">Interests</label>
+              <label className="text-xs text-muted uppercase">Interests</label>
               <div className="flex flex-wrap gap-2 mt-2">
                 {app.additional.interests.map((interest, i) => (
                   <span key={i} className="px-2.5 py-0.5 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20">
@@ -375,20 +375,20 @@ export default function RegistrationDetailPage({
           )}
           {app.additional.previousExperience && (
             <div>
-              <label className="text-xs text-gray-500 uppercase">Previous Experience</label>
-              <p className="text-white text-sm mt-1 whitespace-pre-wrap">{app.additional.previousExperience}</p>
+              <label className="text-xs text-muted uppercase">Previous Experience</label>
+              <p className="text-foreground text-sm mt-1 whitespace-pre-wrap">{app.additional.previousExperience}</p>
             </div>
           )}
           <div>
-            <label className="text-xs text-gray-500 uppercase">Motivation</label>
-            <p className="text-white text-sm mt-1 whitespace-pre-wrap">{app.additional.motivation}</p>
+            <label className="text-xs text-muted uppercase">Motivation</label>
+            <p className="text-foreground text-sm mt-1 whitespace-pre-wrap">{app.additional.motivation}</p>
           </div>
         </div>
       </div>
 
       {/* Admin Notes */}
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
-        <h2 className="text-lg font-black text-white mb-4">Admin Notes</h2>
+      <div className="bg-card border border-border rounded-xl p-6">
+        <h2 className="text-lg font-black text-foreground mb-4">Admin Notes</h2>
 
         {/* Add note form */}
         <div className="flex gap-3 mb-4">
@@ -397,14 +397,14 @@ export default function RegistrationDetailPage({
             value={noteAuthor}
             onChange={(e) => setNoteAuthor(e.target.value)}
             placeholder="Author"
-            className="w-32 bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+            className="w-32 bg-input-bg border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted"
           />
           <input
             type="text"
             value={noteText}
             onChange={(e) => setNoteText(e.target.value)}
             placeholder="Add a note..."
-            className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600"
+            className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-2 text-sm text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted"
             onKeyDown={(e) => e.key === 'Enter' && handleAddNote()}
           />
           <button
@@ -417,16 +417,16 @@ export default function RegistrationDetailPage({
 
         {/* Notes list */}
         {app.adminNotes.length === 0 ? (
-          <p className="text-gray-600 text-sm">No notes yet</p>
+          <p className="text-muted text-sm">No notes yet</p>
         ) : (
           <div className="space-y-2">
             {app.adminNotes.map((n, i) => (
-              <div key={i} className="p-3 bg-[#121212] border border-white/5 rounded-lg">
+              <div key={i} className="p-3 bg-input-bg border border-border rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-bold text-primary">{n.addedBy}</span>
-                  <span className="text-xs text-gray-600">{formatDate(n.addedAt)}</span>
+                  <span className="text-xs text-muted">{formatDate(n.addedAt)}</span>
                 </div>
-                <p className="text-sm text-gray-300">{n.note}</p>
+                <p className="text-sm text-muted">{n.note}</p>
               </div>
             ))}
           </div>

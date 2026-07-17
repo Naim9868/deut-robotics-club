@@ -15,10 +15,8 @@ interface SponsorData {
   isActive: boolean;
 }
 
-// Define category type
 type CategoryType = 'PLATINUM' | 'GOLD' | 'SILVER' | 'PARTNER';
 
-// Category priority mapping - defined outside component to prevent recreation
 const CATEGORY_PRIORITY: Record<CategoryType, number> = {
   'PLATINUM': 1,
   'GOLD': 2,
@@ -26,7 +24,6 @@ const CATEGORY_PRIORITY: Record<CategoryType, number> = {
   'PARTNER': 4
 };
 
-// Fallback sponsor names - defined outside component
 const FALLBACK_SPONSORS = [
   "TECH-X", "GENESIS", "NEXUS ROBOTICS", "DUET ALUMNI", "ROBOMASTER",
   "CYBERDYNE", "BOSTON DYNAMICS", "INTEL", "NVIDIA", "TESLA"
@@ -46,20 +43,16 @@ const Sponsors: React.FC = () => {
         }
         const data = await response.json();
         
-        // Filter active sponsors and sort by category priority and order
         const activeSponsors = Array.isArray(data) 
           ? data
               .filter((item: SponsorData) => item.isActive)
               .sort((a, b) => {
-                // Safely get priority values with type assertion
                 const aPriority = CATEGORY_PRIORITY[a.category as CategoryType];
                 const bPriority = CATEGORY_PRIORITY[b.category as CategoryType];
                 
-                // First sort by category priority
                 if (aPriority !== bPriority) {
                   return aPriority - bPriority;
                 }
-                // Then by order
                 return a.order - b.order;
               })
           : [];
@@ -68,7 +61,6 @@ const Sponsors: React.FC = () => {
       } catch (err) {
         console.error('Error fetching sponsors:', err);
         setError(err instanceof Error ? err.message : 'An error occurred');
-        // Use empty array - fallback will handle display
         setSponsors([]);
       } finally {
         setLoading(false);
@@ -76,11 +68,11 @@ const Sponsors: React.FC = () => {
     };
 
     fetchSponsors();
-  }, []); // Empty dependency array - no dependencies needed
+  }, []);
 
   if (loading) {
     return (
-      <div className="py-24 bg-dark overflow-hidden border-t border-white/5">
+      <div className="py-24 bg-background overflow-hidden border-t border-border">
         <div className="container mx-auto px-4 mb-12">
           <p className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-primary/100">Global Network Partners</p>
         </div>
@@ -93,18 +85,17 @@ const Sponsors: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-24 bg-dark overflow-hidden border-t border-white/5">
+      <div className="py-24 bg-background overflow-hidden border-t border-border">
         <div className="container mx-auto px-4 mb-12">
           <p className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-primary/100">Global Network Partners</p>
         </div>
-        <div className="text-center text-gray-500">
-          {/* Show fallback even on error */}
+        <div className="text-center text-muted">
           <div className="flex relative group">
             <div className="flex animate-marquee whitespace-nowrap">
               {FALLBACK_SPONSORS.concat(FALLBACK_SPONSORS).map((sponsor, idx) => (
                 <div 
                   key={idx} 
-                  className="mx-12 text-3xl md:text-5xl font-black italic text-white/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter"
+                  className="mx-12 text-3xl md:text-5xl font-black italic text-foreground/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter"
                 >
                   {sponsor}
                 </div>
@@ -116,13 +107,12 @@ const Sponsors: React.FC = () => {
     );
   }
 
-  // Use sponsors from API if available, otherwise use fallback data
   const displaySponsors = sponsors.length > 0 
     ? sponsors.map(s => s.name) 
     : FALLBACK_SPONSORS;
 
   return (
-    <div className="py-24 bg-dark overflow-hidden border-t border-white/5">
+    <div className="py-24 bg-background overflow-hidden border-t border-border">
       <div className="container mx-auto px-4 mb-12">
         <p className="text-center text-[10px] font-black uppercase tracking-[0.8em] text-primary/100">Global Network Partners</p>
       </div>
@@ -132,7 +122,7 @@ const Sponsors: React.FC = () => {
           {displaySponsors.concat(displaySponsors).map((sponsor, idx) => (
             <div 
               key={idx} 
-              className="mx-12 text-3xl md:text-5xl font-black italic text-white/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter"
+              className="mx-12 text-3xl md:text-5xl font-black italic text-foreground/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter"
             >
               {sponsor}
             </div>

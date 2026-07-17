@@ -107,7 +107,7 @@ export default function BlogPostPage() {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32 flex justify-center">
+        <div className="min-h-screen bg-background pt-32 flex justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         </div>
         <Footer />
@@ -119,9 +119,9 @@ export default function BlogPostPage() {
     return (
       <>
         <Navbar activeSection={activeSection} />
-        <div className="min-h-screen bg-dark pt-32 text-center">
-          <h1 className="text-4xl text-white mb-4">Post not found</h1>
-          <Link href="/#blog" className="text-primary hover:underline">
+        <div className="min-h-screen bg-background pt-32 text-center">
+          <h1 className="text-4xl text-foreground mb-4">Post not found</h1>
+          <Link href="/blog" className="text-primary hover:underline">
             ← Back to Blog
           </Link>
         </div>
@@ -133,7 +133,7 @@ export default function BlogPostPage() {
   const imageUrl = post.image?.url || post.coverImage || '';
 
   return (
-    <div className="min-h-screen bg-dark text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar activeSection={activeSection} />
       
       <article className="pt-32 pb-20">
@@ -148,7 +148,7 @@ export default function BlogPostPage() {
               Back to Blog
             </Link>
             
-            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-4">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted mb-4">
               <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">
                 {post.category}
               </span>
@@ -175,7 +175,7 @@ export default function BlogPostPage() {
             {/* Author Section with Stats */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 bg-[#1e1e1e]">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 bg-card">
                   <img 
                     src={post.authorImage || getAvatarUrl(post.author)}
                     alt={post.author}
@@ -186,23 +186,23 @@ export default function BlogPostPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-lg font-medium text-white">By {post.author}</p>
+                  <p className="text-lg font-medium text-foreground">By {post.author}</p>
                   {post.authorTitle && (
-                    <p className="text-sm text-gray-400">{post.authorTitle}</p>
+                    <p className="text-sm text-muted">{post.authorTitle}</p>
                   )}
                 </div>
               </div>
 
               {/* Stats */}
               <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex items-center gap-2 text-muted">
                   <EyeIcon className="w-5 h-5" />
                   <span className="text-sm">{viewCount.toLocaleString()} views</span>
                 </div>
                 <button
                   onClick={handleLike}
                   disabled={likesLoading}
-                  className="flex items-center gap-2 text-gray-400 hover:text-primary transition-colors group disabled:opacity-50"
+                  className="flex items-center gap-2 text-muted hover:text-primary transition-colors group disabled:opacity-50"
                 >
                   {liked ? (
                     <HeartSolid className="w-5 h-5 text-primary" />
@@ -219,7 +219,7 @@ export default function BlogPostPage() {
 
           {/* Featured Image */}
           {imageUrl && (
-            <div className="mb-12 rounded-2xl overflow-hidden border border-white/5 bg-[#1a1a1a]">
+            <div className="mb-12 rounded-2xl overflow-hidden border border-border bg-card">
               <img 
                 src={imageUrl} 
                 alt={post.image?.alt || post.title} 
@@ -228,7 +228,7 @@ export default function BlogPostPage() {
                   (e.target as HTMLImageElement).style.display = 'none';
                   const parent = (e.target as HTMLImageElement).parentElement;
                   if (parent) {
-                    parent.innerHTML = '<div class="w-full h-64 flex items-center justify-center text-gray-500">Image not available</div>';
+                    parent.innerHTML = '<div class="w-full h-64 flex items-center justify-center text-muted">Image not available</div>';
                   }
                 }}
               />
@@ -241,7 +241,7 @@ export default function BlogPostPage() {
               {post.tags.map((tag: string) => (
                 <span 
                   key={tag} 
-                  className="px-3 py-1 bg-white/5 hover:bg-white/10 transition-colors rounded-full text-xs text-gray-300"
+                  className="px-3 py-1 bg-background/5 hover:bg-background/10 transition-colors rounded-full text-xs text-muted"
                 >
                   #{tag}
                 </span>
@@ -256,20 +256,20 @@ export default function BlogPostPage() {
               [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4
               [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3
               [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:mt-4 [&_h4]:mb-2
-              [&_p]:text-gray-300 [&_p]:leading-relaxed [&_p]:mb-4
-              [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:text-gray-300
-              [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4 [&_ol]:text-gray-300
+              [&_p]:text-muted [&_p]:leading-relaxed [&_p]:mb-4
+              [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:text-muted
+              [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4 [&_ol]:text-muted
               [&_li]:mb-1
               [&_a]:text-primary [&_a]:underline [&_a:hover]:text-primary/80
-              [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-400 [&_blockquote]:my-4
-              [&_code]:bg-[#2a2a2a] [&_code]:text-primary [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-sm
-              [&_pre]:bg-[#2a2a2a] [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:border [&_pre]:border-white/10 [&_pre]:my-4
+              [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted [&_blockquote]:my-4
+              [&_code]:bg-card [&_code]:text-primary [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:font-mono [&_code]:text-sm
+              [&_pre]:bg-card [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:border [&_pre]:border-border [&_pre]:my-4
               [&_pre_code]:bg-transparent [&_pre_code]:text-inherit [&_pre_code]:p-0
-              [&_img]:rounded-lg [&_img]:border [&_img]:border-white/10 [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto
-              [&_hr]:border-white/10 [&_hr]:my-8
+              [&_img]:rounded-lg [&_img]:border [&_img]:border-border [&_img]:my-4 [&_img]:max-w-full [&_img]:h-auto
+              [&_hr]:border-border [&_hr]:my-8
               [&_table]:w-full [&_table]:border-collapse [&_table]:my-4
-              [&_th]:bg-white/5 [&_th]:p-2 [&_th]:text-left [&_th]:font-bold
-              [&_td]:p-2 [&_td]:border [&_td]:border-white/10
+              [&_th]:bg-background/5 [&_th]:p-2 [&_th]:text-left [&_th]:font-bold
+              [&_td]:p-2 [&_td]:border [&_td]:border-border
             "
             dangerouslySetInnerHTML={{ __html: post.content }}
           />

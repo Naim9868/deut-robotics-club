@@ -31,7 +31,6 @@ const TechStack: React.FC = () => {
         }
         const data = await response.json();
         
-        // Filter active tech stacks and sort by order
         const activeStacks = Array.isArray(data) 
           ? data
               .filter((item: TechStackData) => item.isActive)
@@ -69,7 +68,6 @@ const TechStack: React.FC = () => {
     );
   }
 
-  // Use tech stacks from API if available, otherwise use fallback data
   const displayStacks = techStacks.length > 0 ? techStacks : [
     {
       _id: '1',
@@ -123,7 +121,7 @@ const TechStack: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-20">
           <div>
             <h2 className="text-4xl md:text-5xl font-black uppercase mb-4 section-title">Tech Stack</h2>
-            <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">The technologies driving our innovations</p>
+            <p className="text-muted uppercase text-xs font-bold tracking-[0.3em]">The technologies driving our innovations</p>
           </div>
           <div className="hidden md:block h-[2px] bg-primary flex-1 mx-12 mb-4 opacity-20"></div>
         </div>
@@ -135,24 +133,23 @@ const TechStack: React.FC = () => {
             key={stack._id || idx} 
             animation="up" 
             delay={idx * 150}
-            className="bg-card border border-white/5 p-8 rounded-2xl relative group overflow-hidden"
+            className="bg-card border border-border p-8 rounded-2xl relative group overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
             <h3 className="text-xl font-bold uppercase tracking-widest text-primary mb-8 border-l-4 border-primary pl-4">{stack.category}</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {stack.items.sort((a, b) => (a.order || 0) - (b.order || 0)).map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center group/item p-4 rounded-xl hover:bg-white/5 transition-all cursor-default">
+                <div key={i} className="flex flex-col items-center text-center group/item p-4 rounded-xl hover:bg-primary/5 transition-all cursor-default">
                   <div className="text-3xl mb-4 group-hover/item:scale-110 transition-all duration-300">
                     {item.icon}
                   </div>
-                  <h4 className="text-white font-black text-sm uppercase mb-1">{item.name}</h4>
-                  <p className="text-[10px] text-gray-500 font-bold leading-tight group-hover/item:text-gray-300 transition-colors">{item.use}</p>
+                  <h4 className="text-foreground font-black text-sm uppercase mb-1">{item.name}</h4>
+                  <p className="text-[10px] text-muted font-bold leading-tight group-hover/item:text-muted transition-colors">{item.use}</p>
                   
-                  {/* Optional proficiency indicator (if needed) */}
                   {item.proficiency && (
                     <div className="w-full mt-2">
-                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                      <div className="w-full h-1 bg-border rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-primary rounded-full transition-all duration-300"
                           style={{ width: `${item.proficiency}%` }}
@@ -167,9 +164,8 @@ const TechStack: React.FC = () => {
         ))}
       </div>
       
-      {/* Show message if no tech stacks */}
       {displayStacks.length === 0 && (
-        <div className="text-center text-gray-400 py-12">
+        <div className="text-center text-muted py-12">
           No tech stack data available.
         </div>
       )}

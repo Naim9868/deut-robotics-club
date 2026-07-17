@@ -86,8 +86,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-black text-white mb-2">Dashboard</h1>
-        <p className="text-gray-500 text-sm uppercase tracking-wider">
+        <h1 className="text-4xl font-black text-foreground mb-2">Dashboard</h1>
+        <p className="text-muted text-sm uppercase tracking-wider">
           Welcome back to the control panel
         </p>
       </div>
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
           <Link
             key={section.name}
             href={section.href}
-            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 hover:border-primary/50 transition-all"
+            className="group relative overflow-hidden bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-all"
           >
             <div className={`absolute inset-0 bg-gradient-to-br ${section.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
             
@@ -105,18 +105,18 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <span className="text-3xl">{section.icon}</span>
                 {!loading && stats[section.name] && (
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted">
                     {stats[section.name].active} active
                   </span>
                 )}
               </div>
               
-              <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors">
+              <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
                 {section.name}
               </h3>
               
               {!loading && stats[section.name] && (
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted">
                   Total: {stats[section.name].total} items
                 </p>
               )}
@@ -131,53 +131,53 @@ export default function AdminDashboard() {
 
       {/* Contact Messages Stats Card */}
       <div className="mt-2">
-        <h2 className="text-sm font-black text-gray-500 uppercase tracking-wider mb-4">Communication</h2>
+        <h2 className="text-sm font-black text-muted uppercase tracking-wider mb-4">Communication</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/admin/contact-messages"
-            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-primary/50 transition-all"
+            className="group relative overflow-hidden bg-card border border-border rounded-2xl p-5 hover:border-primary/50 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative z-10">
               <span className="text-2xl">✉️</span>
-              <p className="text-2xl font-black text-white mt-2">{contactStats?.total ?? '—'}</p>
-              <p className="text-xs text-gray-500">Total Messages</p>
+              <p className="text-2xl font-black text-foreground mt-2">{contactStats?.total ?? '—'}</p>
+              <p className="text-xs text-muted">Total Messages</p>
             </div>
           </Link>
 
           <Link
             href="/admin/contact-messages?status=unread"
-            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-blue-500/50 transition-all"
+            className="group relative overflow-hidden bg-card border border-border rounded-2xl p-5 hover:border-blue-500/50 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative z-10">
               <span className="text-2xl">📬</span>
               <p className="text-2xl font-black text-blue-400 mt-2">{contactStats?.unread ?? '—'}</p>
-              <p className="text-xs text-gray-500">Unread</p>
+              <p className="text-xs text-muted">Unread</p>
             </div>
           </Link>
 
           <Link
             href="/admin/contact-messages"
-            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-green-500/50 transition-all"
+            className="group relative overflow-hidden bg-card border border-border rounded-2xl p-5 hover:border-green-500/50 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative z-10">
               <span className="text-2xl">📅</span>
               <p className="text-2xl font-black text-green-400 mt-2">{contactStats?.today ?? '—'}</p>
-              <p className="text-xs text-gray-500">Today</p>
+              <p className="text-xs text-muted">Today</p>
             </div>
           </Link>
 
           <Link
             href="/admin/contact-messages"
-            className="group relative overflow-hidden bg-[#0a0a0a] border border-white/5 rounded-2xl p-5 hover:border-purple-500/50 transition-all"
+            className="group relative overflow-hidden bg-card border border-border rounded-2xl p-5 hover:border-purple-500/50 transition-all"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative z-10">
               <span className="text-2xl">📊</span>
               <p className="text-2xl font-black text-purple-400 mt-2">{contactStats?.thisWeek ?? '—'}</p>
-              <p className="text-xs text-gray-500">This Week</p>
+              <p className="text-xs text-muted">This Week</p>
             </div>
           </Link>
         </div>

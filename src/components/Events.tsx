@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ScrollReveal from './ScrollReveal';
-import { ArrowUpIcon, ArrowDownIcon, MapPinIcon, LinkIcon } from 'lucide-react';
 
 interface EventData {
   _id: string;
@@ -168,7 +167,6 @@ const Events: React.FC<EventsProps> = ({
     }
   ];
 
-  // Separate featured/latest event and other events
   const featuredEvent = displayEvents.find(event => event.featured) || displayEvents[0];
   const otherEvents = displayEvents.filter(event => event._id !== featuredEvent?._id);
 
@@ -176,37 +174,35 @@ const Events: React.FC<EventsProps> = ({
     <div className="py-12 sm:py-16 md:py-20 lg:py-32 container mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollReveal animation="up">
         <div className="mb-8 sm:mb-10 md:mb-14 lg:mb-20">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title tracking-tighter  sm:text-left">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title tracking-tighter sm:text-left">
             UPCOMMING EVENTS
           </h2>
-          <p className="text-gray-500 uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] mt-2 sm:mt-3 md:mt-4 text-center sm:text-left">
+          <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] mt-2 sm:mt-3 md:mt-4 text-center sm:text-left">
             Stay updated with our latest operational breakthroughs
           </p>
         </div>
       </ScrollReveal>
 
-      {/* Featured/Latest Event - Full Width */}
       {featuredEvent && (
         <ScrollReveal animation="up" delay={0}>
           <div className="mb-6 sm:mb-8 md:mb-10">
-            <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)]">
-              {/* Admin Controls */}
+            <div className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)]">
               {isAdmin && (
                 <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                   <button
                     onClick={() => moveEvent(featuredEvent._id, 'up')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-background/70 hover:bg-background rounded text-foreground"
                     title="Move Up"
                     disabled={displayEvents.indexOf(featuredEvent) === 0}
                   >
-                    <ArrowUpIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" /></svg>
                   </button>
                   <button
                     onClick={() => moveEvent(featuredEvent._id, 'down')}
-                    className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                    className="p-1 bg-background/70 hover:bg-background rounded text-foreground"
                     title="Move Down"
                   >
-                    <ArrowDownIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                   </button>
                 </div>
               )}
@@ -228,12 +224,10 @@ const Events: React.FC<EventsProps> = ({
                 </div>
               )}
 
-              {/* Featured Badge */}
               <div className="absolute top-2 left-2 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary/90 text-white text-[7px] sm:text-xs rounded-full z-10">
                 Featured
               </div>
 
-              {/* Event Image */}
               {featuredEvent.image?.url && (
                 <div className="relative h-48 sm:h-56 md:h-64 lg:h-80 overflow-hidden">
                   <img 
@@ -244,40 +238,36 @@ const Events: React.FC<EventsProps> = ({
                       (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x400?text=Event+Image';
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
                 </div>
               )}
 
               <div className="p-4 sm:p-6 md:p-8">
                 <div className="flex items-start gap-3 sm:gap-4 md:gap-6">
-                  {/* Date Badge */}
                   <div className="bg-primary/20 text-primary px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 rounded-lg text-center flex-shrink-0">
                     <div className="text-xl sm:text-2xl md:text-3xl font-black leading-none">{featuredEvent.date?.day}</div>
                     <div className="text-[8px] sm:text-[9px] md:text-xs font-bold">{featuredEvent.date?.month}</div>
                     {featuredEvent.date?.year && (
-                      <div className="text-[6px] sm:text-[7px] md:text-[10px] text-gray-400">{featuredEvent.date.year}</div>
+                      <div className="text-[6px] sm:text-[7px] md:text-[10px] text-muted">{featuredEvent.date.year}</div>
                     )}
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-white font-bold text-base sm:text-lg md:text-2xl lg:text-3xl leading-tight mb-1 sm:mb-2">
+                    <h3 className="text-foreground font-bold text-base sm:text-lg md:text-2xl lg:text-3xl leading-tight mb-1 sm:mb-2">
                       {featuredEvent.title}
                     </h3>
                     
-                    {/* Location */}
                     {featuredEvent.location && (
-                      <div className="flex items-center gap-0.5 sm:gap-1 text-gray-400 text-[8px] sm:text-[10px] md:text-xs mb-1 sm:mb-2">
-                        <MapPinIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+                      <div className="flex items-center gap-0.5 sm:gap-1 text-muted text-[8px] sm:text-[10px] md:text-xs mb-1 sm:mb-2">
+                        <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                         <span>{featuredEvent.location}</span>
                       </div>
                     )}
 
-                    {/* Description */}
-                    <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm leading-relaxed mb-2 sm:mb-3">
+                    <p className="text-muted text-[10px] sm:text-xs md:text-sm leading-relaxed mb-2 sm:mb-3">
                       {featuredEvent.description}
                     </p>
 
-                    {/* Registration Link */}
                     {featuredEvent.registrationLink && (
                       <a 
                         href={featuredEvent.registrationLink}
@@ -285,7 +275,7 @@ const Events: React.FC<EventsProps> = ({
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-0.5 sm:gap-1 text-primary text-[8px] sm:text-[10px] md:text-xs hover:underline"
                       >
-                        <LinkIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+                        <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                         Register Now
                       </a>
                     )}
@@ -297,28 +287,26 @@ const Events: React.FC<EventsProps> = ({
         </ScrollReveal>
       )}
 
-      {/* Other Events - 2 Columns */}
       {otherEvents.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
           {otherEvents.map((event, index) => (
             <ScrollReveal key={event._id} animation="up" delay={(index + 1) * 100}>
-              <div className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)] h-full flex flex-col">
-                {/* Admin Controls */}
+              <div className="bg-card border border-border rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)] h-full flex flex-col">
                 {isAdmin && (
                   <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                     <button
                       onClick={() => moveEvent(event._id, 'up')}
-                      className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                      className="p-1 bg-background/70 hover:bg-background rounded text-foreground"
                       title="Move Up"
                     >
-                      <ArrowUpIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" /></svg>
                     </button>
                     <button
                       onClick={() => moveEvent(event._id, 'down')}
-                      className="p-1 bg-black/70 hover:bg-black rounded text-white"
+                      className="p-1 bg-background/70 hover:bg-background rounded text-foreground"
                       title="Move Down"
                     >
-                      <ArrowDownIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                     </button>
                   </div>
                 )}
@@ -340,14 +328,12 @@ const Events: React.FC<EventsProps> = ({
                   </div>
                 )}
 
-                {/* Featured Badge - Only if featured */}
                 {event.featured && (
                   <div className="absolute top-2 left-2 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary/90 text-white text-[7px] sm:text-xs rounded-full z-10">
                     Featured
                   </div>
                 )}
 
-                {/* Event Image */}
                 {event.image?.url && (
                   <div className="relative h-24 sm:h-32 md:h-36 lg:h-40 overflow-hidden flex-shrink-0">
                     <img 
@@ -363,36 +349,32 @@ const Events: React.FC<EventsProps> = ({
 
                 <div className="p-2.5 sm:p-3 md:p-4 flex flex-col flex-1">
                   <div className="flex items-start gap-1.5 sm:gap-2">
-                    {/* Date Badge */}
                     <div className="bg-primary/20 text-primary px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-lg text-center flex-shrink-0">
                       <div className="text-sm sm:text-base md:text-lg font-black leading-none">{event.date?.day}</div>
                       <div className="text-[6px] sm:text-[7px] md:text-xs font-bold">{event.date?.month}</div>
                       {event.date?.year && (
-                        <div className="text-[5px] sm:text-[6px] md:text-[10px] text-gray-400">{event.date.year}</div>
+                        <div className="text-[5px] sm:text-[6px] md:text-[10px] text-muted">{event.date.year}</div>
                       )}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-xs sm:text-sm md:text-base leading-tight line-clamp-2">
+                      <h3 className="text-foreground font-bold text-xs sm:text-sm md:text-base leading-tight line-clamp-2">
                         {event.title}
                       </h3>
                     </div>
                   </div>
 
-                  {/* Location */}
                   {event.location && (
-                    <div className="flex items-center gap-0.5 sm:gap-1 text-gray-400 text-[8px] sm:text-[10px] md:text-xs mt-1 sm:mt-2">
-                      <MapPinIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+                    <div className="flex items-center gap-0.5 sm:gap-1 text-muted text-[8px] sm:text-[10px] md:text-xs mt-1 sm:mt-2">
+                      <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                       <span className="truncate">{event.location}</span>
                     </div>
                   )}
 
-                  {/* Description */}
-                  <p className="text-gray-400 text-[8px] sm:text-[10px] md:text-xs line-clamp-2 sm:line-clamp-2 md:line-clamp-3 mt-1 sm:mt-2 flex-1">
+                  <p className="text-muted text-[8px] sm:text-[10px] md:text-xs line-clamp-2 sm:line-clamp-2 md:line-clamp-3 mt-1 sm:mt-2 flex-1">
                     {event.description}
                   </p>
 
-                  {/* Registration Link */}
                   {event.registrationLink && (
                     <a 
                       href={event.registrationLink}
@@ -400,7 +382,7 @@ const Events: React.FC<EventsProps> = ({
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-0.5 sm:gap-1 text-primary text-[7px] sm:text-[9px] md:text-xs hover:underline mt-1 sm:mt-2"
                     >
-                      <LinkIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+                      <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                       Register Now
                     </a>
                   )}
@@ -412,7 +394,7 @@ const Events: React.FC<EventsProps> = ({
       )}
       
       {displayEvents.length === 0 && (
-        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+        <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
           No upcoming events at the moment.
         </div>
       )}

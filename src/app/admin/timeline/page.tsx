@@ -141,22 +141,22 @@ export default function TimelinePage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
-      <h1 className="text-4xl font-black text-white">Timeline</h1>
+      <h1 className="text-4xl font-black text-foreground">Timeline</h1>
 
-      <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-white mb-6">{editingId ? 'Edit' : 'Add'} Milestone</h2>
+      <div className="bg-card border border-border rounded-2xl p-8">
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit' : 'Add'} Milestone</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input {...register('year')} placeholder="Year (2015)" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
-            <input {...register('title')} placeholder="Title" className="bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
+            <input {...register('year')} placeholder="Year (2015)" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
+            <input {...register('title')} placeholder="Title" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
           </div>
 
-          <textarea {...register('description')} placeholder="Description" rows={3} className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white" required />
+          <textarea {...register('description')} placeholder="Description" rows={3} className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
 
           {/* Image Upload with Toggle */}
-          <div className="border-t border-white/5 pt-4">
+          <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase">
+              <label className="text-xs font-black text-muted uppercase">
                 Timeline Image
               </label>
               <button
@@ -175,9 +175,9 @@ export default function TimelinePage() {
                   placeholder="https://example.com/event-image.jpg"
                   onChange={handleImageLinkChange}
                   value={currentImageUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the event image
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function TimelinePage() {
                   defaultValue={currentImageUrl}
                   folder="timeline"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload an image or toggle to use an external link
                 </p>
               </div>
@@ -196,13 +196,13 @@ export default function TimelinePage() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-2">Achievements</label>
+            <label className="block text-sm text-muted mb-2">Achievements</label>
             {fields.map((field, index) => (
               <div key={field.id} className="flex gap-2 mb-2">
                 <input 
                   {...register(`achievements.${index}.value`)} 
                   placeholder={`Achievement ${index + 1}`} 
-                  className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white" 
+                  className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-2 text-foreground" 
                 />
                 {fields.length > 1 && (
                   <button type="button" onClick={() => remove(index)} className="text-red-500">×</button>
@@ -217,7 +217,7 @@ export default function TimelinePage() {
           <div className="flex items-center gap-6">
             <label className="flex items-center gap-2">
               <input type="checkbox" {...register('isActive')} className="w-4 h-4" />
-              <span className="text-sm text-gray-300">Active</span>
+              <span className="text-sm text-muted">Active</span>
             </label>
           </div>
 
@@ -239,7 +239,7 @@ export default function TimelinePage() {
                   setCurrentImageUrl('');
                   setUseImageLink(false);
                 }} 
-                className="px-6 py-2 border border-white/10 text-gray-400 rounded-lg"
+                className="px-6 py-2 border border-border text-muted rounded-lg"
               >
                 Cancel
               </button>
@@ -250,17 +250,17 @@ export default function TimelinePage() {
 
       <div className="space-y-4">
         {milestones.map((item) => (
-          <div key={item._id} className="bg-[#0a0a0a] border border-white/5 rounded-xl p-6">
+          <div key={item._id} className="bg-card border border-border rounded-xl p-6">
             <div className="flex items-start justify-between">
               <div className="flex gap-4">
                 <div className="text-2xl font-black text-primary">{item.year}</div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                  <p className="text-gray-400 mt-2">{item.description}</p>
+                  <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
+                  <p className="text-muted mt-2">{item.description}</p>
                   {item.achievements?.length > 0 && (
                     <ul className="mt-4 space-y-1">
                       {item.achievements.map((ach: string, i: number) => (
-                        <li key={i} className="text-sm text-gray-500">• {ach}</li>
+                        <li key={i} className="text-sm text-muted">• {ach}</li>
                       ))}
                     </ul>
                   )}

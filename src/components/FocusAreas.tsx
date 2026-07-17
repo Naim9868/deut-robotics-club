@@ -126,12 +126,12 @@ const FocusAreas: React.FC = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title sm:text-left">
               Our Focus
             </h2>
-            <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm lg:text-base max-w-xl mx-auto sm:mx-0 text-center sm:text-left uppercase tracking-[0.1em] sm:tracking-[0.2em]">
+            <p className="text-muted text-[10px] sm:text-xs md:text-sm lg:text-base max-w-xl mx-auto sm:mx-0 text-center sm:text-left uppercase tracking-[0.1em] sm:tracking-[0.2em]">
               We are actively developing and researching these core robotic systems to solve real-world problems.
             </p>
           </div>
           <Link href={displayAreas.length > 0 && displayAreas[0].slug ? `/focus-areas` : '#'} className="flex-shrink-0">
-            <button className="group inline-flex items-center gap-2 px-4 py-2 bg-transparent border border-white/10 text-gray-400 font-bold uppercase tracking-wider text-[10px] sm:text-xs rounded-full hover:border-primary/50 hover:text-primary transition-all duration-300">
+            <button className="group inline-flex items-center gap-2 px-4 py-2 bg-transparent border border-border text-muted font-bold uppercase tracking-wider text-[10px] sm:text-xs rounded-full hover:border-primary/50 hover:text-primary transition-all duration-300">
               See All
               <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
@@ -146,7 +146,7 @@ const FocusAreas: React.FC = () => {
           <ScrollReveal key={area._id || index} animation="up" delay={index * 100}>
             <Link href={area.slug ? `/focus-areas/${area.slug}` : '#'}>
             <div 
-              className="group p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-white/[0.06] sm:border-white/5 rounded-xl sm:hover:border-primary/50 transition-all duration-500 sm:hover:-translate-y-1 shadow-[0_1px_3px_rgba(0,0,0,0.3)] sm:shadow-none h-full flex flex-col cursor-pointer"
+              className="group p-4 sm:p-5 md:p-6 lg:p-8 bg-card border border-border sm:border-border rounded-xl sm:hover:border-primary/50 transition-all duration-500 sm:hover:-translate-y-1 shadow-[0_1px_3px_rgba(0,0,0,0.3)] sm:shadow-none h-full flex flex-col cursor-pointer"
             >
               <div 
                 className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4 lg:mb-6 transition-all transform sm:group-hover:scale-110 sm:group-hover:rotate-6"
@@ -160,11 +160,11 @@ const FocusAreas: React.FC = () => {
                 />
               </div>
               <h3 
-                className="text-xs sm:text-sm md:text-base lg:text-xl font-bold uppercase mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 text-white sm:group-hover:text-primary transition-colors line-clamp-2"
+                className="text-xs sm:text-sm md:text-base lg:text-xl font-bold uppercase mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 text-foreground sm:group-hover:text-primary transition-colors line-clamp-2"
               >
                 {area.title}
               </h3>
-              <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm leading-relaxed flex-1 line-clamp-3 sm:line-clamp-3 md:line-clamp-4">
+              <p className="text-muted text-[10px] sm:text-xs md:text-sm leading-relaxed flex-1 line-clamp-3 sm:line-clamp-3 md:line-clamp-4">
                 {area.description}
               </p>
             </div>
@@ -174,7 +174,7 @@ const FocusAreas: React.FC = () => {
       </div>
       
       {displayAreas.length === 0 && (
-        <div className="text-center text-gray-400 text-sm sm:text-base py-8 sm:py-12">
+        <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
           No focus areas available.
         </div>
       )}

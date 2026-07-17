@@ -367,10 +367,10 @@ export default function BlogFormPage() {
     <div className="max-w-4xl mx-auto space-y-8 pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black text-white mb-2">
+          <h1 className="text-4xl font-black text-foreground mb-2">
             {isNew ? 'Create New Post' : 'Edit Post'}
           </h1>
-          <p className="text-gray-500 text-sm uppercase tracking-wider">
+          <p className="text-muted text-sm uppercase tracking-wider">
             {isNew ? 'Add a new blog post' : `Editing: ${watch('title') || id}`}
           </p>
         </div>
@@ -380,7 +380,7 @@ export default function BlogFormPage() {
             href={`/blog/${watch('slug')}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center gap-2"
+            className="px-4 py-2 bg-background/5 text-muted rounded-lg hover:bg-background/10 transition-colors text-sm flex items-center gap-2"
           >
             <span>🔍</span> Preview
           </a>
@@ -389,26 +389,26 @@ export default function BlogFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* Basic Information */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>📝</span> Basic Information
           </h2>
 
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Title <span className="text-red-500">*</span>
             </label>
             <div className="flex gap-2">
               <input
                 {...register('title', { required: 'Title is required' })}
-                className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="Enter post title"
                 onBlur={generateSlug}
               />
               <button
                 type="button"
                 onClick={generateSlug}
-                className="px-4 py-3 bg-white/5 text-gray-400 rounded-lg hover:bg-white/10 transition-colors text-sm"
+                className="px-4 py-3 bg-background/5 text-muted rounded-lg hover:bg-background/10 transition-colors text-sm"
               >
                 Generate Slug
               </button>
@@ -419,14 +419,14 @@ export default function BlogFormPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Slug <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center gap-2">
-              <span className="text-gray-600 text-sm">/blog/</span>
+              <span className="text-muted text-sm">/blog/</span>
               <input
                 {...register('slug', { required: 'Slug is required' })}
-                className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="my-awesome-post"
               />
             </div>
@@ -434,12 +434,12 @@ export default function BlogFormPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Category <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('category', { required: 'Category is required' })}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
               >
                 <option value="Robotics">Robotics</option>
                 <option value="Artificial Intelligence">Artificial Intelligence</option>
@@ -451,13 +451,13 @@ export default function BlogFormPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Read Time (minutes)
               </label>
               <input
                 type="number"
                 {...register('readTime')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 min="1"
               />
             </div>
@@ -465,19 +465,19 @@ export default function BlogFormPage() {
         </div>
 
         {/* Author Information - NO 404 ERRORS */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>👤</span> Author Information
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Author Name <span className="text-red-500">*</span>
               </label>
               <input
                 {...register('author', { required: 'Author name is required' })}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="John Doe"
                 onChange={(e) => {
                   // Auto-generate avatar when name changes and no custom image
@@ -491,21 +491,21 @@ export default function BlogFormPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Author Title
               </label>
               <input
                 {...register('authorTitle')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="Lead Developer"
               />
             </div>
           </div>
 
           {/* Author Image Section - NO 404s */}
-          <div className="pt-4 border-t border-white/5">
+          <div className="pt-4 border-t border-border">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-wider">
+              <label className="text-xs font-black text-muted uppercase tracking-wider">
                 Author Image
               </label>
               <div className="flex gap-2">
@@ -526,9 +526,9 @@ export default function BlogFormPage() {
                   placeholder="https://example.com/author-image.jpg"
                   onChange={handleAuthorImageLinkChange}
                   value={currentAuthorImageUrl.includes('ui-avatars.com') ? '' : currentAuthorImageUrl}
-                  className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted mt-1">
                   Enter a URL for the author image
                 </p>
               </div>
@@ -540,14 +540,14 @@ export default function BlogFormPage() {
                   defaultValue={!currentAuthorImageUrl.includes('ui-avatars.com') ? currentAuthorImageUrl : ''}
                   folder="authors"
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-muted mt-2">
                   Upload an image or use the auto-generated avatar
                 </p>
               </div>
             )}
 
             {/* Author Image Preview - ALWAYS WORKS */}
-            <div className="mt-4 flex items-center gap-3 p-3 bg-[#121212] rounded-lg">
+            <div className="mt-4 flex items-center gap-3 p-3 bg-input-bg rounded-lg">
               <img 
                 src={currentAuthorImageUrl || getAvatarUrl(watch('author') || 'User')}
                 alt="Author preview" 
@@ -558,8 +558,8 @@ export default function BlogFormPage() {
                 }}
               />
               <div className="flex-1">
-                <p className="text-xs text-gray-400">Current author image</p>
-                <p className="text-xs text-gray-600 truncate">
+                <p className="text-xs text-muted">Current author image</p>
+                <p className="text-xs text-muted truncate">
                   {currentAuthorImageUrl.includes('ui-avatars.com') ? 'Auto-generated avatar' : 'Custom image'}
                 </p>
               </div>
@@ -568,13 +568,13 @@ export default function BlogFormPage() {
         </div>
 
         {/* Featured Image */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>🖼️</span> Featured Image
           </h2>
 
           <div className="flex items-center justify-between mb-4">
-            <label className="text-xs font-black text-gray-400 uppercase tracking-wider">
+            <label className="text-xs font-black text-muted uppercase tracking-wider">
               Image Source
             </label>
             <div className="flex gap-2">
@@ -595,19 +595,19 @@ export default function BlogFormPage() {
                 placeholder="https://example.com/featured-image.jpg"
                 onChange={handleFeaturedImageLinkChange}
                 value={currentImageUrl}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Enter a URL for the featured image
               </p>
               
               {currentImageUrl && (
                 <div className="mt-4">
-                  <p className="text-xs text-gray-400 mb-2">Preview:</p>
+                  <p className="text-xs text-muted mb-2">Preview:</p>
                   <img 
                     src={currentImageUrl} 
                     alt="Featured preview" 
-                    className="w-full h-48 object-cover rounded-lg border border-white/10"
+                    className="w-full h-48 object-cover rounded-lg border border-border"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x400?text=Invalid+Image+URL';
                     }}
@@ -630,7 +630,7 @@ export default function BlogFormPage() {
                 defaultValue={currentImageUrl}
                 folder="blog"
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-muted mt-2">
                 Upload an image
               </p>
             </div>
@@ -638,12 +638,12 @@ export default function BlogFormPage() {
           
           {currentImageUrl && (
             <div className="mt-4">
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Image Alt Text
               </label>
               <input
                 {...register('image.alt')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="Describe the image"
               />
             </div>
@@ -651,29 +651,29 @@ export default function BlogFormPage() {
         </div>
 
         {/* Content */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>📄</span> Content
           </h2>
 
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Excerpt <span className="text-red-500">*</span>
             </label>
             <textarea
               {...register('excerpt', { required: 'Excerpt is required' })}
               rows={3}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
               placeholder="Brief summary of the post..."
               maxLength={500}
             />
-            <p className="mt-1 text-xs text-gray-500 text-right">
+            <p className="mt-1 text-xs text-muted text-right">
               {watch('excerpt')?.length || 0}/500
             </p>
           </div>
 
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Content <span className="text-red-500">*</span>
             </label>
             <RichTextEditor
@@ -685,7 +685,7 @@ export default function BlogFormPage() {
 
           {/* Tags */}
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Tags
             </label>
             <div className="flex gap-2 mb-2">
@@ -693,7 +693,7 @@ export default function BlogFormPage() {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                className="flex-1 bg-[#121212] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary transition-all"
+                className="flex-1 bg-input-bg border border-border rounded-lg px-4 py-2 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="Add a tag"
               />
               <button
@@ -708,13 +708,13 @@ export default function BlogFormPage() {
               {tags.map(tag => (
                 <span
                   key={tag}
-                  className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs group"
+                  className="inline-flex items-center px-3 py-1 bg-background/5 rounded-full text-xs group"
                 >
                   #{tag}
                   <button
                     type="button"
                     onClick={() => removeTag(tag)}
-                    className="ml-2 text-gray-500 hover:text-red-500 transition-colors"
+                    className="ml-2 text-muted hover:text-red-500 transition-colors"
                   >
                     ×
                   </button>
@@ -725,91 +725,91 @@ export default function BlogFormPage() {
         </div>
 
         {/* SEO & Metadata */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>🔍</span> SEO & Metadata
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Meta Title
               </label>
               <input
                 {...register('metaTitle')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 placeholder="SEO title"
                 maxLength={60}
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted">
                 {watch('metaTitle')?.length || 0}/60
               </p>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Order
               </label>
               <input
                 type="number"
                 {...register('order')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
                 min="0"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
               Meta Description
             </label>
             <textarea
               {...register('metaDescription')}
               rows={2}
-              className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
               placeholder="SEO description"
               maxLength={160}
             />
-            <p className="mt-1 text-xs text-gray-500 text-right">
+            <p className="mt-1 text-xs text-muted text-right">
               {watch('metaDescription')?.length || 0}/160
             </p>
           </div>
         </div>
 
         {/* Dates */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>📅</span> Dates
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Publish Date
               </label>
               <input
                 type="date"
                 {...register('publishedAt')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-400 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Original Date
               </label>
               <input
                 type="date"
                 {...register('date')}
-                className="w-full bg-[#121212] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
               />
             </div>
           </div>
         </div>
 
         {/* Status */}
-        <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 space-y-6">
-          <h2 className="text-xl font-black text-white mb-4 flex items-center gap-2">
+        <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-foreground mb-4 flex items-center gap-2">
             <span>⚙️</span> Status
           </h2>
 
@@ -818,10 +818,10 @@ export default function BlogFormPage() {
               <input
                 type="checkbox"
                 {...register('featured')}
-                className="w-4 h-4 rounded border-white/10 bg-[#121212] text-primary"
+                className="w-4 h-4 rounded border-border bg-input-bg text-primary"
               />
               <div>
-                <span className="text-sm text-gray-300 font-medium">Featured Post</span>
+                <span className="text-sm text-muted font-medium">Featured Post</span>
               </div>
             </label>
 
@@ -829,10 +829,10 @@ export default function BlogFormPage() {
               <input
                 type="checkbox"
                 {...register('isActive')}
-                className="w-4 h-4 rounded border-white/10 bg-[#121212] text-primary"
+                className="w-4 h-4 rounded border-border bg-input-bg text-primary"
               />
               <div>
-                <span className="text-sm text-gray-300 font-medium">Active</span>
+                <span className="text-sm text-muted font-medium">Active</span>
               </div>
             </label>
 
@@ -840,21 +840,21 @@ export default function BlogFormPage() {
               <input
                 type="checkbox"
                 {...register('isPublished')}
-                className="w-4 h-4 rounded border-white/10 bg-[#121212] text-primary"
+                className="w-4 h-4 rounded border-border bg-input-bg text-primary"
               />
               <div>
-                <span className="text-sm text-gray-300 font-medium">Published</span>
+                <span className="text-sm text-muted font-medium">Published</span>
               </div>
             </label>
           </div>
         </div>
 
         {/* Form Actions */}
-        <div className="flex items-center justify-end space-x-4 sticky bottom-8 bg-dark/80 backdrop-blur-lg p-4 rounded-2xl border border-white/5">
+        <div className="flex items-center justify-end space-x-4 sticky bottom-8 bg-background/80 backdrop-blur-lg p-4 rounded-2xl border border-border">
           <button
             type="button"
             onClick={() => router.push('/admin/blog')}
-            className="px-6 py-3 border border-white/10 text-gray-400 font-black uppercase tracking-wider rounded-lg hover:bg-white/5 transition-all"
+            className="px-6 py-3 border border-border text-muted font-black uppercase tracking-wider rounded-lg hover:bg-background/5 transition-all"
             disabled={saving}
           >
             Cancel
@@ -862,7 +862,7 @@ export default function BlogFormPage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-8 py-3 bg-primary text-white font-black uppercase tracking-wider rounded-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-[160px]"
+            className="px-8 py-3 bg-primary text-foreground font-black uppercase tracking-wider rounded-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-[160px]"
           >
             {saving ? (
               <span className="flex items-center justify-center gap-2">

@@ -76,7 +76,6 @@ const About: React.FC = () => {
   const imageUrl = aboutData.story?.image?.url || aboutData.mission?.image?.url || aboutData.image?.url || '';
   const imageAlt = aboutData.story?.image?.alt || aboutData.mission?.image?.alt || aboutData.image?.alt || 'About DRC';
 
-  // Build a combined text string to measure
   const plainText = [
     description,
     longDescription ? longDescription.replace(/<[^>]*>/g, ' ') : '',
@@ -90,19 +89,16 @@ const About: React.FC = () => {
   return (
     <div className="py-12 sm:py-16 md:py-20 lg:py-24 container mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center">
-        {/* Text Content */}
         <ScrollReveal animation="left" className="order-2 lg:order-1">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase mb-4 sm:mb-6 md:mb-8 relative inline-block section-title text-center sm:text-left">
             {title}
           </h2>
 
-          <div className={`space-y-4 text-gray-400 text-sm sm:text-base leading-relaxed ${!expanded ? 'max-h-[240px] sm:max-h-[280px] md:max-h-[320px] overflow-hidden' : ''}`}>
-            {/* Description */}
+          <div className={`space-y-4 text-muted text-sm sm:text-base leading-relaxed ${!expanded ? 'max-h-[240px] sm:max-h-[280px] md:max-h-[320px] overflow-hidden' : ''}`}>
             {description && (
               <p className="text-center sm:text-left">{description}</p>
             )}
 
-            {/* Long description */}
             {longDescription && (
               <div
                 className="text-center sm:text-left"
@@ -110,7 +106,6 @@ const About: React.FC = () => {
               />
             )}
 
-            {/* Story content */}
             {hasStory && storyContent && (
               <div
                 className="text-center sm:text-left"
@@ -118,7 +113,6 @@ const About: React.FC = () => {
               />
             )}
 
-            {/* Legacy paragraphs */}
             {!hasIntroduction && !hasStory && paragraphs.length > 0 && paragraphs.map((paragraph, index) => (
               <div key={index} className="text-center sm:text-left">
                 {paragraph.includes('<strong>') ? (
@@ -129,17 +123,15 @@ const About: React.FC = () => {
               </div>
             ))}
 
-            {/* Fallback */}
             {!description && paragraphs.length === 0 && !hasStory && (
               <p className="text-center sm:text-left">
-                The <strong className="text-white">DUET Robotics Club (DRC)</strong> is the premier student-led organization at
+                The <strong className="text-foreground">DUET Robotics Club (DRC)</strong> is the premier student-led organization at
                 Dhaka University of Engineering & Technology, dedicated to fostering an ecosystem of
                 robotics, automation, and AI.
               </p>
             )}
           </div>
 
-          {/* Read more / less + Button */}
           <div className="pt-4 sm:pt-5 md:pt-6 text-center sm:text-left">
             {needsTruncation && (
               <button
@@ -151,7 +143,7 @@ const About: React.FC = () => {
             )}
             <div>
               <a href={buttonLink}>
-                <button className="px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 border border-white/20 text-white font-bold uppercase text-xs sm:text-sm rounded hover:bg-white hover:text-dark transition-all transform hover:scale-105 active:scale-95 w-full sm:w-auto">
+                <button className="px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 border border-border text-foreground font-bold uppercase text-xs sm:text-sm rounded hover:bg-foreground hover:text-background transition-all transform hover:scale-105 active:scale-95 w-full sm:w-auto">
                   {buttonText}
                 </button>
               </a>
@@ -159,14 +151,13 @@ const About: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Image */}
         {imageUrl && (
           <ScrollReveal animation="right" className="order-1 lg:order-2 relative">
             <div className="absolute -inset-2 sm:-inset-4 bg-primary/20 blur-2xl sm:blur-3xl -z-10 rounded-full animate-pulse" />
             <img
               src={imageUrl}
               alt={imageAlt}
-              className="rounded-xl shadow-2xl border border-white/10 w-full object-cover transition-all duration-700 hover:scale-[1.02] aspect-[4/3] sm:aspect-auto"
+              className="rounded-xl shadow-2xl border border-border w-full object-cover transition-all duration-700 hover:scale-[1.02] aspect-[4/3] sm:aspect-auto"
             />
           </ScrollReveal>
         )}
