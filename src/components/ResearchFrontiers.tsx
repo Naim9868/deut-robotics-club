@@ -80,46 +80,62 @@ const ResearchFrontiers: React.FC = () => {
           {researchItems.map((item, i) => (
             <ScrollReveal key={item._id || i} animation="up" delay={i * 100}>
               <Link href={`/research/${item.slug}`}>
-                <div className="group relative shadow-amber-50 p-2 sm:p-5 md:p-6 lg:p-8 h-auto min-h-[280px] sm:min-h-[300px] md:min-h-[320px] lg:min-h-[340px] glass hover:bg-primary/5 transition-all duration-500 border-l-2 border-l-primary/50 sm:border-l-white/10 hover:border-l-primary rounded-xl hover:shadow-[4px_4px_15px_rgba(230,57,70,0.05)] hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer">
-                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 text-primary/20 sm:text-white/8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black group-hover:text-primary/30 transition-colors">
-                    0{i + 1}
-                  </div>
-
-                  <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                <div className="group relative shadow-amber-50 p-2 sm:p-5 md:p-6 lg:p-8 h-auto min-h-[280px] sm:min-h-[300px] md:min-h-[320px] lg:min-h-[340px] glass hover:bg-primary/5 transition-all duration-500 border-l-2 border-l-primary/50 sm:border-l-white/10 hover:border-l-primary rounded-xl hover:shadow-[4px_4px_15px_rgba(230,57,70,0.05)] hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer flex flex-col shadow-[0_1px_3px_rgba(0,0,0,0.3)] sm:shadow-none">
+                  
+                  {/* Header Section - Status and Number */}
+                  <div className="flex justify-between items-start mb-3 sm:mb-4 md:mb-5">
                     <span className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[6px] sm:text-[7px] md:text-[8px] font-black uppercase tracking-wider rounded-full border ${getStatusColor(item.status)}`}>
                       {item.status.replace(/_/g, ' ')}
                     </span>
+                    <span className="text-primary/20 sm:text-white/8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black group-hover:text-primary/30 transition-colors">
+                      0{i + 1}
+                    </span>
                   </div>
 
-                  <div className="relative z-10 mt-6 sm:mt-7 md:mt-8">
-                    <span className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest block mb-2 sm:mb-3 md:mb-4 line-clamp-1">
+                  {/* Main Content Section */}
+                  <div className="flex-1 relative z-10">
+                    {/* Research Area */}
+                    <span className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest block mb-1.5 sm:mb-2 md:mb-3 line-clamp-1">
                       {item.researchArea || item.category || 'Research'}
                     </span>
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold uppercase text-white mb-2 sm:mb-3 md:mb-4 lg:mb-6 group-hover:translate-x-2 transition-transform line-clamp-2 sm:line-clamp-2 md:line-clamp-3">
+
+                    {/* Title */}
+                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold uppercase text-white mb-2 sm:mb-3 md:mb-4 group-hover:translate-x-2 transition-transform line-clamp-2 sm:line-clamp-2 md:line-clamp-3">
                       {item.title}
                     </h3>
-                    <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-3 sm:line-clamp-3 md:line-clamp-4">
+
+                    {/* Description */}
+                    <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm leading-relaxed group-hover:text-gray-300 transition-colors line-clamp-3 sm:line-clamp-3 md:line-clamp-4 mb-3 sm:mb-4">
                       {item.shortDescription || ''}
                     </p>
 
+                    {/* Researchers Section */}
                     {item.researchers && item.researchers.length > 0 && (
-                      <div className="mt-3 sm:mt-4">
-                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">Researchers</p>
+                      <div className="mb-2 sm:mb-2.5">
+                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">
+                          Researchers
+                        </p>
                         <p className="text-[8px] sm:text-[10px] text-gray-400 line-clamp-2">
                           {item.researchers.map(r => r.fullName).join(' • ')}
                         </p>
                       </div>
                     )}
 
+                    {/* Publications Section */}
                     {item.publications && item.publications.length > 0 && (
-                      <div className="mt-2 sm:mt-2.5">
-                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">Publications</p>
-                        <p className="text-[8px] sm:text-[8px] text-primary/90">{item.publications.length} paper{item.publications.length > 1 ? 's' : ''}</p>
+                      <div>
+                        <p className="text-[7px] sm:text-[8px] text-gray-300 uppercase tracking-wider mb-0.5 sm:mb-1">
+                          Publications
+                        </p>
+                        <p className="text-[8px] sm:text-[9px] text-primary/90 font-medium">
+                          {item.publications.length} paper{item.publications.length > 1 ? 's' : ''}
+                        </p>
                       </div>
                     )}
                   </div>
 
-                  <div className="absolute bottom-8 sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-white/20 group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all" />
+                  {/* Bottom Accent Line */}
+                  <div className="absolute bottom-3 sm:bottom-5 md:bottom-6 lg:bottom-8 right-4 sm:right-5 md:right-6 lg:right-8 w-6 sm:w-7 md:w-8 lg:w-10 h-[1px] bg-white/20 group-hover:w-12 sm:group-hover:w-14 md:group-hover:w-16 lg:group-hover:w-20 group-hover:bg-primary transition-all" />
                 </div>
               </Link>
             </ScrollReveal>

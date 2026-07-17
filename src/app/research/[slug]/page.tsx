@@ -195,15 +195,15 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
       <Navbar activeSection={activeSection} />
       <div className="min-h-screen bg-[#0a0a0a]">
         {/* ─── Hero Section ─────────────────────────────── */}
-        <section className="relative h-[50vh] min-h-[350px]">
+        <section className="relative h-screen">
           {allImages[activeImage]?.url && (
             <img
               src={allImages[activeImage].url}
               alt={allImages[activeImage].alt || research.title}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-[#0a0a0a]/20" />
 
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="max-w-7xl mx-auto">
@@ -260,6 +260,13 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
                 <ScrollReveal>
                   <div>
                     <h2 className="text-xl font-black text-white mb-4">Gallery</h2>
+                    <div className="rounded-xl overflow-hidden border border-white/5 mb-3 bg-black flex items-center justify-center">
+                      <img
+                        src={allImages[activeImage].url}
+                        alt={allImages[activeImage].alt || research.title}
+                        className="w-full max-h-[500px] object-contain"
+                      />
+                    </div>
                     <div className="flex gap-2 overflow-x-auto pb-2">
                       {allImages.map((img, i) => (
                         <button
@@ -729,7 +736,7 @@ export default function ResearchDetailPage({ params }: { params: Promise<{ slug:
           <section className="px-4 pb-20">
             <div className="max-w-7xl mx-auto">
               <h2 className="text-2xl font-black text-white mb-6">Related Research</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {related.map((item) => (
                   <Link key={item._id} href={`/research/${item.slug}`}>
                     <div className="group bg-[#111] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all">

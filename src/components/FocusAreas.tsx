@@ -130,7 +130,7 @@ const FocusAreas: React.FC = () => {
               We are actively developing and researching these core robotic systems to solve real-world problems.
             </p>
           </div>
-          <Link href={displayAreas.length > 0 && displayAreas[0].slug ? `/focus-areas/${displayAreas[0].slug}` : '#'} className="flex-shrink-0">
+          <Link href={displayAreas.length > 0 && displayAreas[0].slug ? `/focus-areas` : '#'} className="flex-shrink-0">
             <button className="group inline-flex items-center gap-2 px-4 py-2 bg-transparent border border-white/10 text-gray-400 font-bold uppercase tracking-wider text-[10px] sm:text-xs rounded-full hover:border-primary/50 hover:text-primary transition-all duration-300">
               See All
               <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -166,8 +166,8 @@ export default function FocusAreaDetailPage({ params }: { params: Promise<{ slug
 
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-7xl mx-auto">
-            <Link href="/" className="text-gray-400 hover:text-white text-sm mb-4 inline-block">
-              &larr; Back to Home
+            <Link href={slug ? `/focus-areas` : '/'} className="text-gray-400 hover:text-white text-sm mb-4 inline-block">
+              &larr; Back 
             </Link>
 
             <div className="flex flex-wrap items-center gap-3 mb-3">

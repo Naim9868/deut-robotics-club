@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import FocusAreaIcon from '@/components/FocusAreaIcon';
+import { LUCIDE_CATEGORIES } from '@/components/FocusAreaIcon';
 
 // ─── Types ────────────────────────────────────────────────────
 
@@ -22,6 +24,7 @@ interface ResearcherForm {
   googleScholar: string;
   researchGate: string;
   role: string;
+  profilePhoto: { url: string; alt: string };
 }
 
 interface FacultyForm {
@@ -29,6 +32,8 @@ interface FacultyForm {
   role: string;
   department: string;
   email: string;
+  phone: string;
+  profilePhoto: { url: string; alt: string };
 }
 
 interface TechForm {
@@ -48,9 +53,14 @@ interface PublicationForm {
   authors: string;
   journal: string;
   conference: string;
+  publisher: string;
+  volume: string;
+  issue: string;
+  pages: string;
   year: number | undefined;
   doi: string;
   url: string;
+  citationCount: number;
   type: string;
 }
 
@@ -64,6 +74,7 @@ interface AwardForm {
   awardName: string;
   organizer: string;
   year: number | undefined;
+  certificate: string;
 }
 
 interface ResearchForm {
@@ -97,7 +108,10 @@ interface ResearchForm {
   docGitlabRepo: string;
   docResearchPaper: string;
   docPresentation: string;
+  docPoster: string;
   docReport: string;
+  docDataset: string;
+  docDocumentation: string;
   docLiveDemo: string;
   docYoutubePresentation: string;
   seoTitle: string;
@@ -168,12 +182,44 @@ export default function ResearchPage() {
   const [awards, setAwards] = useState<AwardForm[]>([]);
   const [galleryImages, setGalleryImages] = useState<{ url: string; alt: string }[]>([]);
 
+  // Image link/upload toggle
+  const [useImageLink, setUseImageLink] = useState(false);
+  const [imageTarget, setImageTarget] = useState<'cover' | 'gallery'>('cover');
+  const [galleryLinkUrl, setGalleryLinkUrl] = useState('');
+
+  // Icon picker
+  const [showIconPicker, setShowIconPicker] = useState(false);
+  const [iconPickerSearch, setIconPickerSearch] = useState('');
+  const [techIconTarget, setTechIconTarget] = useState<number | null>(null);
+  const [pendingTechIcon, setPendingTechIcon] = useState('');
+
   // Inline form inputs
   const [researcherName, setResearcherName] = useState('');
   const [researcherRole, setResearcherRole] = useState('Student Researcher');
+  const [researcherDesig, setResearcherDesig] = useState('');
+  const [researcherDept, setResearcherDept] = useState('');
+  const [researcherSession, setResearcherSession] = useState('');
+  const [researcherStudentId, setResearcherStudentId] = useState('');
+  const [researcherRoll, setResearcherRoll] = useState('');
+  const [researcherEmail, setResearcherEmail] = useState('');
+  const [researcherPhone, setResearcherPhone] = useState('');
+  const [researcherLinkedin, setResearcherLinkedin] = useState('');
+  const [researcherGithub, setResearcherGithub] = useState('');
+  const [researcherOrcid, setResearcherOrcid] = useState('');
+  const [researcherScholar, setResearcherScholar] = useState('');
+  const [researcherResearchGate, setResearcherResearchGate] = useState('');
+  const [researcherPhotoUrl, setResearcherPhotoUrl] = useState('');
+  const [researcherPhotoAlt, setResearcherPhotoAlt] = useState('');
+  const [showResearcherMore, setShowResearcherMore] = useState(false);
+
   const [facultyName, setFacultyName] = useState('');
   const [facultyRole, setFacultyRole] = useState('Supervisor');
   const [facultyDept, setFacultyDept] = useState('');
+  const [facultyEmail, setFacultyEmail] = useState('');
+  const [facultyPhone, setFacultyPhone] = useState('');
+  const [facultyPhotoUrl, setFacultyPhotoUrl] = useState('');
+  const [facultyPhotoAlt, setFacultyPhotoAlt] = useState('');
+  const [showFacultyMore, setShowFacultyMore] = useState(false);
   const [techName, setTechName] = useState('');
   const [techCategory, setTechCategory] = useState('');
   const [compName, setCompName] = useState('');
@@ -182,8 +228,13 @@ export default function ResearchPage() {
   const [pubTitle, setPubTitle] = useState('');
   const [pubAuthors, setPubAuthors] = useState('');
   const [pubJournal, setPubJournal] = useState('');
+  const [pubPublisher, setPubPublisher] = useState('');
+  const [pubVolume, setPubVolume] = useState('');
+  const [pubIssue, setPubIssue] = useState('');
+  const [pubPages, setPubPages] = useState('');
   const [pubYear, setPubYear] = useState<number | undefined>(undefined);
   const [pubDoi, setPubDoi] = useState('');
+  const [pubUrl, setPubUrl] = useState('');
   const [pubType, setPubType] = useState('journal_paper');
   const [datasetName, setDatasetName] = useState('');
   const [datasetSource, setDatasetSource] = useState('');
@@ -191,6 +242,7 @@ export default function ResearchPage() {
   const [awardName, setAwardName] = useState('');
   const [awardOrganizer, setAwardOrganizer] = useState('');
   const [awardYear, setAwardYear] = useState<number | undefined>(undefined);
+  const [awardCert, setAwardCert] = useState('');
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ResearchForm>({
     defaultValues: {
@@ -203,7 +255,7 @@ export default function ResearchPage() {
       startDate: '', expectedCompletion: '',
       funded: false, fundingAgency: '', grantNumber: '', projectBudget: '',
       docGithubRepo: '', docGitlabRepo: '', docResearchPaper: '', docPresentation: '',
-      docReport: '', docLiveDemo: '', docYoutubePresentation: '',
+      docPoster: '', docReport: '', docDataset: '', docDocumentation: '', docLiveDemo: '', docYoutubePresentation: '',
       seoTitle: '', seoDescription: '', seoKeywords: '',
       featured: false, showOnHomepage: false, displayOrder: 0, isActive: true,
     }
@@ -221,8 +273,14 @@ export default function ResearchPage() {
   };
 
   const handleImageUpload = (url: string, publicId?: string) => {
-    setValue('coverImage', { url, alt: watch('title') || 'Research image', publicId });
-    setCurrentImageUrl(url);
+    if (imageTarget === 'cover') {
+      setValue('coverImage', { url, alt: watch('title') || 'Research image', publicId });
+      setCurrentImageUrl(url);
+    } else if (imageTarget === 'gallery') {
+      const newImages = [...galleryImages, { url, alt: '' }];
+      setGalleryImages(newImages);
+    }
+    setUseImageLink(false);
   };
 
   // ─── Array helpers ──────────────────────────────────────────
@@ -230,27 +288,42 @@ export default function ResearchPage() {
   const addResearcher = () => {
     if (!researcherName.trim()) return;
     setResearchers([...researchers, {
-      fullName: researcherName.trim(), designation: '', department: '', session: '',
-      studentId: '', roll: '', email: '', phone: '', linkedin: '', github: '',
-      orcid: '', googleScholar: '', researchGate: '', role: researcherRole,
+      fullName: researcherName.trim(), designation: researcherDesig.trim(), department: researcherDept.trim(),
+      session: researcherSession.trim(), studentId: researcherStudentId.trim(), roll: researcherRoll.trim(),
+      email: researcherEmail.trim(), phone: researcherPhone.trim(),
+      linkedin: researcherLinkedin.trim(), github: researcherGithub.trim(),
+      orcid: researcherOrcid.trim(), googleScholar: researcherScholar.trim(),
+      researchGate: researcherResearchGate.trim(), role: researcherRole,
+      profilePhoto: { url: researcherPhotoUrl.trim(), alt: researcherPhotoAlt.trim() },
     }]);
     setResearcherName(''); setResearcherRole('Student Researcher');
+    setResearcherDesig(''); setResearcherDept(''); setResearcherSession('');
+    setResearcherStudentId(''); setResearcherRoll(''); setResearcherEmail('');
+    setResearcherPhone(''); setResearcherLinkedin(''); setResearcherGithub('');
+    setResearcherOrcid(''); setResearcherScholar(''); setResearcherResearchGate('');
+    setResearcherPhotoUrl(''); setResearcherPhotoAlt('');
   };
 
   const removeResearcher = (i: number) => setResearchers(researchers.filter((_, idx) => idx !== i));
 
   const addFaculty = () => {
     if (!facultyName.trim()) return;
-    setFaculty([...faculty, { name: facultyName.trim(), role: facultyRole, department: facultyDept.trim(), email: '' }]);
+    setFaculty([...faculty, {
+      name: facultyName.trim(), role: facultyRole, department: facultyDept.trim(),
+      email: facultyEmail.trim(), phone: facultyPhone.trim(),
+      profilePhoto: { url: facultyPhotoUrl.trim(), alt: facultyPhotoAlt.trim() },
+    }]);
     setFacultyName(''); setFacultyRole('Supervisor'); setFacultyDept('');
+    setFacultyEmail(''); setFacultyPhone('');
+    setFacultyPhotoUrl(''); setFacultyPhotoAlt('');
   };
 
   const removeFaculty = (i: number) => setFaculty(faculty.filter((_, idx) => idx !== i));
 
   const addTechnology = () => {
     if (!techName.trim()) return;
-    setTechnologies([...technologies, { name: techName.trim(), icon: '', category: techCategory.trim() }]);
-    setTechName(''); setTechCategory('');
+    setTechnologies([...technologies, { name: techName.trim(), icon: pendingTechIcon, category: techCategory.trim() }]);
+    setTechName(''); setTechCategory(''); setPendingTechIcon('');
   };
 
   const removeTechnology = (i: number) => setTechnologies(technologies.filter((_, idx) => idx !== i));
@@ -267,9 +340,13 @@ export default function ResearchPage() {
     if (!pubTitle.trim()) return;
     setPublications([...publications, {
       title: pubTitle.trim(), authors: pubAuthors.trim(), journal: pubJournal.trim(),
-      conference: '', year: pubYear, doi: pubDoi.trim(), url: '', type: pubType,
+      conference: '', publisher: pubPublisher.trim(), volume: pubVolume.trim(),
+      issue: pubIssue.trim(), pages: pubPages.trim(),
+      year: pubYear, doi: pubDoi.trim(), url: pubUrl.trim(), citationCount: 0, type: pubType,
     }]);
-    setPubTitle(''); setPubAuthors(''); setPubJournal(''); setPubYear(undefined); setPubDoi(''); setPubType('journal_paper');
+    setPubTitle(''); setPubAuthors(''); setPubJournal(''); setPubPublisher('');
+    setPubVolume(''); setPubIssue(''); setPubPages('');
+    setPubYear(undefined); setPubDoi(''); setPubUrl(''); setPubType('journal_paper');
   };
 
   const removePublication = (i: number) => setPublications(publications.filter((_, idx) => idx !== i));
@@ -284,19 +361,11 @@ export default function ResearchPage() {
 
   const addAward = () => {
     if (!awardName.trim()) return;
-    setAwards([...awards, { awardName: awardName.trim(), organizer: awardOrganizer.trim(), year: awardYear }]);
-    setAwardName(''); setAwardOrganizer(''); setAwardYear(undefined);
+    setAwards([...awards, { awardName: awardName.trim(), organizer: awardOrganizer.trim(), year: awardYear, certificate: awardCert.trim() }]);
+    setAwardName(''); setAwardOrganizer(''); setAwardYear(undefined); setAwardCert('');
   };
 
   const removeAward = (i: number) => setAwards(awards.filter((_, idx) => idx !== i));
-
-  const addGalleryImage = () => setGalleryImages([...galleryImages, { url: '', alt: '' }]);
-  const updateGalleryImage = (i: number, field: 'url' | 'alt', value: string) => {
-    const updated = [...galleryImages];
-    updated[i] = { ...updated[i], [field]: value };
-    setGalleryImages(updated);
-  };
-  const removeGalleryImage = (i: number) => setGalleryImages(galleryImages.filter((_, idx) => idx !== i));
 
   // ─── Submit ─────────────────────────────────────────────────
 
@@ -342,7 +411,9 @@ export default function ResearchPage() {
         documentation: {
           githubRepo: data.docGithubRepo, gitlabRepo: data.docGitlabRepo,
           researchPaper: data.docResearchPaper, presentation: data.docPresentation,
-          report: data.docReport, liveDemo: data.docLiveDemo,
+          poster: data.docPoster, report: data.docReport,
+          dataset: data.docDataset, documentation: data.docDocumentation,
+          liveDemo: data.docLiveDemo,
           youtubePresentation: data.docYoutubePresentation,
         },
         seo: { metaTitle: data.seoTitle, metaDescription: data.seoDescription, keywords: data.seoKeywords.split(',').map(k => k.trim()).filter(Boolean) },
@@ -365,6 +436,10 @@ export default function ResearchPage() {
         reset();
         setResearchers([]); setFaculty([]); setTechnologies([]); setComponents([]);
         setPublications([]); setDatasets([]); setAwards([]); setGalleryImages([]);
+        setPubTitle(''); setPubAuthors(''); setPubJournal(''); setPubPublisher('');
+        setPubVolume(''); setPubIssue(''); setPubPages(''); setPubYear(undefined);
+        setPubDoi(''); setPubUrl(''); setPubType('journal_paper');
+        setAwardName(''); setAwardOrganizer(''); setAwardYear(undefined); setAwardCert('');
         setEditingId(null); setCurrentImageUrl(''); setActiveTab('basic');
         fetchResearch();
       } else {
@@ -427,7 +502,10 @@ export default function ResearchPage() {
       docGitlabRepo: docs.gitlabRepo || '',
       docResearchPaper: docs.researchPaper || '',
       docPresentation: docs.presentation || '',
+      docPoster: docs.poster || '',
       docReport: docs.report || '',
+      docDataset: docs.dataset || '',
+      docDocumentation: docs.documentation || '',
       docLiveDemo: docs.liveDemo || '',
       docYoutubePresentation: docs.youtubePresentation || '',
       seoTitle: (seo.metaTitle as string) || '',
@@ -621,19 +699,68 @@ export default function ResearchPage() {
           {activeTab === 'media' && (
             <div className="space-y-4">
               <div className="border border-white/5 rounded-lg p-4">
-                <label className="text-xs font-black text-gray-400 uppercase mb-3 block">Cover Image</label>
-                <ImageUpload onUpload={handleImageUpload} defaultValue={currentImageUrl} folder="research" />
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-xs font-black text-gray-400 uppercase">Cover Image</label>
+                  <button type="button" onClick={() => { setImageTarget('cover'); setUseImageLink(!useImageLink); }}
+                    className="text-xs text-primary hover:underline">
+                    {useImageLink && imageTarget === 'cover' ? 'Use Upload' : 'Use Link'}
+                  </button>
+                </div>
+                {useImageLink && imageTarget === 'cover' ? (
+                  <input type="url" placeholder="https://example.com/image.jpg"
+                    onChange={(e) => {
+                      setValue('coverImage', { url: e.target.value, alt: watch('title') || 'Research image' });
+                      setCurrentImageUrl(e.target.value);
+                    }}
+                    value={currentImageUrl} className={inputClass} />
+                ) : (
+                  <ImageUpload onUpload={handleImageUpload} defaultValue={currentImageUrl} folder="research" />
+                )}
               </div>
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <label className={labelClass}>Gallery Images</label>
-                  <button type="button" onClick={addGalleryImage} className="text-xs text-primary hover:underline">+ Add Image</button>
+                  <div className="flex gap-3">
+                    <button type="button" onClick={() => { setImageTarget('gallery'); setUseImageLink(!useImageLink); }}
+                      className="text-xs text-primary hover:underline">
+                      {useImageLink && imageTarget === 'gallery' ? 'Use Upload' : 'Use Link'}
+                    </button>
+                    {!useImageLink && (
+                      <button type="button" onClick={() => { setImageTarget('gallery'); }} className="text-xs text-primary hover:underline">+ Add Image</button>
+                    )}
+                  </div>
                 </div>
+                {useImageLink && imageTarget === 'gallery' ? (
+                  <div className="flex gap-2 mb-2">
+                    <input type="url" placeholder="https://example.com/image.jpg" value={galleryLinkUrl}
+                      onChange={(e) => setGalleryLinkUrl(e.target.value)} className={`${inputClass} flex-1`} />
+                    <button type="button" onClick={() => {
+                      if (galleryLinkUrl.trim()) {
+                        setGalleryImages([...galleryImages, { url: galleryLinkUrl.trim(), alt: '' }]);
+                        setGalleryLinkUrl('');
+                      }
+                    }}
+                      className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium whitespace-nowrap">
+                      Add
+                    </button>
+                  </div>
+                ) : (
+                  !useImageLink && imageTarget === 'gallery' && (
+                    <div className="mb-2"><ImageUpload onUpload={handleImageUpload} folder="research/gallery" /></div>
+                  )
+                )}
                 {galleryImages.map((img, i) => (
                   <div key={i} className="flex gap-2 mb-2">
-                    <input value={img.url} onChange={(e) => updateGalleryImage(i, 'url', e.target.value)} placeholder="Image URL" className={`${inputClass} flex-1`} />
-                    <input value={img.alt} onChange={(e) => updateGalleryImage(i, 'alt', e.target.value)} placeholder="Alt text" className={`${inputClass} flex-1`} />
-                    <button type="button" onClick={() => removeGalleryImage(i)} className="px-3 text-red-500 hover:text-red-400">×</button>
+                    <div className="w-16 h-16 rounded-lg overflow-hidden border border-white/10 flex-shrink-0 bg-[#121212]">
+                      <img src={img.url} alt={img.alt || ''} className="w-full h-full object-cover" />
+                    </div>
+                    <input value={img.url} onChange={(e) => {
+                      const updated = [...galleryImages]; updated[i] = { ...updated[i], url: e.target.value }; setGalleryImages(updated);
+                    }} placeholder="Image URL" className={`${inputClass} flex-1`} />
+                    <input value={img.alt} onChange={(e) => {
+                      const updated = [...galleryImages]; updated[i] = { ...updated[i], alt: e.target.value }; setGalleryImages(updated);
+                    }} placeholder="Alt text" className={`${inputClass} flex-1`} />
+                    <button type="button" onClick={() => setGalleryImages(galleryImages.filter((_, idx) => idx !== i))} className="px-3 text-red-500 hover:text-red-400">×</button>
                   </div>
                 ))}
               </div>
@@ -650,21 +777,74 @@ export default function ResearchPage() {
               {/* Researchers */}
               <div className="bg-white/5 border border-white/5 rounded-lg p-4">
                 <h3 className="text-sm font-bold text-white mb-3">Add Researcher</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                   <input value={researcherName} onChange={(e) => setResearcherName(e.target.value)} placeholder="Full Name *" className={inputClass} />
                   <select value={researcherRole} onChange={(e) => setResearcherRole(e.target.value)} className={inputClass}>
                     {researcherRoles.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
-                  <button type="button" onClick={addResearcher} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
+                  <input value={researcherDesig} onChange={(e) => setResearcherDesig(e.target.value)} placeholder="Designation" className={inputClass} />
+                  <input value={researcherDept} onChange={(e) => setResearcherDept(e.target.value)} placeholder="Department" className={inputClass} />
                 </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                  <input value={researcherSession} onChange={(e) => setResearcherSession(e.target.value)} placeholder="Session (e.g., 2022-23)" className={inputClass} />
+                  <input value={researcherStudentId} onChange={(e) => setResearcherStudentId(e.target.value)} placeholder="Student ID" className={inputClass} />
+                  <input value={researcherRoll} onChange={(e) => setResearcherRoll(e.target.value)} placeholder="Roll" className={inputClass} />
+                  <input value={researcherEmail} onChange={(e) => setResearcherEmail(e.target.value)} placeholder="Email" type="email" className={inputClass} />
+                </div>
+                <button type="button" onClick={() => setShowResearcherMore(!showResearcherMore)}
+                  className="text-xs text-primary hover:underline mb-3">
+                  {showResearcherMore ? '− Less fields' : '+ More fields (phone, links, photo)'}
+                </button>
+                {showResearcherMore && (
+                  <div className="space-y-3 mb-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      <input value={researcherPhone} onChange={(e) => setResearcherPhone(e.target.value)} placeholder="Phone" className={inputClass} />
+                      <input value={researcherLinkedin} onChange={(e) => setResearcherLinkedin(e.target.value)} placeholder="LinkedIn URL" className={inputClass} />
+                      <input value={researcherGithub} onChange={(e) => setResearcherGithub(e.target.value)} placeholder="GitHub URL" className={inputClass} />
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      <input value={researcherOrcid} onChange={(e) => setResearcherOrcid(e.target.value)} placeholder="ORCID URL" className={inputClass} />
+                      <input value={researcherScholar} onChange={(e) => setResearcherScholar(e.target.value)} placeholder="Google Scholar URL" className={inputClass} />
+                      <input value={researcherResearchGate} onChange={(e) => setResearcherResearchGate(e.target.value)} placeholder="ResearchGate URL" className={inputClass} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <input value={researcherPhotoUrl} onChange={(e) => setResearcherPhotoUrl(e.target.value)} placeholder="Profile Photo URL" className={inputClass} />
+                      <input value={researcherPhotoAlt} onChange={(e) => setResearcherPhotoAlt(e.target.value)} placeholder="Photo Alt Text" className={inputClass} />
+                    </div>
+                  </div>
+                )}
+                <button type="button" onClick={addResearcher} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add Researcher</button>
               </div>
               {researchers.length > 0 && (
                 <div className="space-y-2">
                   {researchers.map((r, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2">
-                      <span className="text-white text-sm font-medium flex-1">{r.fullName}</span>
-                      <span className="text-gray-500 text-xs">{r.role}</span>
-                      <button type="button" onClick={() => removeResearcher(i)} className="text-gray-500 hover:text-red-500">×</button>
+                    <div key={i} className="bg-white/5 rounded-lg px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {r.profilePhoto?.url ? (
+                          <img src={r.profilePhoto.url} alt={r.profilePhoto.alt || r.fullName} className="w-8 h-8 rounded-full object-cover" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">{r.fullName.charAt(0)}</div>
+                        )}
+                        <span className="text-white text-sm font-medium flex-1">{r.fullName}</span>
+                        <span className="text-gray-500 text-xs">{r.role}</span>
+                        {r.designation && <span className="text-gray-600 text-xs hidden md:inline">{r.designation}</span>}
+                        <button type="button" onClick={() => removeResearcher(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      </div>
+                      {(r.email || r.phone || r.department || r.session || r.studentId || r.linkedin || r.github || r.orcid || r.googleScholar || r.researchGate) && (
+                        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500">
+                          {r.department && <span>{r.department}</span>}
+                          {r.session && <span>Session: {r.session}</span>}
+                          {r.studentId && <span>ID: {r.studentId}</span>}
+                          {r.roll && <span>Roll: {r.roll}</span>}
+                          {r.email && <span>{r.email}</span>}
+                          {r.phone && <span>{r.phone}</span>}
+                          {r.linkedin && <a href={r.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LinkedIn</a>}
+                          {r.github && <a href={r.github} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">GitHub</a>}
+                          {r.orcid && <a href={r.orcid} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ORCID</a>}
+                          {r.googleScholar && <a href={r.googleScholar} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Scholar</a>}
+                          {r.researchGate && <a href={r.researchGate} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ResearchGate</a>}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -674,23 +854,47 @@ export default function ResearchPage() {
               <div className="border-t border-white/5 pt-4">
                 <div className="bg-white/5 border border-white/5 rounded-lg p-4">
                   <h3 className="text-sm font-bold text-white mb-3">Add Faculty</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                     <input value={facultyName} onChange={(e) => setFacultyName(e.target.value)} placeholder="Faculty Name *" className={inputClass} />
                     <select value={facultyRole} onChange={(e) => setFacultyRole(e.target.value)} className={inputClass}>
                       {facultyRoles.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
                     <input value={facultyDept} onChange={(e) => setFacultyDept(e.target.value)} placeholder="Department" className={inputClass} />
-                    <button type="button" onClick={addFaculty} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
+                    <input value={facultyEmail} onChange={(e) => setFacultyEmail(e.target.value)} placeholder="Email" type="email" className={inputClass} />
                   </div>
+                  <button type="button" onClick={() => setShowFacultyMore(!showFacultyMore)}
+                    className="text-xs text-primary hover:underline mb-3">
+                    {showFacultyMore ? '− Less fields' : '+ More fields (phone, photo)'}
+                  </button>
+                  {showFacultyMore && (
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <input value={facultyPhone} onChange={(e) => setFacultyPhone(e.target.value)} placeholder="Phone" className={inputClass} />
+                      <input value={facultyPhotoUrl} onChange={(e) => setFacultyPhotoUrl(e.target.value)} placeholder="Profile Photo URL" className={inputClass} />
+                    </div>
+                  )}
+                  <button type="button" onClick={addFaculty} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add Faculty</button>
                 </div>
                 {faculty.length > 0 && (
                   <div className="space-y-2 mt-3">
                     {faculty.map((f, i) => (
-                      <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2">
-                        <span className="text-white text-sm font-medium flex-1">{f.name}</span>
-                        <span className="text-gray-500 text-xs">{f.role}</span>
-                        {f.department && <span className="text-gray-500 text-xs">{f.department}</span>}
-                        <button type="button" onClick={() => removeFaculty(i)} className="text-gray-500 hover:text-red-500">×</button>
+                      <div key={i} className="bg-white/5 rounded-lg px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          {f.profilePhoto?.url ? (
+                            <img src={f.profilePhoto.url} alt={f.profilePhoto.alt || f.name} className="w-8 h-8 rounded-full object-cover" />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">{f.name.charAt(0)}</div>
+                          )}
+                          <span className="text-white text-sm font-medium flex-1">{f.name}</span>
+                          <span className="text-gray-500 text-xs">{f.role}</span>
+                          {f.department && <span className="text-gray-600 text-xs hidden md:inline">{f.department}</span>}
+                          <button type="button" onClick={() => removeFaculty(i)} className="text-gray-500 hover:text-red-500">×</button>
+                        </div>
+                        {(f.email || f.phone) && (
+                          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-gray-500">
+                            {f.email && <span>{f.email}</span>}
+                            {f.phone && <span>{f.phone}</span>}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -706,6 +910,10 @@ export default function ResearchPage() {
               <div>
                 <h3 className="text-sm font-bold text-white mb-3">Technologies</h3>
                 <div className="flex gap-2 mb-3">
+                  <button type="button" onClick={() => { setTechIconTarget(-1); setShowIconPicker(true); setIconPickerSearch(''); }}
+                    className="px-3 py-2 bg-[#121212] border border-white/10 rounded-lg text-white hover:bg-primary/20 transition-colors flex-shrink-0" title="Pick icon for new tech">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                  </button>
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
                   <select value={techCategory} onChange={(e) => setTechCategory(e.target.value)} className={`${inputClass} flex-1`}>
                     <option value="">Category</option>
@@ -713,14 +921,71 @@ export default function ResearchPage() {
                   </select>
                   <button type="button" onClick={addTechnology} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
+                {pendingTechIcon && (
+                  <div className="flex items-center gap-2 mt-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-lg">
+                    <FocusAreaIcon icon={pendingTechIcon} iconType="lucide" className="text-sm" />
+                    <span className="text-xs text-primary">Icon selected: {pendingTechIcon}</span>
+                    <button type="button" onClick={() => setPendingTechIcon('')} className="text-gray-500 hover:text-red-500 text-xs ml-auto">Clear</button>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((t, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
+                    <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300">
+                      {t.icon ? <FocusAreaIcon icon={t.icon} iconType="lucide" className="text-sm" /> : <span className="w-4 h-4 inline-block" />}
                       {t.name} {t.category && <span className="text-gray-500 ml-1">({t.category})</span>}
-                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-gray-500 hover:text-red-500">×</button>
+                      <button type="button" onClick={() => { setTechIconTarget(i); setShowIconPicker(true); setIconPickerSearch(''); }}
+                        className="w-5 h-5 inline-flex items-center justify-center rounded bg-white/10 hover:bg-primary/30 text-gray-400 hover:text-primary transition-colors" title="Pick icon">
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                      </button>
+                      <button type="button" onClick={() => removeTechnology(i)} className="text-gray-500 hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
+
+                {/* Icon Picker Modal */}
+                {showIconPicker && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80" onClick={() => setShowIconPicker(false)}>
+                    <div className="bg-[#1a1a1a] border border-white/10 rounded-xl w-full max-w-lg max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-between p-4 border-b border-white/10">
+                        <h3 className="text-sm font-bold text-white">Pick Icon</h3>
+                        <button onClick={() => setShowIconPicker(false)} className="text-gray-500 hover:text-white">✕</button>
+                      </div>
+                      <div className="p-3 border-b border-white/10">
+                        <input type="text" value={iconPickerSearch} onChange={(e) => setIconPickerSearch(e.target.value)}
+                          placeholder="Search icons..." className="w-full bg-[#121212] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary" />
+                      </div>
+                      <div className="p-4 max-h-[60vh] overflow-y-auto">
+                        {Object.entries(LUCIDE_CATEGORIES).map(([category, icons]) => {
+                          const filtered = iconPickerSearch ? icons.filter(i => i.toLowerCase().includes(iconPickerSearch.toLowerCase())) : icons;
+                          if (filtered.length === 0) return null;
+                          return (
+                            <div key={category} className="mb-3">
+                              <h4 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1.5">{category}</h4>
+                              <div className="flex flex-wrap gap-1">
+                                {filtered.map((iconName) => (
+                                  <button key={iconName} type="button"
+                                    onClick={() => {
+                                      if (techIconTarget !== null && techIconTarget >= 0) {
+                                        const updated = [...technologies];
+                                        updated[techIconTarget] = { ...updated[techIconTarget], icon: iconName };
+                                        setTechnologies(updated);
+                                      } else {
+                                        setPendingTechIcon(iconName);
+                                      }
+                                      setShowIconPicker(false);
+                                    }}
+                                    className="p-2 rounded-lg hover:bg-primary/20 transition-colors" title={iconName}>
+                                    <FocusAreaIcon icon={iconName} iconType="lucide" className="text-lg" />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Components */}
@@ -757,9 +1022,14 @@ export default function ResearchPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={pubTitle} onChange={(e) => setPubTitle(e.target.value)} placeholder="Paper Title *" className={`${inputClass} col-span-2`} />
                   <input value={pubAuthors} onChange={(e) => setPubAuthors(e.target.value)} placeholder="Authors" className={inputClass} />
-                  <input value={pubJournal} onChange={(e) => setPubJournal(e.target.value)} placeholder="Journal / Conference" className={inputClass} />
+                  <input value={pubJournal} onChange={(e) => setPubJournal(e.target.value)} placeholder="Journal" className={inputClass} />
+                  <input value={pubPublisher} onChange={(e) => setPubPublisher(e.target.value)} placeholder="Publisher (e.g., IEEE)" className={inputClass} />
+                  <input value={pubVolume} onChange={(e) => setPubVolume(e.target.value)} placeholder="Volume" className={inputClass} />
+                  <input value={pubIssue} onChange={(e) => setPubIssue(e.target.value)} placeholder="Issue" className={inputClass} />
+                  <input value={pubPages} onChange={(e) => setPubPages(e.target.value)} placeholder="Pages (e.g., 234-250)" className={inputClass} />
                   <input type="number" value={pubYear || ''} onChange={(e) => setPubYear(e.target.value ? parseInt(e.target.value) : undefined)} placeholder="Year" className={inputClass} />
                   <input value={pubDoi} onChange={(e) => setPubDoi(e.target.value)} placeholder="DOI" className={inputClass} />
+                  <input value={pubUrl} onChange={(e) => setPubUrl(e.target.value)} placeholder="URL" className={inputClass} />
                   <select value={pubType} onChange={(e) => setPubType(e.target.value)} className={inputClass}>
                     {pubTypes.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
                   </select>
@@ -770,6 +1040,8 @@ export default function ResearchPage() {
                     {publications.map((p, i) => (
                       <div key={i} className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-2 text-sm">
                         <span className="text-white flex-1 truncate">{p.title}</span>
+                        {p.publisher && <span className="text-gray-500 text-xs">{p.publisher}</span>}
+                        {p.volume && <span className="text-gray-500 text-xs">Vol.{p.volume}</span>}
                         {p.year && <span className="text-gray-500 text-xs">{p.year}</span>}
                         {p.doi && <span className="text-primary text-xs">DOI</span>}
                         <button type="button" onClick={() => removePublication(i)} className="text-gray-500 hover:text-red-500">×</button>
@@ -820,10 +1092,11 @@ export default function ResearchPage() {
               {/* Awards */}
               <div className="border-t border-white/5 pt-4">
                 <h3 className="text-sm font-bold text-white mb-3">Awards</h3>
-                <div className="grid grid-cols-3 gap-2 mb-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={awardName} onChange={(e) => setAwardName(e.target.value)} placeholder="Award Name *" className={inputClass} />
                   <input value={awardOrganizer} onChange={(e) => setAwardOrganizer(e.target.value)} placeholder="Organizer" className={inputClass} />
                   <input type="number" value={awardYear || ''} onChange={(e) => setAwardYear(e.target.value ? parseInt(e.target.value) : undefined)} placeholder="Year" className={inputClass} />
+                  <input value={awardCert} onChange={(e) => setAwardCert(e.target.value)} placeholder="Certificate URL" className={inputClass} />
                 </div>
                 <button type="button" onClick={addAward} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium mb-3">Add Award</button>
                 {awards.length > 0 && (
@@ -833,6 +1106,7 @@ export default function ResearchPage() {
                         <span className="text-white flex-1">{a.awardName}</span>
                         {a.organizer && <span className="text-gray-500 text-xs">{a.organizer}</span>}
                         {a.year && <span className="text-gray-500 text-xs">{a.year}</span>}
+                        {a.certificate && <span className="text-primary text-xs">Cert</span>}
                         <button type="button" onClick={() => removeAward(i)} className="text-gray-500 hover:text-red-500">×</button>
                       </div>
                     ))}
@@ -849,10 +1123,13 @@ export default function ResearchPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className={labelClass}>GitHub Repository</label><input {...register('docGithubRepo')} placeholder="https://github.com/..." className={inputClass} /></div>
                 <div><label className={labelClass}>GitLab Repository</label><input {...register('docGitlabRepo')} placeholder="https://gitlab.com/..." className={inputClass} /></div>
-                <div><label className={labelClass}>Research Paper</label><input {...register('docResearchPaper')} placeholder="https://..." className={inputClass} /></div>
+                <div><label className={labelClass}>Research Paper</label><input {...register('docResearchPaper')} placeholder="https://doi.org/..." className={inputClass} /></div>
                 <div><label className={labelClass}>Presentation</label><input {...register('docPresentation')} placeholder="https://..." className={inputClass} /></div>
-                <div><label className={labelClass}>Report</label><input {...register('docReport')} placeholder="https://..." className={inputClass} /></div>
-                <div><label className={labelClass}>Live Demo</label><input {...register('docLiveDemo')} placeholder="https://..." className={inputClass} /></div>
+                <div><label className={labelClass}>Poster</label><input {...register('docPoster')} placeholder="https://..." className={inputClass} /></div>
+                <div><label className={labelClass}>Report</label><input {...register('docReport')} placeholder="https://drive.google.com/..." className={inputClass} /></div>
+                <div><label className={labelClass}>Dataset</label><input {...register('docDataset')} placeholder="https://doi.org/..." className={inputClass} /></div>
+                <div><label className={labelClass}>Documentation</label><input {...register('docDocumentation')} placeholder="https://docs..." className={inputClass} /></div>
+                <div><label className={labelClass}>Live Demo</label><input {...register('docLiveDemo')} placeholder="https://demo..." className={inputClass} /></div>
               </div>
               <div><label className={labelClass}>YouTube Presentation</label><input {...register('docYoutubePresentation')} placeholder="https://youtube.com/watch?v=..." className={inputClass} /></div>
             </div>
@@ -877,6 +1154,10 @@ export default function ResearchPage() {
                 setEditingId(null); reset();
                 setResearchers([]); setFaculty([]); setTechnologies([]); setComponents([]);
                 setPublications([]); setDatasets([]); setAwards([]); setGalleryImages([]);
+                setPubTitle(''); setPubAuthors(''); setPubJournal(''); setPubPublisher('');
+                setPubVolume(''); setPubIssue(''); setPubPages(''); setPubYear(undefined);
+                setPubDoi(''); setPubUrl(''); setPubType('journal_paper');
+                setAwardName(''); setAwardOrganizer(''); setAwardYear(undefined); setAwardCert('');
                 setCurrentImageUrl(''); setActiveTab('basic');
               }}
                 className="px-6 py-3 border border-white/10 text-gray-400 rounded-lg hover:bg-white/5 transition-colors">
@@ -891,7 +1172,7 @@ export default function ResearchPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {researchList.map((item) => (
           <div key={item._id as string} className="bg-[#0a0a0a] border border-white/5 rounded-xl overflow-hidden group hover:border-primary/50 transition-all relative">
-            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <div className="absolute top-2 right-2 flex gap-1 z-10">
               <button onClick={() => handleEdit(item)} className="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Edit</button>
               <button onClick={() => handleDelete(item._id as string)} className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Del</button>
             </div>
