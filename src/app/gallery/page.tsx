@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -28,7 +29,7 @@ export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState<GalleryData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('ALL');
   const [categories, setCategories] = useState<string[]>(['ALL']);
-  const [activeSection, setActiveSection] = useState('gallery'); // Add this
+  const [activeSection, setActiveSection] = useState('gallery');
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -39,16 +40,18 @@ export default function GalleryPage() {
         }
         const data = await response.json();
         
-        // Filter active items and sort by order
         const activeItems = Array.isArray(data) 
           ? data
               .filter((item: GalleryData) => item.isActive)
-              .sort((a, b) => a.order - b.order)
+              .sort((a: GalleryData, b: GalleryData) => {
+                const dateA = a.date ? new Date(a.date).getTime() : 0;
+                const dateB = b.date ? new Date(b.date).getTime() : 0;
+                return dateB - dateA;
+              })
           : [];
         
         setGalleryItems(activeItems);
 
-        // Extract unique categories
         const uniqueCategories = ['ALL', ...new Set(activeItems.map(item => item.category).filter(Boolean))];
         setCategories(uniqueCategories as string[]);
       } catch (err) {
@@ -61,7 +64,6 @@ export default function GalleryPage() {
     fetchGallery();
   }, []);
 
-  // Memoized filtered items
   const filteredItems = useMemo(() => 
     activeCategory === 'ALL' 
       ? galleryItems 
@@ -69,15 +71,12 @@ export default function GalleryPage() {
     [galleryItems, activeCategory]
   );
 
-  // Optimized lightbox handlers
   const openLightbox = useCallback((item: GalleryData) => {
-    console.log('Opening lightbox with item:', item); // Debug log
     setSelectedImage(item);
     document.body.style.overflow = 'hidden';
   }, []);
 
   const closeLightbox = useCallback(() => {
-    console.log('Closing lightbox'); // Debug log
     setSelectedImage(null);
     document.body.style.overflow = 'unset';
   }, []);
@@ -96,7 +95,6 @@ export default function GalleryPage() {
     setSelectedImage(filteredItems[nextIndex]);
   }, [selectedImage, filteredItems]);
 
-  // Handle escape key press
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && selectedImage) {
@@ -125,7 +123,7 @@ export default function GalleryPage() {
   if (loading) {
     return (
       <>
-        <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
+        <Navbar activeSection={activeSection} />
         <div className="min-h-screen bg-dark pt-32">
           <div className="flex justify-center items-center min-h-[50vh]">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -139,7 +137,7 @@ export default function GalleryPage() {
   if (error) {
     return (
       <>
-        <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
+        <Navbar activeSection={activeSection} />
         <div className="min-h-screen bg-dark pt-32">
           <div className="text-center text-red-500 py-20">
             {error}
@@ -235,13 +233,19 @@ export default function GalleryPage() {
 
   return (
     <>
-      <Navbar activeSection={activeSection} /> {/* Fixed: added activeSection prop */}
+      <Navbar activeSection={activeSection} />
       <div className="min-h-screen bg-dark pt-32 pb-24">
-        <div className="container mx-auto px-4">
+        {/* ─── Back to Home Button ────────────────────── */}
+        <Link href="/" className="absolute top-18 left-4 sm:left-6 z-40 flex items-center gap-2 px-3 py-2 bg-[#111]/80 backdrop-blur-md border border-white/10 rounded-lg text-gray-400 hover:text-white hover:border-white/20 transition-all text-sm">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+          Home
+        </Link>
+
+        <div className="container mx-auto px-4 mt-10">
           {/* Header */}
           <ScrollReveal animation="up">
             <div className="text-center mb-12">
-              <h1 className="text-5xl md:text-7xl font-black uppercase mb-4 section-title after:mx-auto">
+              <h1 className="text-3xl md:text-5xl font-black uppercase mb-4 section-title after:mx-auto">
                 Gallery
               </h1>
               <p className="text-gray-500 uppercase text-xs font-bold tracking-[0.3em]">
@@ -257,7 +261,7 @@ export default function GalleryPage() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-6 py-3 text-xs font-black uppercase tracking-[0.2em] transition-all duration-200 ${
+                  className={`px-5 py-2 text-xs font-black uppercase tracking-[0.2em] transition-all duration-200 ${
                     activeCategory === category
                       ? 'bg-primary text-white'
                       : 'bg-transparent text-gray-500 hover:text-white border border-white/10 hover:border-primary/50'
@@ -270,7 +274,7 @@ export default function GalleryPage() {
           </ScrollReveal>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
             {filteredItems.map((item, idx) => (
               <ScrollReveal 
                 key={item._id} 
@@ -279,7 +283,7 @@ export default function GalleryPage() {
               >
                 <div 
                   onClick={() => openLightbox(item)}
-                  className="group cursor-pointer relative aspect-square overflow-hidden bg-[#1a1a1a] rounded-2xl border border-white/5 hover:border-primary/30 transition-colors duration-200"
+                  className="group cursor-pointer relative aspect-square overflow-hidden bg-[#1a1a1a] rounded-xl sm:rounded-2xl border border-white/5 hover:border-primary/30 transition-colors duration-200"
                 >
                   <img
                     src={item.image?.url}
@@ -288,12 +292,12 @@ export default function GalleryPage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
                   />
                   
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="text-white font-bold text-sm truncate">{item.title}</h3>
+                  {/* Overlay - always visible on mobile, hover on desktop */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
+                      <h3 className="text-white font-bold text-[10px] sm:text-sm truncate">{item.title}</h3>
                       {item.date && (
-                        <p className="text-gray-400 text-xs mt-1">
+                        <p className="text-gray-400 text-[8px] sm:text-xs mt-0.5 sm:mt-1">
                           {new Date(item.date).toLocaleDateString('en-US', { 
                             month: 'short', 
                             day: 'numeric',
@@ -306,8 +310,8 @@ export default function GalleryPage() {
 
                   {/* Category tag */}
                   {item.category && (
-                    <div className="absolute top-2 left-2">
-                      <span className="px-2 py-1 bg-primary/90 text-white text-[8px] font-black uppercase tracking-wider rounded-full shadow-lg">
+                    <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2">
+                      <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-primary/90 text-white text-[6px] sm:text-[8px] font-black uppercase tracking-wider rounded-full shadow-lg">
                         {item.category}
                       </span>
                     </div>
@@ -315,8 +319,8 @@ export default function GalleryPage() {
 
                   {/* Featured indicator */}
                   {item.featured && (
-                    <div className="absolute top-2 right-2">
-                      <svg className="w-4 h-4 text-yellow-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                       </svg>
                     </div>
@@ -341,17 +345,17 @@ export default function GalleryPage() {
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
           onClick={closeLightbox}
         >
           {/* Close button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 z-50 w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute top-4 right-4 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
             aria-label="Close"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -362,10 +366,10 @@ export default function GalleryPage() {
               e.stopPropagation();
               goToPrevious();
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
             aria-label="Previous"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -376,47 +380,50 @@ export default function GalleryPage() {
               e.stopPropagation();
               goToNext();
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-white/10"
             aria-label="Next"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
           {/* Image counter */}
-          <div className="absolute top-4 left-4 z-50 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
-            <span className="text-white text-sm">
+          <div className="absolute top-4 left-4 z-50 bg-black/50 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-white/10">
+            <span className="text-white text-xs sm:text-sm">
               {filteredItems.findIndex(item => item._id === selectedImage._id) + 1} / {filteredItems.length}
             </span>
           </div>
 
-          {/* Main image container */}
+          {/* Main content - responsive layout */}
           <div 
-            className="relative max-w-7xl w-full max-h-[90vh]"
+            className="relative w-full max-w-7xl mx-auto flex flex-col max-h-[95vh] sm:max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/10">
+            {/* Image */}
+            <div className="flex-1 flex items-center justify-center p-2 sm:p-4 min-h-0">
               <img
                 src={selectedImage.image?.url}
                 alt={selectedImage.image?.alt || selectedImage.title}
-                className="w-full h-auto max-h-[80vh] object-contain"
+                className="max-h-[55vh] sm:max-h-[70vh] w-auto max-w-full object-contain rounded-lg sm:rounded-2xl"
               />
-              
-              {/* Image info bar */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">{selectedImage.title}</h2>
+            </div>
+
+            {/* Description below image on mobile, overlay on desktop */}
+            <div className="sm:hidden px-4 pb-4 flex-shrink-0">
+              <div className="bg-[#1a1a1a] rounded-xl p-4 border border-white/10">
+                <h2 className="text-lg font-bold text-white mb-1">{selectedImage.title}</h2>
                 {selectedImage.description && (
-                  <p className="text-gray-300 mb-3">{selectedImage.description}</p>
+                  <p className="text-gray-300 text-sm mb-2">{selectedImage.description}</p>
                 )}
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-3 text-xs">
                   {selectedImage.category && (
-                    <span className="px-3 py-1 bg-primary/20 text-primary rounded-full">
+                    <span className="px-2 py-0.5 bg-primary/20 text-primary rounded-full text-[10px] font-bold">
                       {selectedImage.category}
                     </span>
                   )}
                   {selectedImage.date && (
-                    <span className="text-gray-400">
+                    <span className="text-gray-400 text-[10px]">
                       {new Date(selectedImage.date).toLocaleDateString('en-US', { 
                         month: 'long', 
                         day: 'numeric',
@@ -425,6 +432,30 @@ export default function GalleryPage() {
                     </span>
                   )}
                 </div>
+              </div>
+            </div>
+
+            {/* Desktop: overlay on image */}
+            <div className="hidden sm:block absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 pointer-events-none">
+              <h2 className="text-2xl font-bold text-white mb-2">{selectedImage.title}</h2>
+              {selectedImage.description && (
+                <p className="text-gray-300 mb-3">{selectedImage.description}</p>
+              )}
+              <div className="flex items-center gap-4 text-sm">
+                {selectedImage.category && (
+                  <span className="px-3 py-1 bg-primary/20 text-primary rounded-full">
+                    {selectedImage.category}
+                  </span>
+                )}
+                {selectedImage.date && (
+                  <span className="text-gray-400">
+                    {new Date(selectedImage.date).toLocaleDateString('en-US', { 
+                      month: 'long', 
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </span>
+                )}
               </div>
             </div>
           </div>
