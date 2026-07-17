@@ -176,28 +176,26 @@ const ProjectSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, 'Category is required'],
-      enum: {
-        values: ['COMBAT', 'AI', 'AERO', 'AUTO', 'OTHER'],
-        message: 'Invalid category',
-      },
+      trim: true,
+      default: 'OTHER',
       index: true,
     },
     subCategory: { type: String, trim: true, default: '', maxlength: 100 },
     projectType: {
       type: String,
-      enum: ['individual', 'team', 'club'],
+      trim: true,
       default: 'team',
       index: true,
     },
     difficulty: {
       type: String,
-      enum: ['beginner', 'intermediate', 'advanced', 'expert'],
+      trim: true,
       default: 'intermediate',
     },
 
     // ─── Creator ───────────────────────────────────
     createdBy: { type: String, trim: true, default: '' },
-    createdByType: { type: String, enum: ['admin', 'member'], default: 'admin' },
+    createdByType: { type: String, trim: true, default: 'admin' },
 
     // ─── Team ──────────────────────────────────────
     team: [TeamMemberSchema],
@@ -220,10 +218,7 @@ const ProjectSchema = new mongoose.Schema(
     // ─── Project Status ────────────────────────────
     status: {
       type: String,
-      enum: {
-        values: ['draft', 'submitted', 'under_review', 'approved', 'rejected', 'ongoing', 'completed', 'archived'],
-        message: 'Invalid status',
-      },
+      trim: true,
       default: 'draft',
       index: true,
     },
@@ -231,7 +226,7 @@ const ProjectSchema = new mongoose.Schema(
     // ─── Visibility ────────────────────────────────
     visibility: {
       type: String,
-      enum: ['public', 'members', 'private'],
+      trim: true,
       default: 'public',
     },
 

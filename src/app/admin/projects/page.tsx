@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
 import CustomSelect from '@/components/admin/CustomSelect';
+import { LUCIDE_CATEGORIES, LUCIDE_ICON_MAP } from '@/components/FocusAreaIcon';
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
-import { CodeBracketIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 interface TeamMemberForm {
   fullName: string;
@@ -18,6 +18,7 @@ interface TeamMemberForm {
   phone: string;
   github: string;
   linkedin: string;
+  profilePhoto: { url: string; alt: string; publicId?: string };
   roleInProject: string;
   isLeader: boolean;
 }
@@ -108,22 +109,32 @@ export default function ProjectsPage() {
   const [useImageLink, setUseImageLink] = useState(false);
   const [activeTab, setActiveTab] = useState<'basic' | 'media' | 'team' | 'tech' | 'docs' | 'seo'>('basic');
 
-  // Array states
   const [teamMembers, setTeamMembers] = useState<TeamMemberForm[]>([]);
   const [technologies, setTechnologies] = useState<TechForm[]>([]);
   const [components, setComponents] = useState<ComponentForm[]>([]);
   const [galleryImages, setGalleryImages] = useState<{ url: string; alt: string }[]>([]);
 
-  // Team form inputs
   const [teamName, setTeamName] = useState('');
   const [teamRole, setTeamRole] = useState('');
   const [teamLeader, setTeamLeader] = useState(false);
+  const [teamMoreFields, setTeamMoreFields] = useState(false);
+  const [teamDesignation, setTeamDesignation] = useState('');
+  const [teamDepartment, setTeamDepartment] = useState('');
+  const [teamSession, setTeamSession] = useState('');
+  const [teamStudentId, setTeamStudentId] = useState('');
+  const [teamEmail, setTeamEmail] = useState('');
+  const [teamPhone, setTeamPhone] = useState('');
+  const [teamGithub, setTeamGithub] = useState('');
+  const [teamLinkedin, setTeamLinkedin] = useState('');
+  const [teamPhotoUrl, setTeamPhotoUrl] = useState('');
+  const [teamPhotoMode, setTeamPhotoMode] = useState<'upload' | 'link'>('upload');
 
-  // Tech form inputs
   const [techName, setTechName] = useState('');
   const [techCategory, setTechCategory] = useState('');
+  const [showIconPicker, setShowIconPicker] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState('');
+  const [iconSearch, setIconSearch] = useState('');
 
-  // Component form inputs
   const [compName, setCompName] = useState('');
   const [compQty, setCompQty] = useState(1);
   const [compSpec, setCompSpec] = useState('');
@@ -132,8 +143,8 @@ export default function ProjectsPage() {
     defaultValues: {
       id: '', title: '', slug: '', shortDescription: '', fullDescription: '', summary: '', tag: '',
       coverImage: { url: '', alt: '' }, galleryImages: [], youtubeVideo: '',
-      category: 'COMBAT', subCategory: '', projectType: 'team', difficulty: 'intermediate',
-      status: 'draft', visibility: 'public', latency: '0.00ms',
+      category: '', subCategory: '', projectType: '', difficulty: '',
+      status: 'draft', visibility: 'public', latency: '',
       image: { url: '', alt: '' }, github: '', demo: '',
       featured: false, showOnHomepage: false, displayOrder: 0, order: 0, isActive: true,
       facultyAdvisor: '', facultyCoAdvisor: '', facultyMentor: '',
@@ -167,19 +178,24 @@ export default function ProjectsPage() {
   const addTeamMember = () => {
     if (!teamName.trim()) return;
     setTeamMembers([...teamMembers, {
-      fullName: teamName.trim(), designation: '', department: '', session: '',
-      studentId: '', email: '', phone: '', github: '', linkedin: '',
+      fullName: teamName.trim(), designation: teamDesignation, department: teamDepartment,
+      session: teamSession, studentId: teamStudentId, email: teamEmail, phone: teamPhone,
+      github: teamGithub, linkedin: teamLinkedin,
+      profilePhoto: teamPhotoUrl ? { url: teamPhotoUrl, alt: teamName.trim() } : { url: '', alt: '' },
       roleInProject: teamRole.trim(), isLeader: teamLeader,
     }]);
     setTeamName(''); setTeamRole(''); setTeamLeader(false);
+    setTeamDesignation(''); setTeamDepartment(''); setTeamSession('');
+    setTeamStudentId(''); setTeamEmail(''); setTeamPhone('');
+    setTeamGithub(''); setTeamLinkedin(''); setTeamPhotoUrl('');
   };
 
   const removeTeamMember = (i: number) => setTeamMembers(teamMembers.filter((_, idx) => idx !== i));
 
   const addTechnology = () => {
     if (!techName.trim()) return;
-    setTechnologies([...technologies, { name: techName.trim(), icon: '', category: techCategory.trim() }]);
-    setTechName(''); setTechCategory('');
+    setTechnologies([...technologies, { name: techName.trim(), icon: selectedIcon, category: techCategory.trim() }]);
+    setTechName(''); setTechCategory(''); setSelectedIcon('');
   };
 
   const removeTechnology = (i: number) => setTechnologies(technologies.filter((_, idx) => idx !== i));
@@ -206,8 +222,8 @@ export default function ProjectsPage() {
 
   const onSubmit = async (data: ProjectForm) => {
     try {
-      if (!data.title || !data.tag || !data.category) {
-        toast.error('Please fill in all required fields');
+      if (!data.title || !data.tag) {
+        toast.error('Title and Tag are required');
         return;
       }
 
@@ -300,13 +316,13 @@ export default function ProjectsPage() {
       tag: (project.tag as string) || '',
       coverImage: coverImage || { url: '', alt: '' },
       youtubeVideo: (project.youtubeVideo as string) || '',
-      category: (project.category as string) || 'COMBAT',
+      category: (project.category as string) || '',
       subCategory: (project.subCategory as string) || '',
-      projectType: (project.projectType as string) || 'team',
-      difficulty: (project.difficulty as string) || 'intermediate',
+      projectType: (project.projectType as string) || '',
+      difficulty: (project.difficulty as string) || '',
       status: (project.status as string) || 'draft',
       visibility: (project.visibility as string) || 'public',
-      latency: (project.latency as string) || '0.00ms',
+      latency: (project.latency as string) || '',
       image: image || { url: '', alt: '' },
       github: (project.github as string) || '',
       demo: (project.demo as string) || '',
@@ -374,6 +390,10 @@ export default function ProjectsPage() {
   const inputClass = 'w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary';
   const labelClass = 'block text-xs font-black text-muted uppercase mb-2';
 
+  const filteredIcons = Object.keys(LUCIDE_ICON_MAP).filter(name =>
+    name.toLowerCase().includes(iconSearch.toLowerCase())
+  );
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -423,20 +443,20 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <label className={labelClass}>Category *</label>
-                  <CustomSelect value={watch('category') || ''} onChange={(val) => setValue('category', val)} options={[{value:'COMBAT',label:'COMBAT'},{value:'AI',label:'AI'},{value:'AERO',label:'AERO'},{value:'AUTO',label:'AUTO'},{value:'OTHER',label:'OTHER'}]} placeholder="Select category" />
+                  <label className={labelClass}>Category</label>
+                  <CustomSelect value={watch('category') || ''} onChange={(val) => setValue('category', val)} options={[{value:'COMBAT',label:'COMBAT'},{value:'AI',label:'AI'},{value:'AERO',label:'AERO'},{value:'AUTO',label:'AUTO'},{value:'OTHER',label:'OTHER'}]} placeholder="Select or type" />
                 </div>
                 <div>
                   <label className={labelClass}>Project Type</label>
-                  <CustomSelect value={watch('projectType') || ''} onChange={(val) => setValue('projectType', val)} options={[{value:'Team',label:'Team'},{value:'Individual',label:'Individual'},{value:'Club',label:'Club'}]} placeholder="Select type" />
+                  <CustomSelect value={watch('projectType') || ''} onChange={(val) => setValue('projectType', val)} options={[{value:'Team',label:'Team'},{value:'Individual',label:'Individual'},{value:'Club',label:'Club'}]} placeholder="Select or type" />
                 </div>
                 <div>
                   <label className={labelClass}>Difficulty</label>
-                  <CustomSelect value={watch('difficulty') || ''} onChange={(val) => setValue('difficulty', val)} options={[{value:'Beginner',label:'Beginner'},{value:'Intermediate',label:'Intermediate'},{value:'Advanced',label:'Advanced'},{value:'Expert',label:'Expert'}]} placeholder="Select difficulty" />
+                  <CustomSelect value={watch('difficulty') || ''} onChange={(val) => setValue('difficulty', val)} options={[{value:'Beginner',label:'Beginner'},{value:'Intermediate',label:'Intermediate'},{value:'Advanced',label:'Advanced'},{value:'Expert',label:'Expert'}]} placeholder="Select or type" />
                 </div>
                 <div>
                   <label className={labelClass}>Status</label>
-                  <CustomSelect value={watch('status') || ''} onChange={(val) => setValue('status', val)} options={[{value:'draft',label:'Draft'},{value:'submitted',label:'Submitted'},{value:'under_review',label:'Under Review'},{value:'approved',label:'Approved'},{value:'ongoing',label:'Ongoing'},{value:'completed',label:'Completed'},{value:'archived',label:'Archived'}]} placeholder="Select status" />
+                  <CustomSelect value={watch('status') || ''} onChange={(val) => setValue('status', val)} options={[{value:'draft',label:'Draft'},{value:'submitted',label:'Submitted'},{value:'under_review',label:'Under Review'},{value:'approved',label:'Approved'},{value:'ongoing',label:'Ongoing'},{value:'completed',label:'Completed'},{value:'archived',label:'Archived'}]} placeholder="Select or type" />
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -446,21 +466,19 @@ export default function ProjectsPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Visibility</label>
-                  <CustomSelect value={watch('visibility') || ''} onChange={(val) => setValue('visibility', val)} options={[{value:'public',label:'Public'},{value:'members_only',label:'Members Only'},{value:'private',label:'Private'}]} placeholder="Select visibility" />
+                  <CustomSelect value={watch('visibility') || ''} onChange={(val) => setValue('visibility', val)} options={[{value:'public',label:'Public'},{value:'members_only',label:'Members Only'},{value:'private',label:'Private'}]} placeholder="Select or type" />
                 </div>
                 <div>
                   <label className={labelClass}>Latency</label>
                   <input {...register('latency')} placeholder="0.00ms" className={inputClass} />
                 </div>
               </div>
-              {/* Faculty */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-border pt-4">
                 <div><label className={labelClass}>Faculty Advisor</label><input {...register('facultyAdvisor')} placeholder="Prof. Name" className={inputClass} /></div>
                 <div><label className={labelClass}>Co-Advisor</label><input {...register('facultyCoAdvisor')} placeholder="Prof. Name" className={inputClass} /></div>
                 <div><label className={labelClass}>Mentor</label><input {...register('facultyMentor')} placeholder="Prof. Name" className={inputClass} /></div>
               </div>
-              {/* Toggles */}
-              <div className="flex items-center gap-6 border-t border-border pt-4">
+              <div className="flex items-center gap-6 border-t border-border pt-4 flex-wrap">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" {...register('featured')} className="w-4 h-4 rounded border-border text-primary focus:ring-primary" />
                   <span className="text-sm text-muted">Featured</span>
@@ -524,19 +542,76 @@ export default function ProjectsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <input value={teamName} onChange={(e) => setTeamName(e.target.value)} placeholder="Full Name *" className={inputClass} />
                   <input value={teamRole} onChange={(e) => setTeamRole(e.target.value)} placeholder="Role in Project" className={inputClass} />
-                  <label className="flex items-center gap-2 cursor-pointer px-4">
-                    <input type="checkbox" checked={teamLeader} onChange={(e) => setTeamLeader(e.target.checked)} className="w-4 h-4 rounded" />
-                    <span className="text-sm text-muted">Leader</span>
-                  </label>
-                  <button type="button" onClick={addTeamMember} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
+                  <input value={teamDesignation} onChange={(e) => setTeamDesignation(e.target.value)} placeholder="Designation" className={inputClass} />
+                  <input value={teamDepartment} onChange={(e) => setTeamDepartment(e.target.value)} placeholder="Department" className={inputClass} />
+                </div>
+
+                {/* More Fields Toggle */}
+                <button type="button" onClick={() => setTeamMoreFields(!teamMoreFields)}
+                  className="text-xs text-primary hover:underline mt-3 flex items-center gap-1">
+                  {teamMoreFields ? 'Hide' : 'Show'} more fields
+                  <svg className={`w-3 h-3 transition-transform ${teamMoreFields ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {teamMoreFields && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+                    <input value={teamSession} onChange={(e) => setTeamSession(e.target.value)} placeholder="Session (e.g., 2021-22)" className={inputClass} />
+                    <input value={teamStudentId} onChange={(e) => setTeamStudentId(e.target.value)} placeholder="Student ID" className={inputClass} />
+                    <input value={teamEmail} onChange={(e) => setTeamEmail(e.target.value)} placeholder="Email" className={inputClass} />
+                    <input value={teamPhone} onChange={(e) => setTeamPhone(e.target.value)} placeholder="Phone" className={inputClass} />
+                    <input value={teamGithub} onChange={(e) => setTeamGithub(e.target.value)} placeholder="GitHub URL" className={inputClass} />
+                    <input value={teamLinkedin} onChange={(e) => setTeamLinkedin(e.target.value)} placeholder="LinkedIn URL" className={inputClass} />
+                    <div className="col-span-2">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs text-muted">Profile Photo</span>
+                        <button type="button" onClick={() => setTeamPhotoMode(teamPhotoMode === 'upload' ? 'link' : 'upload')}
+                          className="text-[10px] text-primary hover:underline">
+                          {teamPhotoMode === 'upload' ? 'Use Link' : 'Use Upload'}
+                        </button>
+                      </div>
+                      {teamPhotoMode === 'link' ? (
+                        <input value={teamPhotoUrl} onChange={(e) => setTeamPhotoUrl(e.target.value)} placeholder="Photo URL" className={inputClass} />
+                      ) : (
+                        <ImageUpload onUpload={(url) => setTeamPhotoUrl(url)} folder="projects/team" />
+                      )}
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer px-4">
+                      <input type="checkbox" checked={teamLeader} onChange={(e) => setTeamLeader(e.target.checked)} className="w-4 h-4 rounded" />
+                      <span className="text-sm text-muted">Leader</span>
+                    </label>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-3 mt-3">
+                  {!teamMoreFields && (
+                    <label className="flex items-center gap-2 cursor-pointer px-4">
+                      <input type="checkbox" checked={teamLeader} onChange={(e) => setTeamLeader(e.target.checked)} className="w-4 h-4 rounded" />
+                      <span className="text-sm text-muted">Leader</span>
+                    </label>
+                  )}
+                  <button type="button" onClick={addTeamMember} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium ml-auto">Add</button>
                 </div>
               </div>
+
               {teamMembers.length > 0 && (
                 <div className="space-y-2">
                   {teamMembers.map((m, i) => (
                     <div key={i} className="flex items-center gap-3 bg-background/5 rounded-lg px-4 py-2">
-                      <span className="text-foreground text-sm font-medium flex-1">{m.fullName}</span>
-                      {m.roleInProject && <span className="text-muted text-xs">{m.roleInProject}</span>}
+                      {m.profilePhoto?.url ? (
+                        <img src={m.profilePhoto.url} alt={m.fullName} className="w-8 h-8 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">{m.fullName.charAt(0)}</div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <span className="text-foreground text-sm font-medium block truncate">{m.fullName}</span>
+                        <div className="flex items-center gap-2 text-xs text-muted">
+                          {m.roleInProject && <span>{m.roleInProject}</span>}
+                          {m.department && <span>· {m.department}</span>}
+                          {m.session && <span>· {m.session}</span>}
+                        </div>
+                      </div>
                       {m.isLeader && <span className="text-red-500 text-xs font-bold">Leader</span>}
                       <button type="button" onClick={() => removeTeamMember(i)} className="text-muted hover:text-red-500">×</button>
                     </div>
@@ -549,25 +624,71 @@ export default function ProjectsPage() {
           {/* Tech Tab */}
           {activeTab === 'tech' && (
             <div className="space-y-6">
-              {/* Technologies */}
               <div>
                 <h3 className="text-sm font-bold text-foreground mb-3">Technologies</h3>
                 <div className="flex gap-2 mb-3">
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
                   <input value={techCategory} onChange={(e) => setTechCategory(e.target.value)} placeholder="Category (e.g., Language)" className={`${inputClass} flex-1`} />
+                  <button type="button" onClick={() => setShowIconPicker(!showIconPicker)}
+                    className={`px-3 py-2 border border-border rounded-lg text-sm font-medium flex items-center gap-2 ${selectedIcon ? 'text-primary border-primary' : 'text-muted hover:text-foreground'}`}>
+                    {selectedIcon && LUCIDE_ICON_MAP[selectedIcon] ? (
+                      (() => { const Icon = LUCIDE_ICON_MAP[selectedIcon]; return <Icon className="w-4 h-4" />; })()
+                    ) : (
+                      <span>Icon</span>
+                    )}
+                  </button>
                   <button type="button" onClick={addTechnology} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
+
+                {/* Icon Picker */}
+                {showIconPicker && (
+                  <div className="border border-border rounded-lg p-4 mb-3 bg-background/5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <input value={iconSearch} onChange={(e) => setIconSearch(e.target.value)} placeholder="Search icons..." className={`${inputClass} flex-1`} />
+                      {selectedIcon && (
+                        <button type="button" onClick={() => setSelectedIcon('')} className="text-xs text-muted hover:text-red-500">Clear</button>
+                      )}
+                    </div>
+                    <div className="max-h-60 overflow-y-auto">
+                      {Object.entries(LUCIDE_CATEGORIES).map(([category, icons]) => {
+                        const filtered = icons.filter(name =>
+                          name.toLowerCase().includes(iconSearch.toLowerCase())
+                        );
+                        if (filtered.length === 0) return null;
+                        return (
+                          <div key={category} className="mb-3">
+                            <p className="text-[10px] text-muted uppercase tracking-wider mb-1">{category}</p>
+                            <div className="flex flex-wrap gap-1">
+                              {filtered.map((iconName) => {
+                                const Icon = LUCIDE_ICON_MAP[iconName];
+                                return (
+                                  <button key={iconName} type="button"
+                                    onClick={() => { setSelectedIcon(iconName); setShowIconPicker(false); setIconSearch(''); }}
+                                    className={`p-2 rounded-lg border transition-colors ${selectedIcon === iconName ? 'bg-primary/20 border-primary text-primary' : 'border-border hover:border-primary/50 text-muted hover:text-foreground'}`}
+                                    title={iconName}>
+                                    <Icon className="w-4 h-4" />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((t, i) => (
-                    <span key={i} className="inline-flex items-center px-3 py-1 bg-background/5 rounded-full text-xs text-muted">
+                    <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-background/5 rounded-full text-xs text-muted">
+                      {t.icon && LUCIDE_ICON_MAP[t.icon] ? (() => { const Icon = LUCIDE_ICON_MAP[t.icon]; return <Icon className="w-3 h-3" />; })() : null}
                       {t.name} {t.category && <span className="text-muted ml-1">({t.category})</span>}
-                      <button type="button" onClick={() => removeTechnology(i)} className="ml-2 text-muted hover:text-red-500">×</button>
+                      <button type="button" onClick={() => removeTechnology(i)} className="ml-1 text-muted hover:text-red-500">×</button>
                     </span>
                   ))}
                 </div>
               </div>
 
-              {/* Components */}
               <div className="border-t border-border pt-4">
                 <h3 className="text-sm font-bold text-foreground mb-3">Components Used</h3>
                 <div className="grid grid-cols-3 gap-2 mb-3">

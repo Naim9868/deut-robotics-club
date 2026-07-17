@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ScrollReveal from './ScrollReveal';
 
 interface ProjectData {
@@ -35,87 +36,6 @@ const Projects: React.FC = () => {
 
   const categories = ['ALL', 'COMBAT', 'AI', 'AERO', 'AUTO'];
 
-  const fallbackProjects: ProjectData[] = [
-    {
-      _id: 'fallback-1',
-      id: 'DRC_A1',
-      title: 'DESTRON V3',
-      tag: 'COMBAT CLASS',
-      status: 'ACTIVE',
-      latency: '0.02ms',
-      category: 'COMBAT',
-      image: { url: 'https://images.unsplash.com/photo-1544006659-f0b21884cb1d?q=80&w=1000', alt: 'DESTRON V3' },
-      featured: false,
-      order: 0,
-      isActive: true
-    },
-    {
-      _id: 'fallback-2',
-      id: 'DRC_N2',
-      title: 'SPIDER-BOT MK.II',
-      tag: 'NEURAL MESH',
-      status: 'TESTING',
-      latency: '0.15ms',
-      category: 'AI',
-      image: { url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000', alt: 'SPIDER-BOT MK.II' },
-      featured: false,
-      order: 1,
-      isActive: true
-    },
-    {
-      _id: 'fallback-3',
-      id: 'DRC_I3',
-      title: '6-AXIS HYDRA',
-      tag: 'INDUSTRIAL',
-      status: 'ACTIVE',
-      latency: '0.01ms',
-      category: 'AUTO',
-      image: { url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000', alt: '6-AXIS HYDRA' },
-      featured: false,
-      order: 2,
-      isActive: true
-    },
-    {
-      _id: 'fallback-4',
-      id: 'DRC_E4',
-      title: 'EAGLE EYE DRONE',
-      tag: 'AEROSPACE',
-      status: 'ACTIVE',
-      latency: '0.05ms',
-      category: 'AERO',
-      image: { url: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000', alt: 'EAGLE EYE DRONE' },
-      featured: false,
-      order: 3,
-      isActive: true
-    },
-    {
-      _id: 'fallback-5',
-      id: 'DRC_M5',
-      title: 'MAZE RUNNER V.O',
-      tag: 'AUTONOMOUS',
-      status: 'MAINTENANCE',
-      latency: '0.22ms',
-      category: 'AUTO',
-      image: { url: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?q=80&w=1000', alt: 'MAZE RUNNER V.O' },
-      featured: false,
-      order: 4,
-      isActive: true
-    },
-    {
-      _id: 'fallback-6',
-      id: 'DRC_X6',
-      title: 'VOID_WALKER',
-      tag: 'EXPERIMENTAL',
-      status: 'UNKNOWN',
-      latency: 'N/A',
-      category: 'AI',
-      image: { url: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=1000', alt: 'VOID_WALKER' },
-      featured: false,
-      order: 5,
-      isActive: true
-    }
-  ];
-
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -127,20 +47,18 @@ const Projects: React.FC = () => {
         }
         
         const data = await response.json();
+        const projectList = Array.isArray(data) ? data : (data.projects || []);
         
-        if (Array.isArray(data) && data.length > 0) {
-          const activeProjects = data
+        if (projectList.length > 0) {
+          const activeProjects = projectList
             .filter((p: ProjectData) => p.isActive)
-            .sort((a, b) => a.order - b.order);
+            .sort((a: ProjectData, b: ProjectData) => a.order - b.order);
           
           setProjects(activeProjects);
-        } else {
-          setProjects(fallbackProjects);
         }
       } catch (err) {
         console.error('Error fetching projects:', err);
         setError(err instanceof Error ? err.message : 'An error occurred');
-        setProjects(fallbackProjects);
       } finally {
         setLoading(false);
       }
@@ -210,10 +128,15 @@ const Projects: React.FC = () => {
         </ScrollReveal>
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3">
-          {filteredProjects.map((p, idx) => (
+          {filteredProjects.length === 0 ? (
+            <div className="col-span-full text-center py-16">
+              <p className="text-muted text-sm">No projects found. Create projects in the admin panel.</p>
+            </div>
+          ) : (
+          filteredProjects.map((p, idx) => (
             <ScrollReveal key={p.id} animation="scale" delay={idx * 100}>
-              <a href={`/projects/${p.slug || p.id}`} className="block">
-              <div className="group relative border border-border bg-background overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
+              <Link href={`/projects/${p.slug || p.id}`} className="block">
+              <div className="group shadow-[2px_2px_5px_rgba(0,0,0,0.5)] relative border border-border bg-background overflow-hidden aspect-[4/3] md:aspect-square lg:aspect-[4/3] cursor-crosshair">
                 <img 
                   src={p.image?.url} 
                   alt={p.image?.alt || p.title} 
@@ -299,18 +222,19 @@ const Projects: React.FC = () => {
                   )}
                 </div>
               </div>
-              </a>
+              </Link>
             </ScrollReveal>
-          ))}
+          ))
+          )}
         </div>
 
         <ScrollReveal animation="up">
           <div className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 flex items-center justify-center">
             <div className="h-[1px] bg-border flex-1 hidden sm:block"></div>
-            <a href="/projects" className="mx-4 sm:mx-6 md:mx-8 text-[8px] sm:text-[9px] md:text-[10px] font-black text-muted uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] hover:text-primary transition-colors flex items-center group">
+            <Link href="/projects" className="mx-4 sm:mx-6 md:mx-8 text-[8px] sm:text-[9px] md:text-[10px] font-black text-muted uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.5em] hover:text-primary transition-colors flex items-center group">
               Access Full Database 
               <span className="ml-2 sm:ml-3 md:ml-4 transform group-hover:translate-x-2 transition-transform">{'>>>'}</span>
-            </a>
+            </Link>
             <div className="h-[1px] bg-border flex-1 hidden sm:block"></div>
           </div>
         </ScrollReveal>
