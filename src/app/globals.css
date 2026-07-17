@@ -5,7 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #1a1a1a;
-  --primary: #e63946;
+  /* --primary: #e63946; */
+  --primary: #fa7137;
   --secondary: #1d3557;
   --card: #f9f9f9;
   --muted: #6b7280;
@@ -22,7 +23,8 @@
 .dark {
   --background: #050505;
   --foreground: #f1faee;
-  --primary: #e63946;
+  /* --primary: #e63946; */
+  --primary: #fc7136;
   --secondary: #1d3557;
   --card: #0a0a0a;
   --muted: #737373;
