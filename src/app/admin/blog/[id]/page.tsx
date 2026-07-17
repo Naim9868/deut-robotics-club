@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import CustomSelect from '@/components/admin/CustomSelect';
 import axios from 'axios';
 
 interface BlogForm {
@@ -437,17 +438,19 @@ export default function BlogFormPage() {
               <label className="block text-xs font-black text-muted uppercase tracking-wider mb-2">
                 Category <span className="text-red-500">*</span>
               </label>
-              <select
-                {...register('category', { required: 'Category is required' })}
-                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-all"
-              >
-                <option value="Robotics">Robotics</option>
-                <option value="Artificial Intelligence">Artificial Intelligence</option>
-                <option value="Achievements">Achievements</option>
-                <option value="Tutorials">Tutorials</option>
-                <option value="Events">Events</option>
-                <option value="Research">Research</option>
-              </select>
+              <CustomSelect
+                value={watch('category') || ''}
+                onChange={(val) => setValue('category', val)}
+                options={[
+                  { value: 'Robotics', label: 'Robotics' },
+                  { value: 'Artificial Intelligence', label: 'Artificial Intelligence' },
+                  { value: 'Achievements', label: 'Achievements' },
+                  { value: 'Tutorials', label: 'Tutorials' },
+                  { value: 'Events', label: 'Events' },
+                  { value: 'Research', label: 'Research' },
+                ]}
+                placeholder="Select category"
+              />
             </div>
 
             <div>

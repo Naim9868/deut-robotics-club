@@ -28,7 +28,7 @@ export async function getCommitteeById(
 ): Promise<IExecutiveCommittee | null> {
   const committee = await ExecutiveCommittee.findOne({
     _id: id,
-    isDeleted: false,
+    isDeleted: { $ne: true },
   });
   return (committee?.toObject() as IExecutiveCommittee) || null;
 }
@@ -38,7 +38,7 @@ export async function getCommitteeBySlug(
 ): Promise<IExecutiveCommittee | null> {
   const committee = await ExecutiveCommittee.findOne({
     slug,
-    isDeleted: false,
+    isDeleted: { $ne: true },
     isPublished: true,
   });
   return (committee?.toObject() as IExecutiveCommittee) || null;
@@ -49,7 +49,7 @@ export async function getCommitteeByYear(
 ): Promise<IExecutiveCommittee | null> {
   const committee = await ExecutiveCommittee.findOne({
     committeeYear: year,
-    isDeleted: false,
+    isDeleted: { $ne: true },
     isPublished: true,
   });
   return (committee?.toObject() as IExecutiveCommittee) || null;
@@ -60,7 +60,7 @@ export async function getCommitteeByYear(
  */
 export async function listPublishedCommittees(): Promise<IExecutiveCommittee[]> {
   const committees = await ExecutiveCommittee.find({
-    isDeleted: false,
+    isDeleted: { $ne: true },
     isPublished: true,
   })
     .sort({ committeeYear: -1, displayOrder: 1 })
@@ -85,7 +85,7 @@ export async function listCommittees(
     sortOrder = 'desc',
   } = params;
 
-  const filter: Record<string, unknown> = { isDeleted: false };
+  const filter: Record<string, unknown> = { isDeleted: { $ne: true } };
 
   if (year) filter.committeeYear = year;
   if (isPublished !== undefined) filter.isPublished = isPublished;
@@ -127,7 +127,7 @@ export async function findMemberBySlug(
 ): Promise<{ committee: IExecutiveCommittee; member: ICommitteeMember } | null> {
   const committee = await ExecutiveCommittee.findOne({
     'members.slug': slug,
-    isDeleted: false,
+    isDeleted: { $ne: true },
     isPublished: true,
   }).lean();
 
@@ -147,7 +147,7 @@ export async function updateCommittee(
   data: Record<string, unknown>
 ): Promise<IExecutiveCommittee | null> {
   const committee = await ExecutiveCommittee.findOneAndUpdate(
-    { _id: id, isDeleted: false },
+    { _id: id, isDeleted: { $ne: true } },
     { $set: data },
     { new: true, runValidators: true }
   );
@@ -158,7 +158,7 @@ export async function updateCommittee(
 
 export async function softDeleteCommittee(id: string): Promise<boolean> {
   const result = await ExecutiveCommittee.findOneAndUpdate(
-    { _id: id, isDeleted: false },
+    { _id: id, isDeleted: { $ne: true } },
     { $set: { isDeleted: true } }
   );
   return !!result;
@@ -187,7 +187,7 @@ export async function togglePublish(
   isPublished: boolean
 ): Promise<IExecutiveCommittee | null> {
   const committee = await ExecutiveCommittee.findOneAndUpdate(
-    { _id: id, isDeleted: false },
+    { _id: id, isDeleted: { $ne: true } },
     { $set: { isPublished } },
     { new: true }
   );
@@ -224,15 +224,15 @@ export async function getCommitteeStats(): Promise<{
 }> {
   const [total, published, current, totalMembersResult, latest] =
     await Promise.all([
-      ExecutiveCommittee.countDocuments({ isDeleted: false }),
-      ExecutiveCommittee.countDocuments({ isDeleted: false, isPublished: true }),
-      ExecutiveCommittee.countDocuments({ isDeleted: false, isCurrent: true }),
+      ExecutiveCommittee.countDocuments({ isDeleted: { $ne: true } }),
+      ExecutiveCommittee.countDocuments({ isDeleted: { $ne: true }, isPublished: true }),
+      ExecutiveCommittee.countDocuments({ isDeleted: { $ne: true }, isCurrent: true }),
       ExecutiveCommittee.aggregate([
-        { $match: { isDeleted: false } },
+        { $match: { isDeleted: { $ne: true } } },
         { $project: { memberCount: { $size: '$members' } } },
         { $group: { _id: null, total: { $sum: '$memberCount' } } },
       ]),
-      ExecutiveCommittee.findOne({ isDeleted: false })
+      ExecutiveCommittee.findOne({ isDeleted: { $ne: true } })
         .sort({ committeeYear: -1 })
         .select('committeeYear')
         .lean(),

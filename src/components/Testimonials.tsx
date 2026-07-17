@@ -159,7 +159,7 @@ const Testimonials: React.FC = () => {
     if (relativeIndex === 1 || relativeIndex === total - 1) {
       const isRight = relativeIndex === 1;
       return {
-        translateX: isRight ? 180 : -180,
+        translateX: isRight ? 200 : -200,
         translateZ: -50,
         scale: 0.8,
         opacity: 0.6,
@@ -168,7 +168,7 @@ const Testimonials: React.FC = () => {
     if (relativeIndex === 2 || relativeIndex === total - 2) {
       const isRight = relativeIndex === 2;
       return {
-        translateX: isRight ? 320 : -320,
+        translateX: isRight ? 380 : -380,
         translateZ: -100,
         scale: 0.6,
         opacity: 0.3,
@@ -226,28 +226,30 @@ const Testimonials: React.FC = () => {
 
         {testimonials.length > 0 && (
           <div
-            className="relative w-full h-[380px] sm:h-[400px] md:h-[440px] lg:h-[480px] xl:h-[500px] mb-0 group"
+            className="relative w-full h-[380px] sm:h-[400px] md:h-[440px] lg:h-[480px] xl:h-[520px] mb-0 group"
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
             style={{ perspective: "1000px" }}
           >
+            {/* Left Arrow Button - Always Visible */}
             <button
               onClick={prevCard}
-              className="hidden xs:flex absolute left-0 sm:left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-background/5 sm:bg-background/10 backdrop-blur-sm border border-border sm:border-border flex items-center justify-center text-foreground hover:bg-background/20 hover:border-border transition-all duration-300 hover:scale-110 focus:outline-none"
+              className="absolute left-0 sm:left-2 md:left-4 lg:-left-6 xl:-left-10 top-[55%] -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-background/80 backdrop-blur-md border border-border/50 flex items-center justify-center text-foreground hover:bg-background hover:border-primary/50 transition-all duration-300 hover:scale-110 hover:shadow-2xl focus:outline-none shadow-lg"
               aria-label="Previous testimonial"
             >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
 
+            {/* Right Arrow Button - Always Visible */}
             <button
               onClick={nextCard}
-              className="hidden xs:flex absolute right-0 sm:right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-background/5 sm:bg-background/10 backdrop-blur-sm border border-border sm:border-border flex items-center justify-center text-foreground hover:bg-background/20 hover:border-border transition-all duration-300 hover:scale-110 focus:outline-none"
+              className="absolute right-0 sm:right-2 md:right-4 lg:-right-6 xl:-right-10 top-[55%] -translate-y-1/2 z-30 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-background/80 backdrop-blur-md border border-border/50 flex items-center justify-center text-foreground hover:bg-background hover:border-primary/50 transition-all duration-300 hover:scale-110 hover:shadow-2xl focus:outline-none shadow-lg"
               aria-label="Next testimonial"
             >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
               </svg>
             </button>
 
@@ -267,7 +269,7 @@ const Testimonials: React.FC = () => {
                   return (
                     <div
                       key={testimonial._id}
-                      className={`absolute w-[260px] sm:w-[280px] md:w-[320px] lg:w-[350px] left-1/2 top-0 -ml-[130px] sm:-ml-[140px] md:-ml-[160px] lg:-ml-[175px] ${
+                      className={`absolute w-[280px] sm:w-[300px] md:w-[340px] lg:w-[400px] xl:w-[440px] left-1/2 top-0 -ml-[140px] sm:-ml-[150px] md:-ml-[170px] lg:-ml-[200px] xl:-ml-[220px] ${
                         isActive ? 'cursor-default' : 'cursor-pointer'
                       }`}
                       style={{
@@ -279,12 +281,12 @@ const Testimonials: React.FC = () => {
                       }}
                       onClick={() => goToCard(index)}
                     >
-                      <div className={`relative p-4 sm:p-5 md:p-6 lg:p-8 bg-card border rounded-2xl transition-all duration-300 shadow-2xl ${
+                      <div className={`relative p-5 sm:p-6 md:p-7 lg:p-9 xl:p-10 bg-card border rounded-2xl transition-all duration-300 shadow-2xl ${
                         isActive 
-                          ? 'border-primary/50 shadow-[0_0_30px_rgba(230,57,70,0.15)]' 
+                          ? 'border-primary/50 shadow-[0_0_40px_rgba(230,57,70,0.2)] lg:shadow-[0_0_60px_rgba(230,57,70,0.15)]' 
                           : 'border-border hover:border-primary/30'
                       }`}>
-                        <div className={`absolute top-2 sm:top-3 md:top-4 right-4 sm:right-5 md:right-6 lg:right-8 text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-primary/70 font-serif italic ${
+                        <div className={`absolute top-3 sm:top-4 md:top-5 right-5 sm:right-6 md:right-7 lg:right-9 xl:right-10 text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-primary/70 font-serif italic ${
                           isActive ? 'text-primary/90' : 'group-hover:text-primary/90'
                         } transition-colors`}>
                           "
@@ -302,7 +304,7 @@ const Testimonials: React.FC = () => {
                           {renderStars(testimonial.rating)}
                         </div>
                         
-                        <p className={`text-muted text-[9px] sm:text-[10px] md:text-xs lg:text-[13px] italic mb-3 sm:mb-4 md:mb-5 lg:mb-6 relative z-10 leading-relaxed line-clamp-6 sm:line-clamp-8 md:line-clamp-10 lg:line-clamp-12 ${
+                        <p className={`text-muted text-[10px] sm:text-[11px] md:text-xs lg:text-sm xl:text-base italic mb-3 sm:mb-4 md:mb-5 lg:mb-6 relative z-10 leading-relaxed line-clamp-6 sm:line-clamp-8 md:line-clamp-10 lg:line-clamp-12 ${
                           isActive ? 'text-foreground' : ''
                         }`}>
                           {testimonial.text}
@@ -313,19 +315,19 @@ const Testimonials: React.FC = () => {
                             <img 
                               src={testimonial.avatar.url} 
                               alt={testimonial.avatar.alt || testimonial.name}
-                              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-cover border-2 border-primary/30 flex-shrink-0"
+                              className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full object-cover border-2 border-primary/30 flex-shrink-0"
                             />
                           ) : (
-                            <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-xs sm:text-sm flex-shrink-0">
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-xs sm:text-sm md:text-base flex-shrink-0">
                               {testimonial.name.charAt(0)}
                             </div>
                           )}
                           
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-foreground font-bold uppercase text-[9px] sm:text-[10px] md:text-xs truncate">
+                            <h4 className="text-foreground font-bold uppercase text-[10px] sm:text-[11px] md:text-xs lg:text-sm truncate">
                               {testimonial.name}
                             </h4>
-                            <p className="text-muted text-[6px] sm:text-[7px] md:text-[8px] uppercase font-bold tracking-widest truncate">
+                            <p className="text-muted text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] uppercase font-bold tracking-widest truncate">
                               {testimonial.role}
                             </p>
                           </div>
@@ -337,14 +339,14 @@ const Testimonials: React.FC = () => {
               </div>
             </motion.div>
 
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 sm:space-x-2">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 sm:space-x-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToCard(index)}
                   className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
                     index === activeIndex
-                      ? 'w-6 sm:w-8 md:w-10 bg-primary'
+                      ? 'w-6 sm:w-8 md:w-10 lg:w-12 bg-primary'
                       : 'w-1.5 sm:w-2 bg-foreground/30 hover:bg-foreground/50'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}

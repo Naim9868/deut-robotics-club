@@ -131,6 +131,8 @@ export default function ExecutiveCommitteePage() {
   const [saving, setSaving] = useState(false);
   const [profilePhotoUrl, setProfilePhotoUrl] = useState('');
   const [coverPhotoUrl, setCoverPhotoUrl] = useState('');
+  const [profilePhotoMode, setProfilePhotoMode] = useState<'upload' | 'link'>('upload');
+  const [coverPhotoMode, setCoverPhotoMode] = useState<'upload' | 'link'>('upload');
   const [socialLinks, setSocialLinks] = useState({ facebook: '', linkedin: '', github: '', portfolio: '', website: '' });
 
   const { register: regCommittee, handleSubmit: handleSubmitCommittee, reset: resetCommittee, watch: watchCommittee } = useForm<CommitteeForm>({
@@ -237,6 +239,8 @@ export default function ExecutiveCommitteePage() {
     resetMember({ fullName: '', designation: '', department: '', session: '', studentId: '', email: '', phone: '', shortBio: '', fullBiography: '', messageFromMember: '', responsibilities: '', achievements: '', displayOrder: workingMembers.length, featured: false, isVisible: true });
     setProfilePhotoUrl('');
     setCoverPhotoUrl('');
+    setProfilePhotoMode('upload');
+    setCoverPhotoMode('upload');
     setSocialLinks({ facebook: '', linkedin: '', github: '', portfolio: '', website: '' });
     setView('member-form');
   };
@@ -263,6 +267,8 @@ export default function ExecutiveCommitteePage() {
     });
     setProfilePhotoUrl(m.profilePhoto?.url || '');
     setCoverPhotoUrl(m.coverPhoto?.url || '');
+    setProfilePhotoMode('upload');
+    setCoverPhotoMode('upload');
     setSocialLinks(m.socialLinks || { facebook: '', linkedin: '', github: '', portfolio: '', website: '' });
     setView('member-form');
   };
@@ -642,12 +648,28 @@ export default function ExecutiveCommitteePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelClass}>Profile Photo</label>
-                <ImageUpload onUpload={(url) => setProfilePhotoUrl(url)} folder="executive-committee/profile" />
+                <div className="flex gap-2 mb-2">
+                  <button type="button" onClick={() => setProfilePhotoMode('upload')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${profilePhotoMode === 'upload' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Upload</button>
+                  <button type="button" onClick={() => setProfilePhotoMode('link')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${profilePhotoMode === 'link' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Use Link</button>
+                </div>
+                {profilePhotoMode === 'upload' ? (
+                  <ImageUpload onUpload={(url) => setProfilePhotoUrl(url)} folder="executive-committee/profile" />
+                ) : (
+                  <input type="url" value={profilePhotoUrl} onChange={(e) => setProfilePhotoUrl(e.target.value)} className={inputClass} placeholder="Paste image URL" />
+                )}
                 {profilePhotoUrl && <img src={profilePhotoUrl} alt="Profile" className="mt-2 w-20 h-20 rounded-full object-cover" />}
               </div>
               <div>
                 <label className={labelClass}>Cover Photo</label>
-                <ImageUpload onUpload={(url) => setCoverPhotoUrl(url)} folder="executive-committee/cover" />
+                <div className="flex gap-2 mb-2">
+                  <button type="button" onClick={() => setCoverPhotoMode('upload')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${coverPhotoMode === 'upload' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Upload</button>
+                  <button type="button" onClick={() => setCoverPhotoMode('link')} className={`px-3 py-1.5 text-xs font-bold rounded-lg ${coverPhotoMode === 'link' ? 'bg-primary text-foreground' : 'bg-background/5 text-muted'}`}>Use Link</button>
+                </div>
+                {coverPhotoMode === 'upload' ? (
+                  <ImageUpload onUpload={(url) => setCoverPhotoUrl(url)} folder="executive-committee/cover" />
+                ) : (
+                  <input type="url" value={coverPhotoUrl} onChange={(e) => setCoverPhotoUrl(e.target.value)} className={inputClass} placeholder="Paste image URL" />
+                )}
                 {coverPhotoUrl && <img src={coverPhotoUrl} alt="Cover" className="mt-2 w-full h-24 rounded-lg object-cover" />}
               </div>
             </div>

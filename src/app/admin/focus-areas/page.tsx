@@ -7,6 +7,7 @@ import ImageUpload from '@/components/admin/ImageUpload';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import FocusAreaIcon from '@/components/FocusAreaIcon';
 import { LUCIDE_CATEGORIES } from '@/components/FocusAreaIcon';
+import CustomSelect from '@/components/admin/CustomSelect';
 
 // ─── Interfaces ───────────────────────────────────────────────
 
@@ -493,9 +494,12 @@ export default function FocusAreasPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <label className={labelClass}>Category *</label>
-                  <select {...register('category', { required: 'Required' })} className={inputClass}>
-                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={watch('category') || ''}
+                    onChange={(val) => setValue('category', val)}
+                    options={CATEGORIES.map(c => ({ value: c, label: c }))}
+                    placeholder="Select category"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Sub Category</label>
@@ -503,20 +507,30 @@ export default function FocusAreasPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Research Level</label>
-                  <select {...register('researchLevel')} className={inputClass}>
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
-                    <option value="research">Research</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('researchLevel') || ''}
+                    onChange={(val) => setValue('researchLevel', val)}
+                    options={[
+                      { value: 'beginner', label: 'Beginner' },
+                      { value: 'intermediate', label: 'Intermediate' },
+                      { value: 'advanced', label: 'Advanced' },
+                      { value: 'research', label: 'Research' },
+                    ]}
+                    placeholder="Select research level"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Visibility</label>
-                  <select {...register('visibility')} className={inputClass}>
-                    <option value="public">Public</option>
-                    <option value="members">Members Only</option>
-                    <option value="private">Private</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('visibility') || ''}
+                    onChange={(val) => setValue('visibility', val)}
+                    options={[
+                      { value: 'public', label: 'Public' },
+                      { value: 'members', label: 'Members Only' },
+                      { value: 'private', label: 'Private' },
+                    ]}
+                    placeholder="Select visibility"
+                  />
                 </div>
               </div>
 
@@ -835,10 +849,12 @@ export default function FocusAreasPage() {
                 <h3 className="text-sm font-bold text-foreground mb-3">Technologies Used</h3>
                 <div className="flex gap-2 mb-3">
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
-                  <select value={techCategory} onChange={(e) => setTechCategory(e.target.value)} className={`${inputClass} flex-1`}>
-                    <option value="">Select Category</option>
-                    {TECH_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={techCategory}
+                    onChange={(val) => setTechCategory(val)}
+                    options={TECH_CATEGORIES.map(c => ({ value: c, label: c }))}
+                    placeholder="Select Category"
+                  />
                   <button type="button" onClick={addTechnology} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -885,9 +901,12 @@ export default function FocusAreasPage() {
                 <h3 className="text-sm font-bold text-foreground mb-3">Learning Resources</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
                   <input value={resTitle} onChange={(e) => setResTitle(e.target.value)} placeholder="Title *" className={`${inputClass} col-span-2`} />
-                  <select value={resType} onChange={(e) => setResType(e.target.value)} className={inputClass}>
-                    {RESOURCE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={resType}
+                    onChange={(val) => setResType(val)}
+                    options={RESOURCE_TYPES}
+                    placeholder="Select type"
+                  />
                   <button type="button" onClick={addLearningResource} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">

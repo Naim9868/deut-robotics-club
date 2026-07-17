@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 import FocusAreaIcon from '@/components/FocusAreaIcon';
 import { LUCIDE_CATEGORIES } from '@/components/FocusAreaIcon';
 
@@ -578,9 +579,12 @@ export default function ResearchPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Research Area</label>
-                  <select {...register('researchArea')} className={inputClass}>
-                    {researchAreas.map(a => <option key={a} value={a}>{a}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={watch('researchArea') || ''}
+                    onChange={(val) => setValue('researchArea', val)}
+                    options={researchAreas.map(a => ({ value: a, label: a }))}
+                    placeholder="Select research area"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -612,29 +616,55 @@ export default function ResearchPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <label className={labelClass}>Research Type</label>
-                  <select {...register('researchType')} className={inputClass}>
-                    <option value="experimental">Experimental</option><option value="theoretical">Theoretical</option>
-                    <option value="computational">Computational</option><option value="review">Review</option><option value="survey">Survey</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('researchType') || ''}
+                    onChange={(val) => setValue('researchType', val)}
+                    options={[
+                      { value: 'experimental', label: 'Experimental' },
+                      { value: 'theoretical', label: 'Theoretical' },
+                      { value: 'computational', label: 'Computational' },
+                      { value: 'review', label: 'Review' },
+                      { value: 'survey', label: 'Survey' },
+                    ]}
+                    placeholder="Select type"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Level</label>
-                  <select {...register('researchLevel')} className={inputClass}>
-                    <option value="Undergraduate">Undergraduate</option><option value="Graduate">Graduate</option>
-                    <option value="Faculty">Faculty</option><option value="Club">Club</option><option value="Collaborative">Collaborative</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('researchLevel') || ''}
+                    onChange={(val) => setValue('researchLevel', val)}
+                    options={[
+                      { value: 'Undergraduate', label: 'Undergraduate' },
+                      { value: 'Graduate', label: 'Graduate' },
+                      { value: 'Faculty', label: 'Faculty' },
+                      { value: 'Club', label: 'Club' },
+                      { value: 'Collaborative', label: 'Collaborative' },
+                    ]}
+                    placeholder="Select level"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Difficulty</label>
-                  <select {...register('difficulty')} className={inputClass}>
-                    <option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('difficulty') || ''}
+                    onChange={(val) => setValue('difficulty', val)}
+                    options={[
+                      { value: 'Beginner', label: 'Beginner' },
+                      { value: 'Intermediate', label: 'Intermediate' },
+                      { value: 'Advanced', label: 'Advanced' },
+                    ]}
+                    placeholder="Select difficulty"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Status</label>
-                  <select {...register('status')} className={inputClass}>
-                    {statusOptions.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={watch('status') || ''}
+                    onChange={(val) => setValue('status', val)}
+                    options={statusOptions}
+                    placeholder="Select status"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -648,9 +678,16 @@ export default function ResearchPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Visibility</label>
-                  <select {...register('visibility')} className={inputClass}>
-                    <option value="public">Public</option><option value="members">Members Only</option><option value="private">Private</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('visibility') || ''}
+                    onChange={(val) => setValue('visibility', val)}
+                    options={[
+                      { value: 'public', label: 'Public' },
+                      { value: 'members', label: 'Members Only' },
+                      { value: 'private', label: 'Private' },
+                    ]}
+                    placeholder="Select visibility"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -660,9 +697,16 @@ export default function ResearchPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Creator Type</label>
-                  <select {...register('createdByType')} className={inputClass}>
-                    <option value="admin">Admin</option><option value="member">Member</option><option value="faculty">Faculty</option>
-                  </select>
+                  <CustomSelect
+                    value={watch('createdByType') || ''}
+                    onChange={(val) => setValue('createdByType', val)}
+                    options={[
+                      { value: 'admin', label: 'Admin' },
+                      { value: 'member', label: 'Member' },
+                      { value: 'faculty', label: 'Faculty' },
+                    ]}
+                    placeholder="Select creator type"
+                  />
                 </div>
                 <div>
                   <label className={labelClass}>Start Date</label>
@@ -779,9 +823,12 @@ export default function ResearchPage() {
                 <h3 className="text-sm font-bold text-foreground mb-3">Add Researcher</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                   <input value={researcherName} onChange={(e) => setResearcherName(e.target.value)} placeholder="Full Name *" className={inputClass} />
-                  <select value={researcherRole} onChange={(e) => setResearcherRole(e.target.value)} className={inputClass}>
-                    {researcherRoles.map(r => <option key={r} value={r}>{r}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={researcherRole}
+                    onChange={(val) => setResearcherRole(val)}
+                    options={researcherRoles.map(r => ({ value: r, label: r }))}
+                    placeholder="Select role"
+                  />
                   <input value={researcherDesig} onChange={(e) => setResearcherDesig(e.target.value)} placeholder="Designation" className={inputClass} />
                   <input value={researcherDept} onChange={(e) => setResearcherDept(e.target.value)} placeholder="Department" className={inputClass} />
                 </div>
@@ -856,9 +903,12 @@ export default function ResearchPage() {
                   <h3 className="text-sm font-bold text-foreground mb-3">Add Faculty</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
                     <input value={facultyName} onChange={(e) => setFacultyName(e.target.value)} placeholder="Faculty Name *" className={inputClass} />
-                    <select value={facultyRole} onChange={(e) => setFacultyRole(e.target.value)} className={inputClass}>
-                      {facultyRoles.map(r => <option key={r} value={r}>{r}</option>)}
-                    </select>
+                    <CustomSelect
+                      value={facultyRole}
+                      onChange={(val) => setFacultyRole(val)}
+                      options={facultyRoles.map(r => ({ value: r, label: r }))}
+                      placeholder="Select role"
+                    />
                     <input value={facultyDept} onChange={(e) => setFacultyDept(e.target.value)} placeholder="Department" className={inputClass} />
                     <input value={facultyEmail} onChange={(e) => setFacultyEmail(e.target.value)} placeholder="Email" type="email" className={inputClass} />
                   </div>
@@ -915,10 +965,13 @@ export default function ResearchPage() {
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                   </button>
                   <input value={techName} onChange={(e) => setTechName(e.target.value)} placeholder="Name *" className={`${inputClass} flex-1`} />
-                  <select value={techCategory} onChange={(e) => setTechCategory(e.target.value)} className={`${inputClass} flex-1`}>
-                    <option value="">Category</option>
-                    {techCategories.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={techCategory}
+                    onChange={(val) => setTechCategory(val)}
+                    options={[{ value: '', label: 'Category' }, ...techCategories.map(c => ({ value: c, label: c }))]}
+                    placeholder="Select category"
+                    className="flex-1"
+                  />
                   <button type="button" onClick={addTechnology} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
                 {pendingTechIcon && (
@@ -1030,9 +1083,12 @@ export default function ResearchPage() {
                   <input type="number" value={pubYear || ''} onChange={(e) => setPubYear(e.target.value ? parseInt(e.target.value) : undefined)} placeholder="Year" className={inputClass} />
                   <input value={pubDoi} onChange={(e) => setPubDoi(e.target.value)} placeholder="DOI" className={inputClass} />
                   <input value={pubUrl} onChange={(e) => setPubUrl(e.target.value)} placeholder="URL" className={inputClass} />
-                  <select value={pubType} onChange={(e) => setPubType(e.target.value)} className={inputClass}>
-                    {pubTypes.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
-                  </select>
+                  <CustomSelect
+                    value={pubType}
+                    onChange={(val) => setPubType(val)}
+                    options={pubTypes.map(t => ({ value: t, label: t.replace(/_/g, ' ') }))}
+                    placeholder="Select type"
+                  />
                   <button type="button" onClick={addPublication} className="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 text-sm font-medium">Add</button>
                 </div>
                 {publications.length > 0 && (

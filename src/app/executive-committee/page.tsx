@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import ScrollReveal from '@/components/ScrollReveal';
 
 // ─── Types ────────────────────────────────────────────────────
@@ -55,7 +57,7 @@ function SocialIcon({ platform, url }: { platform: string; url: string }) {
 
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary transition-all text-muted hover:text-foreground"
+      className="w-8 h-8 rounded-lg bg-background/5 flex items-center justify-center hover:bg-primary transition-all text-muted hover:text-foreground"
       title={platform}>
       {icons[platform]}
     </a>
@@ -67,7 +69,6 @@ function SocialIcon({ platform, url }: { platform: string; url: string }) {
 export default function ExecutiveCommitteePage() {
   const [committees, setCommittees] = useState<Committee[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeYear, setActiveYear] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCommittees = async () => {
@@ -75,11 +76,6 @@ export default function ExecutiveCommitteePage() {
         const res = await fetch('/api/executive-committees');
         const data = await res.json();
         setCommittees(data);
-        // Set active year to the first (most recent) or current committee
-        if (data.length > 0) {
-          const current = data.find((c: Committee) => c.isCurrent);
-          setActiveYear(current ? current.committeeYear : data[0].committeeYear);
-        }
       } catch {
         // Silently fail
       } finally {
@@ -89,134 +85,131 @@ export default function ExecutiveCommitteePage() {
     fetchCommittees();
   }, []);
 
-  const activeCommittee = committees.find(c => c.committeeYear === activeYear);
-  const visibleMembers = activeCommittee?.members.filter(m => m.isVisible) || [];
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
-      </div>
+      <>
+        <Navbar activeSection="" />
+        <div className="min-h-screen bg-background flex items-center justify-center pt-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
+        </div>
+        <Footer />
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="pt-32 pb-12 sm:pt-40 sm:pb-16 container mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal animation="up">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4">
-              Executive <span className="text-primary">Committee</span>
-            </h1>
-            <p className="text-muted uppercase text-[10px] sm:text-xs font-bold tracking-[0.3em] max-w-xl mx-auto">
-              The leadership team driving DUET Robotics Club forward
-            </p>
-          </div>
-        </ScrollReveal>
-
-        {/* Year Tabs */}
-        {committees.length > 0 && (
-          <ScrollReveal animation="up" delay={100}>
-            <div className="flex justify-center gap-2 flex-wrap mb-8">
-              {committees.map((c) => (
-                <button
-                  key={c._id}
-                  onClick={() => setActiveYear(c.committeeYear)}
-                  className={`px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${
-                    activeYear === c.committeeYear
-                      ? 'bg-primary text-foreground'
-                      : 'bg-white/5 text-muted hover:bg-background/10 hover:text-foreground'
-                  }`}
-                >
-                  {c.committeeYear}
-                  {c.isCurrent && (
-                    <span className="ml-1.5 w-2 h-2 bg-green-400 rounded-full inline-block" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </ScrollReveal>
-        )}
-
-        {/* Committee Info */}
-        {activeCommittee && (
-          <ScrollReveal animation="up" delay={150}>
+    <>
+      <Navbar activeSection="" />
+      <Link href="/" className="fixed top-24 left-4 sm:left-8 z-50 bg-card/80 backdrop-blur-md border border-border rounded-full p-2 sm:p-3 text-muted hover:text-primary transition-colors shadow-lg">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </Link>
+      <div className="min-h-screen bg-background pt-20">
+        {/* Hero Section */}
+        <section className="py-12 sm:py-16 container mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal animation="up">
             <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-black text-foreground uppercase mb-2">
-                {activeCommittee.title}
-              </h2>
-              {activeCommittee.description && (
-                <p className="text-muted text-sm max-w-2xl mx-auto">{activeCommittee.description}</p>
-              )}
-              {activeCommittee.isCurrent && (
-                <span className="inline-block mt-3 px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full font-bold uppercase tracking-wider">
-                  Current Committee
-                </span>
-              )}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4">
+                Executive <span className="text-primary">Committee</span>
+              </h1>
+              <p className="text-muted uppercase text-[10px] sm:text-xs font-bold tracking-[0.3em] max-w-xl mx-auto">
+                The leadership team driving DUET Robotics Club forward
+              </p>
             </div>
           </ScrollReveal>
-        )}
-      </section>
+        </section>
 
-      {/* Members Grid */}
-      <section className="pb-20 sm:pb-24 container mx-auto px-4 sm:px-6 lg:px-8">
-        {visibleMembers.length === 0 ? (
-          <div className="text-center py-12 text-muted">
-            No members found for this committee.
+        {/* All Committees by Year */}
+        {committees.length === 0 ? (
+          <div className="text-center py-12 text-muted container mx-auto px-4">
+            No committees found.
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-            {visibleMembers
-              .sort((a, b) => a.displayOrder - b.displayOrder)
-              .map((member, idx) => (
-                <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 50}>
-                  <Link href={`/executive-committee/${member.slug}`}>
-                    <div className="group relative overflow-hidden aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
-                      {/* Profile Image */}
-                      {member.profilePhoto?.url ? (
-                        <img
-                          src={member.profilePhoto.url}
-                          alt={member.profilePhoto.alt || member.fullName}
-                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">
-                          {member.fullName.charAt(0)}
-                        </div>
-                      )}
-
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-
-                      {/* Info */}
-                      <div className="absolute bottom-0 left-0 p-3 sm:p-4 w-full">
-                        <p className="text-primary text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] mb-1 truncate">
-                          {member.designation}
-                        </p>
-                        <h3 className="text-xs sm:text-sm font-black text-foreground uppercase leading-tight line-clamp-2">
-                          {member.fullName}
-                        </h3>
-                        {(member.department || member.session) && (
-                          <p className="text-[7px] sm:text-[8px] text-muted uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            {member.department}{member.session && ` · ${member.session}`}
-                          </p>
+          <div className="space-y-16 sm:space-y-20 pb-20">
+            {committees.map((committee, cIdx) => {
+              const visibleMembers = committee.members.filter(m => m.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+              return (
+                <section key={committee._id} className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  <ScrollReveal animation="up" delay={cIdx * 100}>
+                    <div className="text-center mb-8">
+                      <div className="flex items-center justify-center gap-3 mb-2">
+                        <h2 className="text-3xl sm:text-4xl font-black text-foreground">
+                          {committee.committeeYear}
+                        </h2>
+                        {committee.isCurrent && (
+                          <span className="px-2.5 py-1 bg-green-500/20 text-green-400 text-xs rounded-full font-bold uppercase tracking-wider">
+                            Current
+                          </span>
                         )}
                       </div>
-
-                      {/* Featured Badge */}
-                      {member.featured && (
-                        <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-yellow-500/90 text-black text-[8px] rounded font-bold">
-                          Featured
-                        </div>
+                      <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">{committee.title}</h3>
+                      {committee.description && (
+                        <p className="text-muted text-sm max-w-2xl mx-auto">{committee.description}</p>
                       )}
                     </div>
-                  </Link>
-                </ScrollReveal>
-              ))}
+                  </ScrollReveal>
+
+                  {visibleMembers.length === 0 ? (
+                    <div className="text-center py-8 text-muted text-sm">
+                      No members in this committee.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                      {visibleMembers.map((member, idx) => (
+                        <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 50}>
+                          <Link href={`/executive-committee/${member.slug}`}>
+                            <div className="group relative overflow-hidden aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
+                              {/* Profile Image */}
+                              {member.profilePhoto?.url ? (
+                                <img
+                                  src={member.profilePhoto.url}
+                                  alt={member.profilePhoto.alt || member.fullName}
+                                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">
+                                  {member.fullName.charAt(0)}
+                                </div>
+                              )}
+
+                              {/* Gradient Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+
+                              {/* Info */}
+                              <div className="absolute bottom-0 left-0 p-3 sm:p-4 w-full">
+                                <p className="text-primary text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] mb-1 truncate">
+                                  {member.designation}
+                                </p>
+                                <h3 className="text-xs sm:text-sm font-black text-white uppercase leading-tight line-clamp-2">
+                                  {member.fullName}
+                                </h3>
+                                {(member.department || member.session) && (
+                                  <p className="text-[7px] sm:text-[8px] text-white/60 uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    {member.department}{member.session && ` · ${member.session}`}
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Featured Badge */}
+                              {member.featured && (
+                                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-yellow-500/90 text-black text-[8px] rounded font-bold">
+                                  Featured
+                                </div>
+                              )}
+                            </div>
+                          </Link>
+                        </ScrollReveal>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              );
+            })}
           </div>
         )}
-      </section>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }

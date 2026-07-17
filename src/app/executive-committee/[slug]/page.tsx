@@ -49,7 +49,7 @@ function SocialLink({ platform, url }: { platform: string; url: string }) {
   };
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className="flex items-center gap-2 px-4 py-2.5 bg-white/5 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 hover:text-foreground text-sm">
+      className="flex items-center gap-2 px-4 py-2.5 bg-background/5 rounded-lg hover:bg-primary/20 transition-colors text-muted hover:text-foreground text-sm">
       <span className="font-medium">{labels[platform] || platform}</span>
       <svg className="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -105,6 +105,13 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Back Button */}
+      <Link href="/executive-committee" className="fixed top-24 left-4 sm:left-8 z-50 bg-card/80 backdrop-blur-md border border-border rounded-full p-2 sm:p-3 text-muted hover:text-primary transition-colors shadow-lg">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </Link>
+
       {/* Cover Photo */}
       <div className="relative h-64 sm:h-80 md:h-96">
         {member.coverPhoto?.url ? (
@@ -163,7 +170,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
                 <ScrollReveal animation="up" delay={100}>
                   <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
                     <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">About</h2>
-                    <div className="prose prose-invert prose-sm max-w-none text-muted leading-relaxed"
+                    <div className="prose prose-invert prose-sm max-w-none text-foreground/80 leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: member.fullBiography }} />
                   </div>
                 </ScrollReveal>
@@ -173,7 +180,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
                 <ScrollReveal animation="up" delay={100}>
                   <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
                     <h2 className="text-lg font-black text-foreground uppercase tracking-wider mb-4">About</h2>
-                    <p className="text-muted leading-relaxed">{member.shortBio}</p>
+                    <p className="text-foreground/80 leading-relaxed">{member.shortBio}</p>
                   </div>
                 </ScrollReveal>
               )}
@@ -235,24 +242,24 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
                     {member.department && (
                       <div>
                         <p className="text-muted text-xs uppercase">Department</p>
-                        <p className="text-gray-300">{member.department}</p>
+                        <p className="text-muted">{member.department}</p>
                       </div>
                     )}
                     {member.session && (
                       <div>
                         <p className="text-muted text-xs uppercase">Session</p>
-                        <p className="text-gray-300">{member.session}</p>
+                        <p className="text-muted">{member.session}</p>
                       </div>
                     )}
                     {member.studentId && (
                       <div>
                         <p className="text-muted text-xs uppercase">Student ID</p>
-                        <p className="text-gray-300">{member.studentId}</p>
+                        <p className="text-muted">{member.studentId}</p>
                       </div>
                     )}
                     <div>
                       <p className="text-muted text-xs uppercase">Committee</p>
-                      <p className="text-gray-300">{committee.title}</p>
+                      <p className="text-muted">{committee.title}</p>
                     </div>
                   </div>
                 </div>
@@ -296,7 +303,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ slug: s
               {/* Back Link */}
               <ScrollReveal animation="up" delay={250}>
                 <Link href="/executive-committee"
-                  className="block text-center px-4 py-3 bg-white/5 rounded-lg text-muted hover:text-foreground hover:bg-background/10 transition-all text-sm font-medium">
+                  className="block text-center px-4 py-3 bg-background/5 rounded-lg text-muted hover:text-foreground hover:bg-background/10 transition-all text-sm font-medium">
                   &larr; All Committees
                 </Link>
               </ScrollReveal>

@@ -139,6 +139,7 @@ const Stats: React.FC = () => {
               <div className="text-center group w-full">
                 <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-black/80 dark:text-white/80 mb-2 sm:mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl tabular-nums">
                   <CountUp end={stat.value} />
+                  <span>{stat.suffix}</span>
                 </div>
                 <div className="text-black/80 dark:text-white/80 uppercase font-black tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] text-[8px] sm:text-[10px] md:text-xs lg:text-sm">
                   {stat.label}

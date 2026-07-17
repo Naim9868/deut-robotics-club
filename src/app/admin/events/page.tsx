@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { CalendarIcon, MapPinIcon, LinkIcon } from '@heroicons/react/24/outline';
 
@@ -291,15 +292,12 @@ export default function EventsPage() {
               </div>
               
               <div>
-                <select 
-                  {...register('date.month', { required: 'Month is required' })} 
-                  className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
-                >
-                  <option value="">Select Month</option>
-                  {months.map(month => (
-                    <option key={month} value={month}>{month}</option>
-                  ))}
-                </select>
+                <CustomSelect
+                  value={watch('date.month') || ''}
+                  onChange={(val) => setValue('date.month', val)}
+                  options={months.map(m => ({ value: m, label: m }))}
+                  placeholder="Select month"
+                />
                 {errors.date?.month && (
                   <p className="mt-1 text-xs text-red-500">{errors.date.month.message}</p>
                 )}

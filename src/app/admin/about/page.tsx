@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import CustomSelect from '@/components/admin/CustomSelect';
 
 // ─── Constants ────────────────────────────────────────────────
 
@@ -712,14 +713,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <input value={item.name || ''} onChange={(e) => update('name', e.target.value)} className={smallInputClass} placeholder="Name" />
-            <select value={item.tier || ''} onChange={(e) => update('tier', e.target.value)} className={smallInputClass}>
-              <option value="">Select tier</option>
-              <option value="platinum">Platinum</option>
-              <option value="gold">Gold</option>
-              <option value="silver">Silver</option>
-              <option value="bronze">Bronze</option>
-              <option value="partner">Partner</option>
-            </select>
+            <CustomSelect value={item.tier || ''} onChange={(val) => update('tier', val)} options={[{value:'Platinum',label:'Platinum'},{value:'Gold',label:'Gold'},{value:'Silver',label:'Silver'},{value:'Bronze',label:'Bronze'},{value:'Partner',label:'Partner'}]} placeholder="Select tier" />
           </div>
           <input value={item.website || ''} onChange={(e) => update('website', e.target.value)} className={smallInputClass} placeholder="Website URL" />
           <div>
@@ -741,10 +735,7 @@ function ItemForm({ sectionKey, data, update }: { sectionKey: string; data: Reco
           </div>
           <div className="grid grid-cols-2 gap-3">
             <input value={item.alt || ''} onChange={(e) => update('alt', e.target.value)} className={smallInputClass} placeholder="Alt text" />
-            <select value={item.type || 'image'} onChange={(e) => update('type', e.target.value)} className={smallInputClass}>
-              <option value="image">Image</option>
-              <option value="video">Video</option>
-            </select>
+            <CustomSelect value={item.type || ''} onChange={(val) => update('type', val)} options={[{value:'Image',label:'Image'},{value:'Video',label:'Video'}]} placeholder="Select type" />
           </div>
           <input value={item.caption || ''} onChange={(e) => update('caption', e.target.value)} className={smallInputClass} placeholder="Caption" />
           {commonFields}

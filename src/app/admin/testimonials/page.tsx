@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
 
@@ -310,16 +311,18 @@ export default function TestimonialsPage() {
               <label className="block text-xs font-black text-muted uppercase mb-2">
                 Rating
               </label>
-              <select 
-                {...register('rating')} 
-                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
-              >
-                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
-                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
-                <option value="3">⭐⭐⭐ 3 Stars</option>
-                <option value="2">⭐⭐ 2 Stars</option>
-                <option value="1">⭐ 1 Star</option>
-              </select>
+              <CustomSelect
+                value={String(watch('rating') || '')}
+                onChange={(val) => setValue('rating', Number(val) as 1 | 2 | 3 | 4 | 5)}
+                options={[
+                  { value: '5', label: '⭐⭐⭐⭐⭐ 5 Stars' },
+                  { value: '4', label: '⭐⭐⭐⭐ 4 Stars' },
+                  { value: '3', label: '⭐⭐⭐ 3 Stars' },
+                  { value: '2', label: '⭐⭐ 2 Stars' },
+                  { value: '1', label: '⭐ 1 Star' }
+                ]}
+                placeholder="Select rating"
+              />
             </div>
 
             <div>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
@@ -249,15 +250,17 @@ export default function SponsorsPage() {
               <label className="block text-xs font-black text-muted uppercase mb-2">
                 Category
               </label>
-              <select 
-                {...register('category')} 
-                className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
-              >
-                <option value="PLATINUM">🥇 PLATINUM</option>
-                <option value="GOLD">🥈 GOLD</option>
-                <option value="SILVER">🥉 SILVER</option>
-                <option value="PARTNER">🤝 PARTNER</option>
-              </select>
+              <CustomSelect
+                value={watch('category') || ''}
+                onChange={(val) => setValue('category', val as 'PLATINUM' | 'GOLD' | 'SILVER' | 'PARTNER')}
+                options={[
+                  { value: 'PLATINUM', label: '🏅 PLATINUM' },
+                  { value: 'GOLD', label: '🥇 GOLD' },
+                  { value: 'SILVER', label: '🥈 SILVER' },
+                  { value: 'PARTNER', label: '🤝 PARTNER' }
+                ]}
+                placeholder="Select tier"
+              />
             </div>
           </div>
 

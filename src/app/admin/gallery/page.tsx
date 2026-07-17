@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 
 interface GalleryForm {
   title: string;
@@ -123,13 +124,18 @@ export default function GalleryPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <input {...register('title')} placeholder="Title" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
-            <select {...register('category')} className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground">
-              <option value="Events">Events</option>
-              <option value="Workshops">Workshops</option>
-              <option value="Competitions">Competitions</option>
-              <option value="Team">Team</option>
-              <option value="Lab">Lab</option>
-            </select>
+            <CustomSelect
+              value={watch('category') || ''}
+              onChange={(val) => setValue('category', val)}
+              options={[
+                { value: 'Events', label: 'Events' },
+                { value: 'Workshops', label: 'Workshops' },
+                { value: 'Competitions', label: 'Competitions' },
+                { value: 'Team', label: 'Team' },
+                { value: 'Lab', label: 'Lab' },
+              ]}
+              placeholder="Select category"
+            />
             <input type="date" {...register('date')} className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
           </div>
 

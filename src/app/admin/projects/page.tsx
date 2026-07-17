@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import ImageUpload from '@/components/admin/ImageUpload';
+import CustomSelect from '@/components/admin/CustomSelect';
 import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { CodeBracketIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
@@ -423,32 +424,19 @@ export default function ProjectsPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <label className={labelClass}>Category *</label>
-                  <select {...register('category', { required: 'Required' })} className={inputClass}>
-                    <option value="COMBAT">COMBAT</option><option value="AI">AI</option>
-                    <option value="AERO">AERO</option><option value="AUTO">AUTO</option><option value="OTHER">OTHER</option>
-                  </select>
+                  <CustomSelect value={watch('category') || ''} onChange={(val) => setValue('category', val)} options={[{value:'COMBAT',label:'COMBAT'},{value:'AI',label:'AI'},{value:'AERO',label:'AERO'},{value:'AUTO',label:'AUTO'},{value:'OTHER',label:'OTHER'}]} placeholder="Select category" />
                 </div>
                 <div>
                   <label className={labelClass}>Project Type</label>
-                  <select {...register('projectType')} className={inputClass}>
-                    <option value="team">Team</option><option value="individual">Individual</option><option value="club">Club</option>
-                  </select>
+                  <CustomSelect value={watch('projectType') || ''} onChange={(val) => setValue('projectType', val)} options={[{value:'Team',label:'Team'},{value:'Individual',label:'Individual'},{value:'Club',label:'Club'}]} placeholder="Select type" />
                 </div>
                 <div>
                   <label className={labelClass}>Difficulty</label>
-                  <select {...register('difficulty')} className={inputClass}>
-                    <option value="beginner">Beginner</option><option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option><option value="expert">Expert</option>
-                  </select>
+                  <CustomSelect value={watch('difficulty') || ''} onChange={(val) => setValue('difficulty', val)} options={[{value:'Beginner',label:'Beginner'},{value:'Intermediate',label:'Intermediate'},{value:'Advanced',label:'Advanced'},{value:'Expert',label:'Expert'}]} placeholder="Select difficulty" />
                 </div>
                 <div>
                   <label className={labelClass}>Status</label>
-                  <select {...register('status')} className={inputClass}>
-                    <option value="draft">Draft</option><option value="submitted">Submitted</option>
-                    <option value="under_review">Under Review</option><option value="approved">Approved</option>
-                    <option value="ongoing">Ongoing</option><option value="completed">Completed</option>
-                    <option value="archived">Archived</option>
-                  </select>
+                  <CustomSelect value={watch('status') || ''} onChange={(val) => setValue('status', val)} options={[{value:'draft',label:'Draft'},{value:'submitted',label:'Submitted'},{value:'under_review',label:'Under Review'},{value:'approved',label:'Approved'},{value:'ongoing',label:'Ongoing'},{value:'completed',label:'Completed'},{value:'archived',label:'Archived'}]} placeholder="Select status" />
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -458,9 +446,7 @@ export default function ProjectsPage() {
                 </div>
                 <div>
                   <label className={labelClass}>Visibility</label>
-                  <select {...register('visibility')} className={inputClass}>
-                    <option value="public">Public</option><option value="members">Members Only</option><option value="private">Private</option>
-                  </select>
+                  <CustomSelect value={watch('visibility') || ''} onChange={(val) => setValue('visibility', val)} options={[{value:'public',label:'Public'},{value:'members_only',label:'Members Only'},{value:'private',label:'Private'}]} placeholder="Select visibility" />
                 </div>
                 <div>
                   <label className={labelClass}>Latency</label>
