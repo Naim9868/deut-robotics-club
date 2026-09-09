@@ -154,55 +154,83 @@ export default function ExecutiveCommitteePage() {
                     <div className="text-center py-8 text-muted text-sm">
                       No members in this committee.
                     </div>
-                  ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-                      {visibleMembers.map((member, idx) => (
-                        <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 50}>
-                          <Link href={`/executive-committee/${member.slug}`}>
-                            <div className="group relative overflow-hidden aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
-                              {/* Profile Image */}
-                              {member.profilePhoto?.url ? (
-                                <img
-                                  src={member.profilePhoto.url}
-                                  alt={member.profilePhoto.alt || member.fullName}
-                                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">
-                                  {member.fullName.charAt(0)}
-                                </div>
-                              )}
+                  ) : (() => {
+                    const isAdvisor = (d: string) => d === 'Faculty Advisor' || d === 'Advisor';
+                    const advisors = visibleMembers.filter(m => isAdvisor(m.designation));
+                    const president = visibleMembers.find(m => m.designation === 'President');
+                    const genSecretary = visibleMembers.find(m => m.designation === 'General Secretary');
+                    const topRow = [president, genSecretary].filter(Boolean) as CommitteeMember[];
+                    const seniorVP = visibleMembers.find(m => m.designation === 'Senior Vice President');
+                    const vicePresident = visibleMembers.find(m => m.designation === 'Vice President');
+                    const asstGS = visibleMembers.find(m => m.designation === 'Asst. General Secretary');
+                    const secondRow = [seniorVP, vicePresident, asstGS].filter(Boolean) as CommitteeMember[];
+                    const topSlugs = new Set([...topRow, ...secondRow, ...advisors].map(m => m._id));
+                    const remaining = visibleMembers
+                      .filter(m => !topSlugs.has(m._id))
+                      .sort((a, b) => {
+                        if (a.featured && !b.featured) return -1;
+                        if (!a.featured && b.featured) return 1;
+                        return a.displayOrder - b.displayOrder;
+                      });
 
-                              {/* Gradient Overlay */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+                    const renderCard = (member: CommitteeMember, sizeClass?: string) => (
+                      <Link key={member._id} href={`/executive-committee/${member.slug}`}>
+                        <div className={`group relative overflow-hidden bg-card border border-border rounded-xl sm:rounded-2xl hover:border-primary/50 transition-all duration-500 shadow-lg hover:shadow-primary/10 hover:-translate-y-1 ${sizeClass || 'aspect-[3/4]'}`}>
+                          {member.profilePhoto?.url ? (
+                            <img src={member.profilePhoto.url} alt={member.profilePhoto.alt || member.fullName} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-4xl text-muted font-black">{member.fullName.charAt(0)}</div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-70 group-hover:opacity-60 transition-opacity" />
+                          <div className="absolute bottom-0 left-0 p-3 sm:p-4 w-full">
+                            <p className="text-primary text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] mb-1 truncate">{member.designation}</p>
+                            <h3 className="text-xs sm:text-sm font-black text-white uppercase leading-tight line-clamp-2">{member.fullName}</h3>
+                            {(member.department || member.session) && (
+                              <p className="text-[7px] sm:text-[8px] text-white/60 uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                {member.department}{member.session && ` · ${member.session}`}
+                              </p>
+                            )}
+                          </div>
+                          {member.featured && (
+                            <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-yellow-500/90 text-black text-[8px] rounded font-bold">Featured</div>
+                          )}
+                        </div>
+                      </Link>
+                    );
 
-                              {/* Info */}
-                              <div className="absolute bottom-0 left-0 p-3 sm:p-4 w-full">
-                                <p className="text-primary text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] mb-1 truncate">
-                                  {member.designation}
-                                </p>
-                                <h3 className="text-xs sm:text-sm font-black text-white uppercase leading-tight line-clamp-2">
-                                  {member.fullName}
-                                </h3>
-                                {(member.department || member.session) && (
-                                  <p className="text-[7px] sm:text-[8px] text-white/60 uppercase tracking-wider mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {member.department}{member.session && ` · ${member.session}`}
-                                  </p>
-                                )}
-                              </div>
-
-                              {/* Featured Badge */}
-                              {member.featured && (
-                                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-yellow-500/90 text-black text-[8px] rounded font-bold">
-                                  Featured
-                                </div>
-                              )}
+                    return (
+                      <div className="space-y-8">
+                        {topRow.length > 0 && (
+                          <div className="flex justify-center gap-4 sm:gap-6 md:gap-8">
+                            {topRow.map(m => <div key={m._id} className="w-[45%] sm:w-[40%] md:w-[30%] lg:w-[22%]">{renderCard(m)}</div>)}
+                          </div>
+                        )}
+                        {secondRow.length > 0 && (
+                          <div className="flex justify-center gap-3 sm:gap-4 md:gap-6">
+                            {secondRow.map(m => <div key={m._id} className="w-[30%] sm:w-[28%] md:w-[22%] lg:w-[18%]">{renderCard(m)}</div>)}
+                          </div>
+                        )}
+                        {remaining.length > 0 && (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                            {remaining.map((m, idx) => (
+                              <ScrollReveal key={m._id || idx} animation="scale" delay={idx * 50}>{renderCard(m)}</ScrollReveal>
+                            ))}
+                          </div>
+                        )}
+                        {advisors.length > 0 && (
+                          <div className="pt-8 border-t border-border">
+                            <div className="text-center mb-6">
+                              <p className="text-primary text-[10px] font-black uppercase tracking-[0.3em] mb-2">Let&apos;s Introduce Our Club Advisor</p>
+                              <h3 className="text-xl sm:text-2xl font-black uppercase section-title after:mx-auto">Our Guiding Force</h3>
                             </div>
-                          </Link>
-                        </ScrollReveal>
-                      ))}
-                    </div>
-                  )}
+                            <div className="flex justify-center gap-4 sm:gap-6 md:gap-8">
+                              {advisors.map(m => <div key={m._id} className="w-[40%] sm:w-[35%] md:w-[25%] lg:w-[20%]">{renderCard(m)}</div>)}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </section>
               );
             })}

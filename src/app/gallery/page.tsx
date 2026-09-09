@@ -15,6 +15,7 @@ interface GalleryData {
     url: string;
     alt?: string;
   };
+  videoUrl?: string;
   category?: string;
   date?: string;
   featured: boolean;
@@ -80,6 +81,17 @@ export default function GalleryPage() {
     setSelectedImage(null);
     document.body.style.overflow = 'unset';
   }, []);
+
+  const getEmbedUrl = (url: string): string => {
+    if (!url) return '';
+    const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/);
+    if (youtubeMatch) return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+    const facebookMatch = url.match(/facebook\.com\/.*\/videos\/(\d+)/);
+    if (facebookMatch) return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}`;
+    return url;
+  };
 
   const goToPrevious = useCallback(() => {
     if (!selectedImage || filteredItems.length === 0) return;
@@ -148,7 +160,7 @@ export default function GalleryPage() {
     );
   }
 
-  const displayItems = galleryItems.length > 0 ? galleryItems : [
+  const displayItems: GalleryData[] = galleryItems.length > 0 ? galleryItems : [
     { 
       _id: '1',
       title: 'Midnight Lab Session', 
@@ -285,28 +297,44 @@ export default function GalleryPage() {
                   onClick={() => openLightbox(item)}
                   className="group cursor-pointer relative aspect-square overflow-hidden bg-card rounded-xl sm:rounded-2xl border border-border/5 hover:border-primary/30 transition-colors duration-200"
                 >
-                  <img
-                    src={item.image?.url}
-                    alt={item.image?.alt || item.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
-                  />
-                  
-                  {/* Overlay - always visible on mobile, hover on desktop */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-4">
-                      <h3 className="text-white font-bold text-[10px] sm:text-sm truncate">{item.title}</h3>
-                      {item.date && (
-                        <p className="text-muted text-[8px] sm:text-xs mt-0.5 sm:mt-1">
-                          {new Date(item.date).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
-                        </p>
+                  {item.videoUrl ? (
+                    <div className="w-full h-full relative">
+                      {item.image?.url ? (
+                        <img
+                          src={item.image.url}
+                          alt={item.image?.alt || item.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center">
+                          <svg className="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </div>
                       )}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                          <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ) : item.image?.url ? (
+                    <img
+                      src={item.image.url}
+                      alt={item.image?.alt || item.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                      <svg className="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
 
                   {/* Category tag */}
                   {item.category && (
@@ -336,7 +364,7 @@ export default function GalleryPage() {
               <svg className="w-20 h-20 mx-auto mb-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <p>No images found in this category.</p>
+              <p>No items found in this category.</p>
             </div>
           )}
         </div>
@@ -400,13 +428,23 @@ export default function GalleryPage() {
             className="relative w-full max-w-7xl mx-auto flex flex-col max-h-[95vh] sm:max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image */}
+            {/* Image / Video */}
             <div className="flex-1 flex items-center justify-center p-2 sm:p-4 min-h-0">
-              <img
-                src={selectedImage.image?.url}
-                alt={selectedImage.image?.alt || selectedImage.title}
-                className="max-h-[55vh] sm:max-h-[70vh] w-auto max-w-full object-contain rounded-lg sm:rounded-2xl"
-              />
+              {selectedImage.videoUrl ? (
+                <iframe
+                  src={getEmbedUrl(selectedImage.videoUrl)}
+                  className="w-full max-h-[55vh] sm:max-h-[70vh] aspect-video rounded-lg sm:rounded-2xl"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={selectedImage.title}
+                />
+              ) : selectedImage.image?.url ? (
+                <img
+                  src={selectedImage.image.url}
+                  alt={selectedImage.image?.alt || selectedImage.title}
+                  className="max-h-[55vh] sm:max-h-[70vh] w-auto max-w-full object-contain rounded-lg sm:rounded-2xl"
+                />
+              ) : null}
             </div>
 
             {/* Description below image on mobile, overlay on desktop */}

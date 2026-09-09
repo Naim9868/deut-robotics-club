@@ -11,6 +11,7 @@ interface GalleryForm {
   title: string;
   description: string;
   image: { url: string; alt: string; publicId?: string };
+  videoUrl: string;
   category: string;
   tags: string[];
   date: string;
@@ -32,6 +33,7 @@ export default function GalleryPage() {
     defaultValues: {
       title: '',
       description: '',
+      videoUrl: '',
       category: 'Events',
       tags: [],
       date: new Date().toISOString().split('T')[0],
@@ -59,16 +61,21 @@ export default function GalleryPage() {
 
   const onSubmit = async (data: GalleryForm) => {
     try {
+      const payload = {
+        ...data,
+        image: data.image || { url: '', alt: data.title || '' },
+      };
       const res = await fetch(`/api/gallery${editingId ? `/${editingId}` : ''}`, {
         method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
         toast.success(editingId ? 'Updated' : 'Created');
         reset();
         setEditingId(null);
+        setCurrentImageUrl('');
         fetchItems();
       }
     } catch (error) {
@@ -98,6 +105,12 @@ export default function GalleryPage() {
   const handleEdit = (item: any) => {
     setEditingId(item._id);
     reset(item);
+    setCurrentImageUrl(item.image?.url || '');
+  };
+
+  const handleRemoveImage = () => {
+    setValue('image', { url: '', alt: '' });
+    setCurrentImageUrl('');
   };
 
   const handleDelete = async (id: string) => {
@@ -120,7 +133,7 @@ export default function GalleryPage() {
       <h1 className="text-4xl font-black text-foreground">Gallery</h1>
 
       <div className="bg-card border border-border rounded-2xl p-8">
-        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit' : 'Add'} Image</h2>
+        <h2 className="text-xl font-bold text-foreground mb-6">{editingId ? 'Edit' : 'Add'} Gallery Item</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <input {...register('title')} placeholder="Title" className="bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" required />
@@ -141,20 +154,52 @@ export default function GalleryPage() {
 
           <textarea {...register('description')} placeholder="Description" rows={2} className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground" />
 
+          <div className="border-t border-border pt-4">
+            <label className="text-xs font-black text-muted uppercase block mb-2">
+              Video URL (Optional)
+            </label>
+            <input
+              {...register('videoUrl')}
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=... or https://vimeo.com/..."
+              className="w-full bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary"
+            />
+            <p className="text-xs text-muted mt-1">
+              Supports YouTube, Vimeo, and Facebook videos. Leave empty for image-only gallery items.
+            </p>
+          </div>
+
           {/* Image Upload with Toggle */}
           <div className="border-t border-border pt-4">
             <div className="flex items-center justify-between mb-4">
               <label className="text-xs font-black text-muted uppercase">
-                Project Image
+                Thumbnail Image
               </label>
-              <button
-                type="button"
-                onClick={() => setUseImageLink(!useImageLink)}
-                className="text-xs text-primary hover:underline"
-              >
-                {useImageLink ? 'Use Upload' : 'Use Image Link'}
-              </button>
+              <div className="flex items-center gap-3">
+                {currentImageUrl && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="text-xs text-red-500 hover:underline"
+                  >
+                    Remove Image
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setUseImageLink(!useImageLink)}
+                  className="text-xs text-primary hover:underline"
+                >
+                  {useImageLink ? 'Use Upload' : 'Use Image Link'}
+                </button>
+              </div>
             </div>
+
+            {currentImageUrl && (
+              <div className="mb-3 relative inline-block">
+                <img src={currentImageUrl} alt="Preview" className="h-32 rounded-lg object-cover" />
+              </div>
+            )}
 
             {useImageLink ? (
               <div>
@@ -196,7 +241,7 @@ export default function GalleryPage() {
 
           <div className="flex gap-2">
             <button type="submit" className="px-6 py-2 bg-primary text-foreground rounded-lg">{editingId ? 'Update' : 'Create'}</button>
-            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); }} className="px-6 py-2 border border-border text-muted rounded-lg">Cancel</button>}
+            {editingId && <button type="button" onClick={() => { setEditingId(null); reset(); setCurrentImageUrl(''); }} className="px-6 py-2 border border-border text-muted rounded-lg">Cancel</button>}
           </div>
         </form>
       </div>
@@ -204,7 +249,26 @@ export default function GalleryPage() {
       <div className="columns-2 md:columns-3 gap-4">
         {items.map((item) => (
           <div key={item._id} className="break-inside-avoid mb-4 relative group">
-            <img src={item.image?.url} alt={item.title} className="w-full rounded-lg" />
+            <div className="relative">
+              {item.image?.url ? (
+                <img src={item.image.url} alt={item.title} className="w-full rounded-lg" />
+              ) : (
+                <div className="w-full aspect-video bg-muted rounded-lg flex items-center justify-center">
+                  <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              )}
+              {item.videoUrl && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
+                  <div className="w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
               <button onClick={() => handleEdit(item)} className="px-3 py-1 bg-blue-500 text-foreground text-xs rounded">Edit</button>
               <button onClick={() => handleDelete(item._id)} className="px-3 py-1 bg-red-500 text-foreground text-xs rounded">Delete</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import ScrollReveal from './ScrollReveal';
 
@@ -10,6 +10,7 @@ interface GalleryData {
     url: string;
     alt?: string;
   };
+  videoUrl?: string;
   category?: string;
   date?: string;
   featured: boolean;
@@ -17,10 +18,23 @@ interface GalleryData {
   isActive: boolean;
 }
 
+const getEmbedUrl = (url: string): string => {
+  if (!url) return '';
+  const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/);
+  if (youtubeMatch) return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  const facebookMatch = url.match(/facebook\.com\/.*\/videos\/(\d+)/);
+  if (facebookMatch) return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}`;
+  return url;
+};
+
 const Gallery: React.FC = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<GalleryData | null>(null);
+  const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
 
   const formatDate = (dateString?: string): string => {
     if (!dateString) return '';
@@ -39,6 +53,26 @@ const Gallery: React.FC = () => {
     }
   };
 
+  const openItem = useCallback((item: GalleryData) => {
+    setSelectedItem(item);
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const closeItem = useCallback(() => {
+    setSelectedItem(null);
+    document.body.style.overflow = 'unset';
+  }, []);
+
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedItem) {
+        closeItem();
+      }
+    };
+    window.addEventListener('keydown', handleEscKey);
+    return () => window.removeEventListener('keydown', handleEscKey);
+  }, [selectedItem, closeItem]);
+
   useEffect(() => {
     const fetchGallery = async () => {
       try {
@@ -50,7 +84,7 @@ const Gallery: React.FC = () => {
         
         const activeItems = Array.isArray(data) 
           ? data
-              .filter((item: GalleryData) => item.isActive)
+              .filter((item: GalleryData) => item.isActive && item.featured)
               .sort((a, b) => a.order - b.order)
               .slice(0, 6)
           : [];
@@ -86,7 +120,7 @@ const Gallery: React.FC = () => {
     );
   }
 
-  const displayItems = galleryItems.length > 0 ? galleryItems : [
+  const displayItems: GalleryData[] = galleryItems.length > 0 ? galleryItems : [
     { 
       _id: '1',
       title: 'Midnight Lab Session', 
@@ -165,26 +199,83 @@ const Gallery: React.FC = () => {
       <div className="columns-2 sm:columns-2 md:columns-2 lg:columns-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
         {displayItems.map((item, idx) => (
           <ScrollReveal key={item._id || idx} animation="scale" delay={idx * 100} className="break-inside-avoid">
-            <div className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-card">
-              <img 
-                src={item.image?.url} 
-                alt={item.image?.alt || item.title} 
-                className="w-full h-auto object-cover hover:scale-105 transition-all duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 md:p-5 lg:p-6 pointer-events-none">
-                <h4 className="text-foreground font-bold uppercase text-[10px] sm:text-xs md:text-sm tracking-wider line-clamp-2">
-                  {item.title}
-                </h4>
-                <p className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-0.5 sm:mt-1">
-                  {item.category || 'DUET Robotics Club'}
-                </p>
-                {item.date && (
-                  <p className="text-muted text-[6px] sm:text-[7px] md:text-[8px] uppercase tracking-wider mt-0.5 sm:mt-1">
-                    {formatDate(item.date)}
-                  </p>
+            {item.videoUrl ? (
+              <div className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-card">
+                {playingVideos.has(item._id) ? (
+                  <iframe
+                    src={getEmbedUrl(item.videoUrl)}
+                    className="w-full aspect-video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title={item.title}
+                  />
+                ) : (
+                  <div 
+                    className="relative cursor-pointer"
+                    onClick={() => setPlayingVideos(prev => new Set(prev).add(item._id))}
+                  >
+                    {item.image?.url ? (
+                      <img 
+                        src={item.image.url} 
+                        alt={item.image?.alt || item.title} 
+                        className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full aspect-video bg-muted flex items-center justify-center">
+                        <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors duration-300">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
-            </div>
+            ) : (
+              <div 
+                className="relative group overflow-hidden rounded-lg sm:rounded-xl bg-card cursor-pointer"
+                onClick={() => openItem(item)}
+              >
+                {item.image?.url ? (
+                  <img 
+                    src={item.image.url} 
+                    alt={item.image?.alt || item.title} 
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full aspect-video bg-muted flex items-center justify-center">
+                    <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-4 md:p-5 lg:p-6 pointer-events-none">
+                  <h4 className="text-foreground font-bold uppercase text-[10px] sm:text-xs md:text-sm tracking-wider line-clamp-2">
+                    {item.title}
+                  </h4>
+                  {item.description && (
+                    <p className="text-muted text-[8px] sm:text-[9px] md:text-[10px] line-clamp-2 mt-0.5 sm:mt-1">
+                      {item.description}
+                    </p>
+                  )}
+                  <p className="text-primary text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest mt-0.5 sm:mt-1">
+                    {item.category || 'DUET Robotics Club'}
+                  </p>
+                  {item.date && (
+                    <p className="text-muted text-[6px] sm:text-[7px] md:text-[8px] uppercase tracking-wider mt-0.5 sm:mt-1">
+                      {formatDate(item.date)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </ScrollReveal>
         ))}
       </div>
@@ -203,7 +294,53 @@ const Gallery: React.FC = () => {
 
       {displayItems.length === 0 && (
         <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
-          No gallery images found.
+          No gallery items found.
+        </div>
+      )}
+
+      {selectedItem && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
+          onClick={closeItem}
+        >
+          <button
+            onClick={closeItem}
+            className="absolute top-4 right-4 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors duration-200 border border-border/10"
+            aria-label="Close"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div 
+            className="relative w-full max-w-5xl mx-auto px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {selectedItem.videoUrl ? (
+              <iframe
+                src={getEmbedUrl(selectedItem.videoUrl)}
+                className="w-full aspect-video rounded-lg sm:rounded-2xl"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={selectedItem.title}
+              />
+            ) : selectedItem.image?.url ? (
+              <img
+                src={selectedItem.image.url}
+                alt={selectedItem.image?.alt || selectedItem.title}
+                className="w-auto max-w-full max-h-[80vh] mx-auto object-contain rounded-lg sm:rounded-2xl"
+              />
+            ) : null}
+
+            <div className="mt-4 text-center">
+              <h2 className="text-lg sm:text-xl font-bold text-white">{selectedItem.title}</h2>
+              {selectedItem.description && (
+                <p className="text-muted text-sm mt-1">{selectedItem.description}</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </div>

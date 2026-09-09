@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Duet Robotics Club",
+  title: "DUET Robotics Club",
   icons: {
     icon: '/DRC-Logo-300x221.gif',
   },

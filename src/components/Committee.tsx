@@ -25,6 +25,14 @@ interface ExecutiveCommittee {
   members: ExecutiveMember[];
 }
 
+const DESIGNATION_ORDER: Record<string, number> = {
+  'President': 1,
+  'General Secretary': 2,
+  'Senior Vice President': 3,
+  'Vice President': 4,
+  'Asst. General Secretary': 5,
+};
+
 const Committee: React.FC = () => {
   const [committee, setCommittee] = useState<ExecutiveCommittee | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,9 +79,32 @@ const Committee: React.FC = () => {
     );
   }
 
-  const displayMembers = committee?.members
+  const allMembers = committee?.members
     .filter(m => m.isVisible)
     .sort((a, b) => a.displayOrder - b.displayOrder) || [];
+
+  const isAdvisor = (d: string) => d === 'Faculty Advisor' || d === 'Advisor';
+  const isTopRow = (d: string) => d === 'President' || d === 'General Secretary';
+  const isSecondRow = (d: string) => d === 'Senior Vice President' || d === 'Vice President' || d === 'Asst. General Secretary';
+
+  const advisors = allMembers.filter(m => isAdvisor(m.designation));
+  const president = allMembers.find(m => m.designation === 'President');
+  const genSecretary = allMembers.find(m => m.designation === 'General Secretary');
+  const topRow = [president, genSecretary].filter(Boolean) as ExecutiveMember[];
+
+  const seniorVP = allMembers.find(m => m.designation === 'Senior Vice President');
+  const vicePresident = allMembers.find(m => m.designation === 'Vice President');
+  const asstGS = allMembers.find(m => m.designation === 'Asst. General Secretary');
+  const secondRow = [seniorVP, vicePresident, asstGS].filter(Boolean) as ExecutiveMember[];
+
+  const topSlugs = new Set([...topRow, ...secondRow, ...advisors].map(m => m._id));
+  const remaining = allMembers
+    .filter(m => !topSlugs.has(m._id))
+    .sort((a, b) => {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return a.displayOrder - b.displayOrder;
+    });
 
   const renderSocialIcon = (platform: string, url?: string) => {
     if (!url) return null;
@@ -107,12 +138,59 @@ const Committee: React.FC = () => {
     );
   };
 
+  const renderMemberCard = (member: ExecutiveMember, sizeClass?: string) => (
+    <Link key={member._id} href={`/executive-committee/${member.slug}`}>
+      <div className={`relative overflow-hidden bg-card border border-border rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl group-hover:shadow-primary/5 ${sizeClass || 'aspect-[3/4]'}`}>
+        {member.profilePhoto?.url ? (
+          <img 
+            src={member.profilePhoto.url} 
+            alt={member.profilePhoto.alt || member.fullName} 
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" 
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-4xl sm:text-5xl md:text-6xl text-muted font-black bg-gradient-to-br from-background/10 to-background/30">
+            {member.fullName.charAt(0)}
+          </div>
+        )}
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-70 group-hover:opacity-60 transition-opacity" />
+        
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 lg:p-6 xl:p-7 2xl:p-8">
+          <p className="text-primary text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[10px] 2xl:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] xl:tracking-[0.35em] mb-0.5 sm:mb-1 md:mb-1.5 lg:mb-2 truncate">
+            {member.designation}
+          </p>
+          
+          <h3 className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-black text-white uppercase leading-none mb-1.5 sm:mb-2 md:mb-2.5 lg:mb-3 xl:mb-3.5 2xl:mb-4 line-clamp-2">
+            {member.fullName}
+          </h3>
+          
+          <div className="flex flex-row justify-between items-end">
+            {(member.department || member.session) && (
+              <p className="text-[4px] sm:text-[5px] md:text-[6px] lg:text-[7px] xl:text-[8px] 2xl:text-[9px] text-white/60 uppercase tracking-wider line-clamp-1 max-w-[55%] sm:max-w-[50%]">
+                {member.department && `${member.department}`}
+                {member.session && ` · ${member.session}`}
+              </p>
+            )}
+            <div className="flex justify-end text-white space-x-0.5 sm:space-x-1 md:space-x-1.5 lg:space-x-2 xl:space-x-2.5">
+              {member.socialLinks?.linkedin && renderSocialIcon('linkedin', member.socialLinks.linkedin)}
+              {member.socialLinks?.github && renderSocialIcon('github', member.socialLinks.github)}
+              {member.socialLinks?.facebook && renderSocialIcon('facebook', member.socialLinks.facebook)}
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+        <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+      </div>
+    </Link>
+  );
+
   return (
     <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 2xl:py-28 container mx-auto px-4 sm:px-6 lg:px-8">
       <ScrollReveal animation="up">
         <div className="text-center mb-10 sm:mb-14 md:mb-18 lg:mb-20 xl:mb-24">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black uppercase mb-2 sm:mb-3 md:mb-4 section-title after:mx-auto tracking-tighter">
-            Command Center
+            Executive Committee
           </h2>
           <p className="text-muted uppercase text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] xl:text-[12px] font-bold tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] lg:tracking-[0.5em] xl:tracking-[0.6em] mt-2 sm:mt-3 md:mt-4">
             The architect minds driving DUET's robotics legacy
@@ -125,71 +203,74 @@ const Committee: React.FC = () => {
         </div>
       </ScrollReveal>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 2xl:gap-10">
-        {displayMembers.map((member, idx) => (
-          <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 100} className="group">
-            <Link href={`/executive-committee/${member.slug}`}>
-              <div className="relative overflow-hidden aspect-[3/4] sm:aspect-[3/4] md:aspect-[3/4] lg:aspect-[3/4] xl:aspect-[3/4] 2xl:aspect-[3/4] bg-card border border-border rounded-xl sm:rounded-2xl group-hover:border-primary/50 transition-all duration-700 shadow-2xl group-hover:shadow-primary/10 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-2xl group-hover:shadow-primary/5">
-                {member.profilePhoto?.url ? (
-                  <img 
-                    src={member.profilePhoto.url} 
-                    alt={member.profilePhoto.alt || member.fullName} 
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" 
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl sm:text-5xl md:text-6xl text-muted font-black bg-gradient-to-br from-background/10 to-background/30">
-                    {member.fullName.charAt(0)}
-                  </div>
-                )}
-                
-                {/* Gradient Overlay - stronger at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 group-hover:opacity-80 transition-opacity" />
-                
-                {/* Content Container - positioned at bottom */}
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 lg:p-6 xl:p-7 2xl:p-8">
-                  {/* Designation - always visible at bottom */}
-                  <p className="text-primary text-[6px] sm:text-[7px] md:text-[8px] lg:text-[9px] xl:text-[10px] 2xl:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.25em] lg:tracking-[0.3em] xl:tracking-[0.35em] mb-0.5 sm:mb-1 md:mb-1.5 lg:mb-2 truncate">
-                    {member.designation}
-                  </p>
-                  
-                  {/* Name - always visible at bottom */}
-                  <h3 className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-xl font-black text-white uppercase leading-none mb-1.5 sm:mb-2 md:mb-2.5 lg:mb-3 xl:mb-3.5 2xl:mb-4 line-clamp-2">
-                    {member.fullName}
-                  </h3>
-                  
-                  {/* Department & Social Icons Row */}
-                  <div className="flex flex-row justify-between items-end">
-                    {(member.department || member.session) && (
-                      <p className="text-[4px] sm:text-[5px] md:text-[6px] lg:text-[7px] xl:text-[8px] 2xl:text-[9px] text-white/60 uppercase tracking-wider line-clamp-1 max-w-[55%] sm:max-w-[50%]">
-                        {member.department && `${member.department}`}
-                        {member.session && ` · ${member.session}`}
-                      </p>
-                    )}
-                    <div className="flex justify-end text-white space-x-0.5 sm:space-x-1 md:space-x-1.5 lg:space-x-2 xl:space-x-2.5">
-                      {member.socialLinks?.linkedin && renderSocialIcon('linkedin', member.socialLinks.linkedin)}
-                      {member.socialLinks?.github && renderSocialIcon('github', member.socialLinks.github)}
-                      {member.socialLinks?.facebook && renderSocialIcon('facebook', member.socialLinks.facebook)}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Animated border lines */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
-                <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+      {/* Row 1: President + General Secretary (centered) */}
+      {topRow.length > 0 && (
+        <ScrollReveal animation="up" delay={100}>
+          <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-6 md:mb-8">
+            {topRow.map((member) => (
+              <div key={member._id} className="group w-[45%] sm:w-[40%] md:w-[30%] lg:w-[22%]">
+                {renderMemberCard(member, 'aspect-[3/4]')}
               </div>
-            </Link>
-          </ScrollReveal>
-        ))}
-      </div>
-      
-      {displayMembers.length === 0 && (
+            ))}
+          </div>
+        </ScrollReveal>
+      )}
+
+      {/* Row 2: Senior VP + VP + Asst. GS */}
+      {secondRow.length > 0 && (
+        <ScrollReveal animation="up" delay={200}>
+          <div className="flex justify-center gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10">
+            {secondRow.map((member) => (
+              <div key={member._id} className="group w-[30%] sm:w-[28%] md:w-[22%] lg:w-[18%]">
+                {renderMemberCard(member, 'aspect-[3/4]')}
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+      )}
+
+      {/* Remaining members */}
+      {remaining.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 xl:gap-8 2xl:gap-10 mb-8 sm:mb-10 md:mb-12">
+          {remaining.map((member, idx) => (
+            <ScrollReveal key={member._id || idx} animation="scale" delay={idx * 100} className="group">
+              {renderMemberCard(member)}
+            </ScrollReveal>
+          ))}
+        </div>
+      )}
+
+      {/* Advisors Section */}
+      {advisors.length > 0 && (
+        <ScrollReveal animation="up" delay={300}>
+          <div className="mt-8 sm:mt-10 md:mt-12 pt-8 sm:pt-10 md:pt-12 border-t border-border">
+            <div className="text-center mb-6 sm:mb-8 md:mb-10">
+              <p className="text-primary text-[8px] sm:text-[9px] md:text-[10px] lg:text-[11px] xl:text-[12px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] mb-2">
+                Let&apos;s Introduce Our Club Advisor
+              </p>
+              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black uppercase section-title after:mx-auto">
+                Our Guiding Force
+              </h3>
+            </div>
+            <div className="flex justify-center gap-4 sm:gap-6 md:gap-8">
+              {advisors.map((member) => (
+                <div key={member._id} className="group w-[40%] sm:w-[35%] md:w-[25%] lg:w-[20%]">
+                  {renderMemberCard(member, 'aspect-[3/4]')}
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+      )}
+
+      {allMembers.length === 0 && (
         <div className="text-center text-muted text-sm sm:text-base py-8 sm:py-12">
           No committee members found.
         </div>
       )}
 
-      {displayMembers.length > 0 && (
-        <ScrollReveal animation="up" delay={300}>
+      {allMembers.length > 0 && (
+        <ScrollReveal animation="up" delay={400}>
           <div className="text-center mt-10 sm:mt-12 md:mt-14 lg:mt-16 xl:mt-20">
             <Link
               href="/executive-committee"

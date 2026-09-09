@@ -4,15 +4,17 @@ const GallerySchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   image: {
-    url: { type: String, required: true },
-    alt: { type: String }
+    url: { type: String, default: '' },
+    alt: { type: String, default: '' },
+    publicId: { type: String, default: '' }
   },
+  videoUrl: { type: String, default: '' },
   category: { type: String },
-  // tags: [{ type: String }],
   date: { type: Date },
   featured: { type: Boolean, default: false },
   order: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
-export default mongoose.models.Gallery || mongoose.model('Gallery', GallerySchema);
+delete mongoose.models.Gallery;
+export default mongoose.model('Gallery', GallerySchema);

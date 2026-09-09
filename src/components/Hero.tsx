@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 interface HeroData {
   title: string;
@@ -38,10 +38,69 @@ const FALLBACK_DATA: HeroData = {
   isActive: true
 };
 
+type AnimationType = 'fade' | 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down' | 'zoom-in' | 'zoom-out' | 'ken-burns';
+
+const ANIMATIONS: AnimationType[] = ['fade', 'slide-left', 'slide-right', 'slide-up', 'slide-down', 'zoom-in', 'zoom-out', 'ken-burns'];
+
+const getAnimationClasses = (type: AnimationType, isActive: boolean): string => {
+  if (isActive) {
+    switch (type) {
+      case 'fade': return 'opacity-100 scale-100';
+      case 'slide-left': return 'opacity-100 translate-x-0';
+      case 'slide-right': return 'opacity-100 translate-x-0';
+      case 'slide-up': return 'opacity-100 translate-y-0';
+      case 'slide-down': return 'opacity-100 translate-y-0';
+      case 'zoom-in': return 'opacity-100 scale-100';
+      case 'zoom-out': return 'opacity-100 scale-100';
+      case 'ken-burns': return 'opacity-100 scale-100';
+      default: return 'opacity-100 scale-100';
+    }
+  }
+
+  switch (type) {
+    case 'fade': return 'opacity-0 scale-105';
+    case 'slide-left': return 'opacity-0 -translate-x-full';
+    case 'slide-right': return 'opacity-0 translate-x-full';
+    case 'slide-up': return 'opacity-0 -translate-y-full';
+    case 'slide-down': return 'opacity-0 translate-y-full';
+    case 'zoom-in': return 'opacity-0 scale-150';
+    case 'zoom-out': return 'opacity-0 scale-50';
+    case 'ken-burns': return 'opacity-0 scale-110';
+    default: return 'opacity-0 scale-105';
+  }
+};
+
 const Hero: React.FC = () => {
   const [heroData, setHeroData] = useState<HeroData>(FALLBACK_DATA);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const [currentAnimation, setCurrentAnimation] = useState<AnimationType>('fade');
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const usedAnimations = useRef<Set<AnimationType>>(new Set());
+
+  const getRandomAnimation = useCallback((): AnimationType => {
+    const available = ANIMATIONS.filter(a => !usedAnimations.current.has(a));
+    if (available.length === 0) {
+      usedAnimations.current.clear();
+      return ANIMATIONS[Math.floor(Math.random() * ANIMATIONS.length)];
+    }
+    const anim = available[Math.floor(Math.random() * available.length)];
+    usedAnimations.current.add(anim);
+    return anim;
+  }, []);
+
+  const goToSlide = useCallback((index: number) => {
+    if (isTransitioning || index === currentIndex) return;
+    setIsTransitioning(true);
+    setPrevIndex(currentIndex);
+    setCurrentAnimation(getRandomAnimation());
+    setCurrentIndex(index);
+    setTimeout(() => {
+      setIsTransitioning(false);
+      setPrevIndex(null);
+    }, 2000);
+  }, [currentIndex, isTransitioning, getRandomAnimation]);
 
   useEffect(() => {
     const fetchHeroData = async () => {
@@ -72,11 +131,12 @@ const Hero: React.FC = () => {
 
     const interval = heroData.autoSlideInterval || 6000;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroData.images.length);
+      const nextIndex = (currentIndex + 1) % heroData.images.length;
+      goToSlide(nextIndex);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [heroData?.images?.length, heroData?.autoSlideInterval, heroData?.isActive]);
+  }, [heroData?.images?.length, heroData?.autoSlideInterval, heroData?.isActive, currentIndex, goToSlide]);
 
   const sortedImages = [...(heroData?.images || [])].sort((a, b) => (a.order || 0) - (b.order || 0));
 
@@ -120,25 +180,27 @@ const Hero: React.FC = () => {
     <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen min-h-[350px] sm:min-h-[450px] md:min-h-[550px] lg:min-h-[700px] flex items-end justify-center overflow-hidden bg-background">
       {sortedImages.length > 0 && (
         <div className="absolute inset-0 z-0">
-          {sortedImages.map((img, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 bg-cover bg-center transition-all duration-[1500ms] sm:duration-[2000ms] ease-in-out transform ${index === currentIndex
-                  ? 'opacity-100 translate-x-0 scale-100'
-                  : index < currentIndex
-                    ? 'opacity-0 -translate-x-full scale-110'
-                    : 'opacity-0 translate-x-full scale-110'
-                }`}
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(var(--background-rgb, 5,5,5),0.40), rgba(var(--background-rgb, 5,5,5),0.15), rgba(var(--background-rgb, 5,5,5),0.70)), url('${img.url}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                zIndex: index === currentIndex ? 1 : 0
-              }}
-              role="img"
-              aria-label={img.alt || 'Hero background'}
-            />
-          ))}
+          {sortedImages.map((img, index) => {
+            const isActive = index === currentIndex;
+            const isPrev = index === prevIndex;
+            const animType = isActive ? currentAnimation : 'fade';
+
+            return (
+              <div
+                key={index}
+                className={`absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] ease-in-out transform ${getAnimationClasses(animType, isActive)} ${isPrev && !isActive ? 'opacity-0 scale-105' : ''}`}
+                style={{
+                  backgroundImage: `linear-gradient(to bottom, rgba(var(--background-rgb, 5,5,5),0.40), rgba(var(--background-rgb, 5,5,5),0.15), rgba(var(--background-rgb, 5,5,5),0.70)), url('${img.url}')`,
+                  backgroundSize: animType === 'ken-burns' ? '120%' : 'cover',
+                  backgroundPosition: isActive && animType === 'ken-burns' ? 'center' : 'center',
+                  zIndex: isActive ? 1 : 0,
+                  animation: isActive && animType === 'ken-burns' ? 'kenBurns 8s ease-in-out infinite' : 'none'
+                }}
+                role="img"
+                aria-label={img.alt || 'Hero background'}
+              />
+            );
+          })}
         </div>
       )}
 
@@ -193,7 +255,7 @@ const Hero: React.FC = () => {
           {sortedImages.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrentIndex(i)}
+              onClick={() => goToSlide(i)}
               className={`h-1 sm:h-1.5 transition-all duration-500 rounded-full ${i === currentIndex
                   ? 'w-6 sm:w-8 md:w-10 lg:w-12 xl:w-14 2xl:w-16 bg-primary'
                   : 'w-1.5 sm:w-2 md:w-2.5 lg:w-3 xl:w-3.5 bg-white/30 hover:bg-white/50'
@@ -213,6 +275,11 @@ const Hero: React.FC = () => {
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes kenBurns {
+          0% { background-size: 100%; background-position: center; }
+          50% { background-size: 115%; background-position: 30% 40%; }
+          100% { background-size: 100%; background-position: center; }
         }
         .text-glow {
           text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);

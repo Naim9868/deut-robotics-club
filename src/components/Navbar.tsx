@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     { name: 'Blog', href: '/blog', id: 'blog', isPage: true },
     { name: 'Projects', href: '/projects', id: 'projects', isPage: false },
     { name: 'Gallery', href: '/gallery', id: 'gallery', isPage: true },
-    { name: 'Team', href: '#committee', id: 'committee', isPage: false },
+    { name: 'Executive-Committee', href: '#committee', id: 'committee', isPage: false },
     { name: 'FAQ', href: '#faq', id: 'faq', isPage: false },
   ];
 
@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Natural wave animation every 5 seconds
+  // Natural wave animation every 60 seconds
   useEffect(() => {
     const startWaveAnimation = () => {
       setIsWaving(true);
@@ -85,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
     waveTimeoutRef.current = setInterval(() => {
       startWaveAnimation();
-    }, 10000);
+    }, 60000);
 
     return () => {
       clearTimeout(initialDelay);
