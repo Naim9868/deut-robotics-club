@@ -18,6 +18,7 @@ const menuItems = [
   { name: 'Blog', href: '/admin/blog', icon: '📰' },
   { name: 'Projects', href: '/admin/projects', icon: '🚀' },
   { name: 'Gallery', href: '/admin/gallery', icon: '🖼️' },
+  { name: 'Certificates', href: '/admin/certificates', icon: '📜' },
   { name: 'Events', href: '/admin/events', icon: '📅' },
   { name: 'Timeline', href: '/admin/timeline', icon: '⏳' },
   { name: 'Executive Committee', href: '/admin/executive-committee', icon: '🏛️' },
