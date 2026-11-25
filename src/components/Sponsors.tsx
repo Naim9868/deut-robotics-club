@@ -114,9 +114,9 @@ const Sponsors: React.FC = () => {
       </div>
       
       <div className="flex relative group">
-        <div className="flex animate-marquee whitespace-nowrap gap-8 sm:gap-12 md:gap-16">
+        <div className="flex animate-marquee whitespace-nowrap gap-10 sm:gap-14 md:gap-20">
           {sponsors.concat(sponsors).map((sponsor, idx) => (
-            <div key={idx} className="mx-4 flex items-center justify-center">
+            <div key={idx} className="flex flex-col items-center gap-2 min-w-[150px]">
               {sponsor.website ? (
                 <a href={sponsor.website} target="_blank" rel="noopener noreferrer">
                   <img
@@ -132,6 +132,9 @@ const Sponsors: React.FC = () => {
                   className="h-10 sm:h-12 md:h-16 grayscale hover:grayscale-0 transition-all duration-300 object-contain max-w-[160px]"
                 />
               )}
+              <span className="text-[8px] sm:text-[9px] md:text-xs font-black uppercase tracking-wider text-foreground/70 whitespace-nowrap">
+                {sponsor.name}
+              </span>
             </div>
           ))}
         </div>
