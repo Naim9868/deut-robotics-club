@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import NextImage from 'next/image';
-import { Space_Grotesk, Fraunces, Inter, IBM_Plex_Mono } from 'next/font/google';
 import toast from 'react-hot-toast';
 import styles from './CertificateGenerator.module.css';
 
@@ -30,11 +29,6 @@ const SEAL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <text x="32" y="29" text-anchor="middle" font-family="monospace" font-size="9" fill="#12110F" font-weight="500">DRC</text>
   <text x="32" y="40" text-anchor="middle" font-family="monospace" font-size="6" fill="#110f0b">VERIFIED</text>
 </svg>`;
-
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], weight: ['500', '600', '700'] });
-const fraunces = Fraunces({ subsets: ['latin'], style: ['italic'], weight: ['500', '600'] });
-const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600'] });
-const plexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'] });
 
 type CertType = 'Membership' | 'Participation' | 'Achievement' | 'Appreciation' | 'Completion';
 
@@ -200,10 +194,10 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
   const dateStr = formatDate(dateIssued);
 
   return (
-    <div className={`${styles.wrap} ${inter.className}`}>
+    <div className={`${styles.wrap} `}>
       {/* ============ CONTROL PANEL ============ */}
       <div className={styles.panel}>
-        <h2 className={spaceGrotesk.className}>
+        <h2>
           {editData ? 'Edit Certificate' : 'DUET Robotics Club'}
         </h2>
         <p className={styles.panelSub}>
@@ -261,7 +255,7 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
           <textarea className={styles.textarea} value={citation} onChange={(e) => setCitation(e.target.value)} />
           <div className={styles.hint}>Edit freely, or change the fields above and hit Regenerate. Supports &lt;b&gt; tags for bold.</div>
         </div>
-        <button type="button" className={`${styles.btn} ${styles.btnGen} ${spaceGrotesk.className}`} onClick={() => regenerateCitation()}>
+        <button type="button" className={`${styles.btn} ${styles.btnGen} `} onClick={() => regenerateCitation()}>
           ↻ Regenerate citation
         </button>
 
@@ -290,10 +284,10 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
         </div>
 
         <div className={styles.dividerLine} />
-        <button type="button" className={`${styles.btn} ${styles.btnPng} ${spaceGrotesk.className}`} onClick={handleDownloadPng} disabled={saving}>
+        <button type="button" className={`${styles.btn} ${styles.btnPng} `} onClick={handleDownloadPng} disabled={saving}>
           {saving ? 'Saving...' : editData ? '⬆ Update & Download PNG' : '⬇ Download as PNG'}
         </button>
-        <button type="button" className={`${styles.btn} ${styles.btnPrint} ${spaceGrotesk.className}`} onClick={handlePrint}>
+        <button type="button" className={`${styles.btn} ${styles.btnPrint} `} onClick={handlePrint}>
           🖨 Print / Save as PDF
         </button>
       </div>
@@ -303,14 +297,14 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
         <div className={styles.cert} ref={certRef}>
           <div className={`${styles.rulerbar} ${styles.rulerbarTop}`}><div className={styles.ticks} /></div>
           <div className={styles.rail} />
-          <div className={`${styles.railLabel} ${plexMono.className}`}>DUET ROBOTICS CLUB · EST-2014. GAZIPUR</div>
+          <div className={`${styles.railLabel} `}>DUET ROBOTICS CLUB · EST-2014. GAZIPUR</div>
           <div className={styles.watermark}>
             <NextImage src={LOGO_DUET} alt="" width={420} height={420} unoptimized />
           </div>
 
           <div className={styles.content}>
             <div className={styles.hdr}>
-              <div className={`${styles.certMeta} ${plexMono.className}`}>
+              <div className={`${styles.certMeta} `}>
                 Certificate No. <b>{certNo || '—'}</b><br />
                 Issued <b>{dateStr}</b>
               </div>
@@ -321,17 +315,17 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
 
             <div className={styles.titleBlock}>
               <div className={styles.kicker}>DUET Robotics Club</div>
-              <div className={`${styles.bigTitle} ${spaceGrotesk.className}`}>CERTIFICATE</div>
-              <div className={`${styles.subTitle} ${spaceGrotesk.className}`}>{TYPE_COPY[certType].sub}</div>
+              <div className={`${styles.bigTitle} `}>CERTIFICATE</div>
+              <div className={`${styles.subTitle} `}>{TYPE_COPY[certType].sub}</div>
               <div className={styles.titleRule} />
             </div>
 
             <div className={styles.presentedTo}>is proudly presented to</div>
             <div className={styles.nameWrap}>
-              <div className={`${styles.recipientNameDisplay} ${fraunces.className}`}>{recipientName || 'Recipient Name'}</div>
+              <div className={`${styles.recipientNameDisplay} `}>{recipientName || 'Recipient Name'}</div>
               <div className={styles.nameRule} />
               {studentId && (
-                <div className={`${styles.studentIdLine} ${plexMono.className}`}>STUDENT ID · {studentId}</div>
+                <div className={`${styles.studentIdLine} `}>STUDENT ID · {studentId}</div>
               )}
             </div>
 
@@ -341,32 +335,32 @@ export default function CertificateGenerator({ editData, onSaved }: CertificateG
 
             <div className={styles.dataStrip}>
               <div className={styles.dataCell}>
-                <div className={`${styles.dataLbl} ${plexMono.className}`}>Certificate No.</div>
-                <div className={`${styles.dataVal} ${plexMono.className}`}>{certNo || '—'}</div>
+                <div className={`${styles.dataLbl} `}>Certificate No.</div>
+                <div className={`${styles.dataVal} `}>{certNo || '—'}</div>
               </div>
               <div className={styles.dataCell}>
-                <div className={`${styles.dataLbl} ${plexMono.className}`}>Session</div>
-                <div className={`${styles.dataVal} ${plexMono.className}`}>{session || '—'}</div>
+                <div className={`${styles.dataLbl} `}>Session</div>
+                <div className={`${styles.dataVal} `}>{session || '—'}</div>
               </div>
               <div className={styles.dataCell}>
-                <div className={`${styles.dataLbl} ${plexMono.className}`}>Date Issued</div>
-                <div className={`${styles.dataVal} ${plexMono.className}`}>{dateStr}</div>
+                <div className={`${styles.dataLbl} `}>Date Issued</div>
+                <div className={`${styles.dataVal} `}>{dateStr}</div>
               </div>
             </div>
 
             <div className={styles.sigRow}>
               <div className={styles.sig}>
                 <div className={styles.sigline} />
-                <div className={`${styles.signame} ${fraunces.className}`}>{presidentName}</div>
+                <div className={`${styles.signame} `}>{presidentName}</div>
                 <div className={styles.sigrole}>President</div>
-                <div className={`${styles.sigorg} ${plexMono.className}`}>DUET Robotics Club</div>
+                <div className={`${styles.sigorg} `}>DUET Robotics Club</div>
               </div>
               {sealSrc && <img className={styles.seal} src={sealSrc} alt="DRC Verified Seal" />}
               <div className={styles.sig}>
                 <div className={styles.sigline} />
-                <div className={`${styles.signame} ${fraunces.className}`}>{directorName}</div>
+                <div className={`${styles.signame} `}>{directorName}</div>
                 <div className={styles.sigrole}>Director, Students&apos; Welfare</div>
-                <div className={`${styles.sigorg} ${plexMono.className}`}>DUET, Gazipur</div>
+                <div className={`${styles.sigorg} `}>DUET, Gazipur</div>
               </div>
             </div>
           </div>
