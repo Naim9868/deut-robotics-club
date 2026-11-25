@@ -80,7 +80,7 @@ const Committee: React.FC = () => {
   }
 
   const allMembers = committee?.members
-    .filter(m => m.isVisible)
+    .filter(m => m.isVisible && m.featured)
     .sort((a, b) => a.displayOrder - b.displayOrder) || [];
 
   const isAdvisor = (d: string) => d === 'Faculty Advisor' || d === 'Advisor';
