@@ -107,10 +107,6 @@ const Sponsors: React.FC = () => {
     );
   }
 
-  const displaySponsors = sponsors.length > 0 
-    ? sponsors.map(s => s.name) 
-    : FALLBACK_SPONSORS;
-
   return (
     <div className="py-24 bg-background overflow-hidden border-t border-border">
       <div className="container mx-auto px-4 mb-12">
@@ -118,13 +114,24 @@ const Sponsors: React.FC = () => {
       </div>
       
       <div className="flex relative group">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {displaySponsors.concat(displaySponsors).map((sponsor, idx) => (
-            <div 
-              key={idx} 
-              className="mx-12 text-3xl md:text-5xl font-black italic text-foreground/90 hover:text-primary transition-all duration-500 cursor-default uppercase tracking-tighter"
-            >
-              {sponsor}
+        <div className="flex animate-marquee whitespace-nowrap gap-8 sm:gap-12 md:gap-16">
+          {sponsors.concat(sponsors).map((sponsor, idx) => (
+            <div key={idx} className="mx-4 flex items-center justify-center">
+              {sponsor.website ? (
+                <a href={sponsor.website} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={sponsor.logo.url}
+                    alt={sponsor.logo.alt || sponsor.name}
+                    className="h-10 sm:h-12 md:h-16 grayscale hover:grayscale-0 transition-all duration-300 object-contain max-w-[160px]"
+                  />
+                </a>
+              ) : (
+                <img
+                  src={sponsor.logo.url}
+                  alt={sponsor.logo.alt || sponsor.name}
+                  className="h-10 sm:h-12 md:h-16 grayscale hover:grayscale-0 transition-all duration-300 object-contain max-w-[160px]"
+                />
+              )}
             </div>
           ))}
         </div>
